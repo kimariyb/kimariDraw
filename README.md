@@ -1,2 +1,3 @@
-# kimariDraw
-The application is used to draw the Energy Profile Map
+<div align="center">
+    <img src="figure/logo.png" width="250px" />
+</div>
