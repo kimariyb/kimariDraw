@@ -1,3 +1,6 @@
+import numpy as np
+
+
 class KDData:
 
     def __init__(self, unit, temperature, figure_size, color_theme, font_family, save_image, num_data):
@@ -28,6 +31,12 @@ class KDData:
         """
         y = []
         for item in self.num_Data:
-            y.append(item[0])
+            y.append(item[1])
 
         return y
+
+    def get_numpy_data(self):
+        """
+        Returns the data as a numpy array
+        """
+        return np.array([self.get_num_x(), self.get_num_y()])
