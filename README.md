@@ -2,6 +2,8 @@
     <img src="figure/logo.png" width="250px"  alt=""/>
 </div>
 
+---
+
 kimariDraw 是一个用于绘制化学反应能量折线图的 Python 命令行程序，使用 Matplotlib 和 Numpy 库实现绘图功能。
 
 ## 安装

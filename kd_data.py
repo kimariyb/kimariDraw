@@ -16,9 +16,18 @@ class KDData:
         """
         Returns the number of x-axis values
         """
+        x = []
+        for item in self.num_Data:
+            x.append(item[0])
 
+        return x
 
     def get_num_y(self):
         """
         Returns the number of y-axis values
         """
+        y = []
+        for item in self.num_Data:
+            y.append(item[0])
+
+        return y
