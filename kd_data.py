@@ -40,3 +40,4 @@ class KDData:
         Returns the data as a numpy array
         """
         return np.array([self.get_num_x(), self.get_num_y()])
+

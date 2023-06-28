@@ -3,7 +3,7 @@
 # FIGURE_SIZE = 8, 6
 # COLOR_THEME = nature
 # FONT_FAMILY = Times New Roman
-# SAVE_IMAGE = PNG
+# SAVE_IMAGE = png
 
 BEGIN
 0.0, 10.00
