@@ -8,27 +8,51 @@ from kd_data import KDData
 
 
 class KDProfile:
-    def __init__(self, x, y, data: KDData):
-        self.x = x
-        self.y = y
+    def __init__(self, data: KDData):
+        """
+        初始化 KDProfile constructor
+        :param data: KDData 对象
+        """
         self.data = data
 
+    def axis_init(self):
+        """
+        初始化坐标轴
+        :return:
+        """
+        pass
+
     def set_font(self):
+        """
+        修改坐标轴字体
+        :return:
+        """
         font = self.data.font_family
         if font == 'Arial':
-            axis_font = FontProperties(family='sans-serif', size=14)
-            axis_font.set_name("Arial")
-            axis_font.set_weight("bold")
+            pass
         elif font == 'Times New Roman':
-            axis_font = FontProperties(family='serif', size=14)
-            axis_font.set_name("Times New Roman")
-            axis_font.set_weight("bold")
+            pass
+        elif font == 'Calibri':
+            pass
 
     def set_color(self):
-        pass
+        """
+        修改主题颜色
+        :return:
+        """
+        color_theme = self.data.color_theme
+        if color_theme == 'nature':
+            pass
+        elif color_theme == 'science':
+            pass
 
     def set_figure(self):
-        pass
+        """
+        修改图片画布大小
+        :return:
+        """
+        figure_size = self.data.figure_size
+        plt.figure(figure=figure_size, dpi=700)
 
     def save_figure(self):
         pass

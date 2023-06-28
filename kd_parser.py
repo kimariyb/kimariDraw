@@ -1,3 +1,6 @@
+import os.path
+
+
 class KDFile:
     def __init__(self, header, data):
         """
@@ -5,7 +8,6 @@ class KDFile:
         """
         self.header = header
         self.data = data
-        print("已经载入文件！")
 
     def __str__(self):
         """
@@ -50,14 +52,25 @@ class KDFileParser:
         验证符合上述格式的 KD 文件是否存在数据行。
         如果存在数据行，返回 True；否则返回 False。
         """
+        # 确保文件后缀为 .kd
+        if not self.filepath.endswith('.kd'):
+            print(f"{self.filepath} 不是一个 KD 文件")
+            return False
+
+        # 确保文件存在
+        if not os.path.isfile(self.filepath):
+            print(f"{self.filepath} 文件不存在")
+            return False
+
+        # 验证是否存在数据行
         with open(self.filepath, 'r', encoding="utf-8") as f:
-            begin = False  # 标记是否开始读取数据行
+            begin_found = False
             for line in f:
                 line = line.strip()
                 if line == 'BEGIN':
-                    begin = True  # 开始读取数据行
+                    begin_found = True
                 elif line == 'END':
-                    return begin  # 读取到了 END 标记，返回是否开始读取数据行
+                    return begin_found
 
         return False  # 没有找到 BEGIN 和 END 标记，返回 False
 

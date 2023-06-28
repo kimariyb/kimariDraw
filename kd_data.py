@@ -35,7 +35,7 @@ class KDData:
 
         return y
 
-    def get_numpy_data(self):
+    def get_numpy_array(self):
         """
         Returns the data as a numpy array
         """
