@@ -1,65 +1,55 @@
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.font_manager import FontProperties
-
 
 from kd_data import KDData
 
 
-def kd_draw(data: KDData):
-    """_summary_
-
-    Args:
-        data (KDData): _description_
+def kd_draw(data: KDData, save_name='figure'):
     """
-    
+    使用 matplotlib 绘制能量折线图
+    """
     # 设置全局字体
     plt.rcParams['font.family'] = data.font_family
     plt.rcParams['font.weight'] = 'bold'
     plt.rcParams['axes.linewidth'] = 1.5
-    
+
     num_x = data.get_num_x()
     num_y = data.get_num_y()
-    
-    # 将所有的浮点数修改为字符串
-    str_x = [f'{num:.2f}' for num in num_x]
-        
-    # 创建画布和子图对象
-    plt.figure(figsize=data.figure_size)
-    bars = plt.bar(str_x, num_y, width=0.4, edgecolor='black', linewidth=2.5)
-    
-    # 将整个条形都变透明
-    for bar in bars:
-        bar.set_facecolor('none')
 
-    # 在图上显示数值
-    for a, b in zip(str_x, num_y):
-        plt.text(x=a,
-            y=b + 0.02 * np.max(data.get_num_y()),
-            s='{:.1f}'.format(b),
-            ha='center',
-            fontsize=9
-        )
-    
+    # 创建画布和子图对象
+    fig, ax = plt.subplots(figsize=data.figure_size)
+
     # 设置 x 轴和 y 轴的范围
-    plt.ylim(np.min(data.get_num_y())*0.9, np.max(data.get_num_y())*1.1)
-    
+    ax.set_xlim(0, np.max(num_x) + 1)
+    ax.set_ylim(np.min(num_y) * 0.9, np.max(num_y) * 1.1)
+
+    # 绘制平台
+    # 绘制数据点
+    # for i in range(len(num_x)):
+    #    ax.scatter(num_x[i], num_y[i])
+
+    # 在每个数据点上绘制长度为0.4的水平线
+    for i, (x, y) in enumerate(zip(num_x, num_y)):
+        ax.plot([x - 0.2, x + 0.2], [y, y], color='black', linewidth=3)
+        ax.text(x, y * 1.01, f"{y:.1f}", ha='center', va='bottom', fontweight='bold', fontsize=10)
+
+    for i in range(len(num_x) - 1):
+        ax.plot([num_x[i]+0.2, num_x[i+1]-0.2], [num_y[i], num_y[i+1]],  color='black', linewidth=1, linestyle='--')
+
     # 设置 x 轴和 y 轴标签
-    y_label = "Free Energy" + f" ({data.unit})" 
-    plt.xlabel("", fontweight='bold', fontsize=12)
-    plt.ylabel(y_label, fontweight='bold', fontsize=12)
-    
-    # 隐藏 x 轴坐标和 y 轴坐标
-    plt.tick_params(axis='both', which='both', length=0)
-    plt.tick_params(labelbottom=False, labelleft=False)
-    
+    y_label = "Free Energy" + f" ({data.unit})"
+    ax.set_xlabel("Reaction Coordinate", fontweight='bold', fontsize=12)
+    ax.set_ylabel(y_label, fontweight='bold', fontsize=12)
+
+    # 设置 x 轴和 y 轴坐标
+    ax.tick_params(axis='x', color='white')
+    ax.tick_params(axis='x', labelcolor='white')
+
     # 设置标题
-    plt.title("Chemical Energy Profile", fontweight='bold', fontsize=16)
-    
+    ax.set_title("Chemical Energy Profile", fontweight='bold', fontsize=16)
+
     # 保存路径
-    save_fig_url = "figure." + data.save_image
-    plt.savefig(save_fig_url, dpi=800)
-    
+    # save_fig_url = save_name + "." + data.save_image
+    # plt.savefig(save_fig_url, dpi=800)
+
     plt.show()
-    
