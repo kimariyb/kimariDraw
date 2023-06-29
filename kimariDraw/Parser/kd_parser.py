@@ -52,7 +52,6 @@ class KDFileParser:
             raise ValueError('Invalid KD file format')
 
         header = {'unit': None,
-                  'temperature': None,
                   'figure_size': None,
                   'color_theme': None,
                   'font_family': None,
@@ -64,7 +63,7 @@ class KDFileParser:
             lines = f.readlines()
 
         # 解析文件头
-        for line in lines[:6]:
+        for line in lines[:5]:
             key, value = line[2:].strip().split(' = ')
             if key == 'FIGURE_SIZE':
                 width, height = map(int, value.split(','))
@@ -85,3 +84,4 @@ class KDFileParser:
                 data_started = True
 
         return header, data
+

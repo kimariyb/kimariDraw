@@ -16,7 +16,7 @@ pip install Numpy
 pip install Matplotlib
 ```
 
-除此之外，还可以直接从 Github 上 clone。
+除此之外，还可以直接从 Github 上 clone（不推荐，因为这样得到的是源码）。
 
 ```bash
 git clone https://github.com/kimariyb/kimariDraw.git
@@ -28,7 +28,6 @@ git clone https://github.com/kimariyb/kimariDraw.git
 
 ```basic
 # UNIT = Hartree
-# TEMPERATURE = 398
 # FIGURE_SIZE = 8, 4
 # COLOR_THEME = science
 # FONT_FAMILY = Arial
@@ -44,15 +43,13 @@ BEGIN
 END
 ```
 
-文件头格式，文件头必须以 # 开头，包含键值对，以 : 分隔，例如 # UNIT = kj/mol，key 不区分大小写。数据行格式，数据行格式以 BEGIN 开头，用逗号分隔，表示反应进度和能量。数据行每行包含两个数，第一个数表示反应进度，从 1 开始，后面的数表示能量，数据行以 END 开头的行结束。
+在示例中，以 `#` 开头的是文件的文件头，其包含了单位、画布的大小、颜色以及字体等参数，以 `=` 分隔。`BEGIN` 和 `END` 之间表示的数据行，数据行每行包含两个数，用逗号分隔，分别表示反应进度和能量。反应进度必须从 1 开始。注意，文件头和数据行的中间必须存在一个空格。
 
-
-- UNIT: 能量单位，例如 kJ/mol
-- TEMPERATURE: 温度，例如 298，默认为开尔文温度
-- FIGURE_SIZE: 画布大小，例如 8,6
-- COLOR_THEME: 颜色主题，例如 nature
-- FONT_FAMILY: 坐标字体，例如 Times New Roman
-- SIVE_IMAGE: 保存的图片格式，例如 PNG
+- `UNIT:` 能量单位，例如 kJ/mol
+- `FIGURE_SIZE:` 画布大小，例如 8,6
+- `COLOR_THEME:` 颜色主题，例如 nature
+- `FONT_FAMILY:` 坐标字体，例如 Times New Roman
+- `SIVE_IMAGE:` 保存的图片格式，例如 PNG
 
 使用 kimariDraw 绘制折线图的命令如下：
 
@@ -60,9 +57,9 @@ END
 kimariDraw <filename>
 ```
 
-其中 <filename> 是一个 .kd 格式的文件。
+其中 `<filename>` 是一个 `.kd` 格式的文件。
 
-假如要运行 example 目录下的 test2.kd 文件，并且生成 test.png 则可以输入以下指令：
+假如要运行 example 目录下的 `test2.kd` 文件，并且生成 `test.png` 则可以输入以下指令：
 
 ```bash
 kimariDraw ./example/test2.kd -s test
@@ -80,7 +77,7 @@ kimariDraw 支持以下命令行参数：
 
 ## 作者
 
-kimariDraw 是由 kimariyb 开发的。
+**kimariDraw 是由 kimariyb 开发的。**
 
 ## 许可证
 

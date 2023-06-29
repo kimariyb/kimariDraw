@@ -20,12 +20,11 @@ class KDFile:
         返回 KDDate 对象的数据列表
         """
         unit = self.header["unit"]
-        temperature = self.header["temperature"]
         figure_size = self.header["figure_size"]
         color_theme = self.header["color_theme"]
         font_family = self.header["font_family"]
         save_image = self.header["save_image"]
         num_data = self.data
 
-        kd_data = KDData(unit, temperature, figure_size, color_theme, font_family, save_image, num_data)
+        kd_data = KDData(unit, figure_size, color_theme, font_family, save_image, num_data)
         return kd_data
