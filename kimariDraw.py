@@ -1,19 +1,20 @@
-from kd_parser import KDFileParser
+import argparse
+from kd_parser import *
 from kd_plot import *
+from kd_data import *
 
-if __name__ == '__main__':
-    url = "./test_data/test1.kd"
-    kd_data = KDFileParser(url).parse().get_kd_data()
-    print(kd_data)
-    print(type(kd_data.figure_size))
-    print(kd_data.get_num_x())
-    print(kd_data.get_num_y())
+def parse_args():
+    parser = argparse.ArgumentParser(description='Draw energy profile plot using matplotlib')
+    parser.add_argument('input_file', type=str, help='path to input data file')
+    parser.add_argument('-s', '--save_name', type=str, default='figure', help='name of the output image file')
+    return parser.parse_args()
 
-    kd_draw(kd_data)
-
-    
-
-
-
-
-
+def main():
+    args = parse_args()
+    # 读取数据    
+    data = KDFileParser(args.input_file).parse().get_kd_data()
+    # 判断 save_name 是否为空
+    if args.save_name == None:
+        kd_draw(data)
+    else:
+        kd_draw(data, args.save_name)

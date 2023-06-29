@@ -30,22 +30,21 @@ pip install kimariDraw
 # 数据行以 END 开头的行结束
 
 # 示例
-# 文件头
-# # UNIT = kJ/mol
-# # TEMPERATURE = 298
-# # FIGURE_SIZE = 8, 6
-# # COLOR_THEME = nature
-# # FONT_FAMILY = Times New Roman
-# # SIVE_IMAGE = PNG
-# 数据行
-# BEGIN
-# 0.0, 10.00
-# 0.2, 15.00
-# 0.4, 25.00
-# 0.6, 15.00
-# 0.8, 18.00
-# 1.0, 30.00
-# END
+# # UNIT = Hartree
+# # TEMPERATURE = 398
+# # FIGURE_SIZE = 8, 4
+# # COLOR_THEME = science
+# # FONT_FAMILY = Arial
+# # SAVE_IMAGE = png
+# #
+# # BEGIN
+# # 1, 375.5
+# # 2, 405.5
+# # 3, 323.7
+# # 4, 457.8
+# # 5, 300.6
+# # 6, 346.9
+# # END
 ```
 
 使用 kimariDraw 绘制折线图的命令如下：
@@ -60,8 +59,7 @@ kimariDraw <filename>
 
 kimariDraw 支持以下命令行参数：
 
-- `-h`, `--help`：显示帮助信息
-- `-o`, `--output`：指定输出文件名，默认为 output.png
+- `-s`, `--save_name`：指定输出文件名，默认为 figure.png
 
 ## 作者
 

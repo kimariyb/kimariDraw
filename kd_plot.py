@@ -38,8 +38,8 @@ def kd_draw(data: KDData, save_name='figure'):
 
     # 设置 x 轴和 y 轴标签
     y_label = "Free Energy" + f" ({data.unit})"
-    ax.set_xlabel("Reaction Coordinate", fontweight='bold', fontsize=12)
-    ax.set_ylabel(y_label, fontweight='bold', fontsize=12)
+    ax.set_xlabel("Reaction Coordinate", fontweight='bold', fontsize=14)
+    ax.set_ylabel(y_label, fontweight='bold', fontsize=14)
 
     # 设置 x 轴和 y 轴坐标
     ax.tick_params(axis='x', color='white')
@@ -49,7 +49,8 @@ def kd_draw(data: KDData, save_name='figure'):
     ax.set_title("Chemical Energy Profile", fontweight='bold', fontsize=16)
 
     # 保存路径
-    # save_fig_url = save_name + "." + data.save_image
-    # plt.savefig(save_fig_url, dpi=800)
+    save_fig_url = save_name + "." + data.save_image
+    plt.savefig(save_fig_url, dpi=700)
 
+    # 显示图像
     plt.show()
