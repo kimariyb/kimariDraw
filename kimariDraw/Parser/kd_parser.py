@@ -84,4 +84,3 @@ class KDFileParser:
                 data_started = True
 
         return header, data
-
