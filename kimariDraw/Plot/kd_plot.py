@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from kd_data import KDData
+from kimariDraw.Data.kd_data import KDData
 
 
 def kd_draw(data: KDData, save_name='figure'):

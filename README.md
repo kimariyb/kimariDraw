@@ -4,16 +4,24 @@
 
 ---
 
-kimariDraw 是一个用于绘制化学反应能量折线图的 Python 命令行程序，使用 Matplotlib 和 Numpy 库实现绘图功能。
+kimariDraw 是一个用于绘制化学反应能量折线图的 Python 命令行程序，使用 Matplotlib 和 Numpy 库实现绘图功能。其目的是为了更方便的绘制出化学反应能量折线图，特别是在每周的组会上，需要绘制化学反应能量折线图
 
 ## 安装
+
 你可以通过以下命令使用 pip 安装 kimariDraw：
 
 ```bash
 pip install kimariDraw
 ```
 
+除此之外，还可以直接从 Github 上 clone:
+
+```bash
+git clone https://github.com/kimariyb/kimariDraw.git
+```
+
 ## 使用
+
 使用 kimariDraw 绘制折线图需要一个符合 .kd 格式的文件。该文件应包含绘制折线图所需的数据和参数。以下是一个 .kd 文件的示例：
 
 ```basic
@@ -54,6 +62,16 @@ kimariDraw <filename>
 ```
 
 其中 <filename> 是一个 .kd 格式的文件。
+
+假如要运行 example 目录下的 test2.kd 文件，并且生成 test.png 则可以输入以下指令：
+
+```bash
+kimariDraw ./example/test2.kd -s test
+```
+
+则可以在当前目录下得到 test.png:
+
+<img src="figure/test.png">
 
 ## 支持的参数
 
