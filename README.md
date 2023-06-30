@@ -67,7 +67,9 @@ kimariDraw ./example/test2.kd -s test.png
 
 则可以在当前目录下得到 test.png:
 
-<img src="figure/test.png" height="80%" width="80%">
+<div style="text-align:center;">
+  <img src="figure/test.png" height="80%" width="80%">
+</div>
 
 目前仅支持三种内置的颜色主题。分别为 `normal`、`nature` 以及 `science`。
 
