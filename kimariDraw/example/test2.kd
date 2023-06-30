@@ -1,7 +1,7 @@
-# UNIT = Hartree
-# FIGURE_SIZE = 8, 6
+# UNIT = kJ/mol
+# FIGURE_SIZE = 8, 5
 # COLOR_THEME = science
-# FONT_FAMILY = Calibri
+# FONT_FAMILY = Arial
 # PLOT_STYLE = line
 
 BEGIN

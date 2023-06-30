@@ -1,5 +1,5 @@
-# UNIT = Hartree
-# FIGURE_SIZE = 8, 6
+# UNIT = kJ/mol
+# FIGURE_SIZE = 8, 5
 # COLOR_THEME = normal
 # FONT_FAMILY = Arial
 # PLOT_STYLE = line

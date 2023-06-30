@@ -1,7 +1,7 @@
 # UNIT = kJ/mol
-# FIGURE_SIZE = 8, 6
+# FIGURE_SIZE = 8, 5
 # COLOR_THEME = nature
-# FONT_FAMILY = Times New Roman
+# FONT_FAMILY = Arial
 # PLOT_STYLE = line
 
 BEGIN

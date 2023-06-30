@@ -67,15 +67,12 @@ kimariDraw ./example/test2.kd -s test.png
 
 则可以在当前目录下得到 test.png:
 
-<img src="figure/test.png">
+<img src="figure/test.png" height="80%" width="80%">
 
-目前仅支持三种内置的颜色主题。
+目前仅支持三种内置的颜色主题。分别为 `normal`、`nature` 以及 `science`。
 
-<img src="figure/figure1.png">
+<img src="figure/color_theme.png">
 
-<img src="figure/figure2.png">
-
-<img src="figure/figure3.png">
 
 ## 支持的参数
 
