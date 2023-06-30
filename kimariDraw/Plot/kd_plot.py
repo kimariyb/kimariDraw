@@ -20,17 +20,29 @@ def kd_draw(data: KDData, save_name='figure'):
     fig, ax = plt.subplots(figsize=data.figure_size)
 
     # 设置 x 轴和 y 轴的范围
-    ax.set_xlim(0, np.max(num_x) + 1)
-    y_min = np.min(num_y) * 1.25 if np.min(num_y) < 0 else np.min(num_y) * 0.75
-    y_max = np.max(num_y) * 1.25 if np.max(num_y) > 0 else np.max(num_y) * 0.75
+    y_min = np.min(num_y)
+    y_max = np.max(num_y)
+    x_max = np.max(num_x)
+    ax.set_xlim(0, x_max + 1)
+    # 处理最小值为 0 时，不扩展 y 轴范围的情况
+    if y_min == 0:
+        y_max *= 1.25 if y_max > 0 else 0.75
+        y_min = -15
+    else:
+        y_min *= 1.25 if y_min < 0 else 0.75
+        y_max *= 1.25 if y_max > 0 else 0.75
+
     ax.set_ylim(y_min, y_max)
+
+    # 更改颜色主题
+
 
     # 绘制平台
     # 绘制数据点
     # for i in range(len(num_x)):
     #    ax.scatter(num_x[i], num_y[i])
 
-    # 在每个数据点上绘制长度为 0.4 的水平线
+    # 在每个数据点上绘制长度为 0.4 的水平线，并在水平线上显示数字
     for i, (x, y) in enumerate(zip(num_x, num_y)):
         ax.plot([x - 0.2, x + 0.2], [y, y], color='black', linewidth=3)
         if abs(y) > 100:
