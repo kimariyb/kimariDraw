@@ -2,10 +2,12 @@
 # FIGURE_SIZE = 8, 6
 # COLOR_THEME = nature
 # FONT_FAMILY = Times New Roman
-# SAVE_IMAGE = png
+# PLOT_STYLE = line
 
 BEGIN
-1, 298.5
-2, 374.6
-3, 275.3
+1, 0
+2, -20.3
+3, -4.8
+4, 6.2
+5, 37.9
 END

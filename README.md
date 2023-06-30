@@ -31,7 +31,7 @@ git clone https://github.com/kimariyb/kimariDraw.git
 # FIGURE_SIZE = 8, 4
 # COLOR_THEME = science
 # FONT_FAMILY = Arial
-# SAVE_IMAGE = png
+# PLOT_STYLE = line
 
 BEGIN
 1, 375.5
@@ -47,9 +47,9 @@ END
 
 - `UNIT:` 能量单位，例如 kJ/mol
 - `FIGURE_SIZE:` 画布大小，例如 8,6
-- `COLOR_THEME:` 颜色主题，例如 nature
-- `FONT_FAMILY:` 坐标字体，例如 Times New Roman
-- `SIVE_IMAGE:` 保存的图片格式，例如 PNG
+- `COLOR_THEME:` 颜色主题，例如 nature，不支持自定义颜色。可选择内置颜色主题，分别为 nature、science 和 normal
+- `FONT_FAMILY:` 坐标字体，例如 Times New Roman，只能使用系统已经安装过的字体
+- `PLOT_STYLE:` 绘制样式，例如 想要绘制折线图，则写上 line，暂不支持其他样式
 
 使用 kimariDraw 绘制折线图的命令如下：
 
@@ -68,6 +68,14 @@ kimariDraw ./example/test2.kd -s test
 则可以在当前目录下得到 test.png:
 
 <img src="figure/test.png">
+
+目前仅支持三种内置的颜色主题。
+
+<img src="figure/figure1.png">
+
+<img src="figure/figure2.png">
+
+<img src="figure/figure3.png">
 
 ## 支持的参数
 

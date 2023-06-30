@@ -7,7 +7,7 @@ from kimariDraw.Plot.kd_plot import kd_draw
 def parse_args():
     parser = argparse.ArgumentParser(description='Draw energy profile plot using matplotlib')
     parser.add_argument('input_file', type=str, help='path to input data file')
-    parser.add_argument('-s', '--save_name', type=str, default='figure', help='name of the output image file')
+    parser.add_argument('-s', '--save_name', type=str, default='figure.png', help='name of the output image file')
     return parser.parse_args()
 
 

@@ -1,7 +1,5 @@
 import os.path
 
-from kimariDraw.Plot.kd_plot import kd_draw
-
 from kimariDraw.Parser.kd_file import KDFile
 
 
@@ -57,7 +55,7 @@ class KDFileParser:
                   'figure_size': None,
                   'color_theme': None,
                   'font_family': None,
-                  'save_image': None}
+                  'plot_style': None}
 
         data = []
 
@@ -87,7 +85,3 @@ class KDFileParser:
 
         return header, data
 
-
-if __name__ == '__main__':
-    kd_data = KDFileParser("d:/project/test.kd").parse().get_kd_data()
-    kd_draw(kd_data)

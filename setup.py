@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='kimariDraw',
-    version='1.1.5',
+    version='1.2.0',
     description='The application is used to draw the Energy Profile Map',
     author='kimariyb',
     author_email='kimariyb@163.com',

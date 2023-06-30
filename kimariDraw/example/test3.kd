@@ -1,0 +1,14 @@
+# UNIT = Hartree
+# FIGURE_SIZE = 8, 6
+# COLOR_THEME = normal
+# FONT_FAMILY = Arial
+# PLOT_STYLE = line
+
+BEGIN
+1, 0
+2, 4.7
+3, 11.3
+4, 35.7
+5, 24.5
+6, 43.1
+END

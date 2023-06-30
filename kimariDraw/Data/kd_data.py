@@ -3,16 +3,16 @@ import numpy as np
 
 class KDData:
 
-    def __init__(self, unit, figure_size, color_theme, font_family, save_image, num_data):
+    def __init__(self, unit, figure_size, color_theme, font_family, plot_style, num_data):
         self.unit = unit
         self.figure_size = figure_size
         self.color_theme = color_theme
         self.font_family = font_family
-        self.save_image = save_image
+        self.plot_style = plot_style
         self.num_Data = num_data
 
     def __str__(self):
-        return f"KDData(unit={self.unit}, figure_size={self.figure_size}, color_theme={self.color_theme}, font_family={self.font_family}, save_image={self.save_image}, num_data={self.num_Data})"
+        return f"KDData(unit={self.unit}, figure_size={self.figure_size}, color_theme={self.color_theme}, font_family={self.font_family}, plot_style={self.plot_style}, num_data={self.num_Data})"
 
     def get_num_x(self):
         """

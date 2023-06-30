@@ -23,8 +23,8 @@ class KDFile:
         figure_size = self.header["figure_size"]
         color_theme = self.header["color_theme"]
         font_family = self.header["font_family"]
-        save_image = self.header["save_image"]
+        plot_style = self.header["plot_style"]
         num_data = self.data
 
-        kd_data = KDData(unit, figure_size, color_theme, font_family, save_image, num_data)
+        kd_data = KDData(unit, figure_size, color_theme, font_family, plot_style, num_data)
         return kd_data

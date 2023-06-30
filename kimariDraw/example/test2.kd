@@ -1,8 +1,8 @@
 # UNIT = Hartree
-# FIGURE_SIZE = 8, 4
+# FIGURE_SIZE = 8, 6
 # COLOR_THEME = science
-# FONT_FAMILY = Arial
-# SAVE_IMAGE = png
+# FONT_FAMILY = Calibri
+# PLOT_STYLE = line
 
 BEGIN
 1, 375.5
