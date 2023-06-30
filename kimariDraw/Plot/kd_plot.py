@@ -35,7 +35,13 @@ def kd_draw(data: KDData, save_name='figure'):
     ax.set_ylim(y_min, y_max)
 
     # 更改颜色主题
-
+    colors = []
+    if data.color_theme == 'normal':
+        colors = ['black', 'black']
+    elif data.color_theme == 'nature':
+        colors = ['#0072B2', '#D55E00']
+    elif data.color_theme == 'science':
+        colors = ["#1b9e77", "#d95f02"]
 
     # 绘制平台
     # 绘制数据点
@@ -44,14 +50,17 @@ def kd_draw(data: KDData, save_name='figure'):
 
     # 在每个数据点上绘制长度为 0.4 的水平线，并在水平线上显示数字
     for i, (x, y) in enumerate(zip(num_x, num_y)):
-        ax.plot([x - 0.2, x + 0.2], [y, y], color='black', linewidth=3)
+        ax.plot([x - 0.2, x + 0.2], [y, y], color=colors[0], linewidth=3)
         if abs(y) > 100:
-            ax.text(x, y + 2, f"{y:.1f}", ha='center', va='bottom', fontweight='bold', fontsize=10)
+            ax.text(x, y + 2, f"{y:.1f}", ha='center', va='bottom', fontweight='bold', fontsize=10, color=colors[1])
         else:
-            ax.text(x, y + 0.5, f"{y:.1f}", ha='center', va='bottom', fontweight='bold', fontsize=10)
+            ax.text(x, y + 0.5, f"{y:.1f}", ha='center', va='bottom', fontweight='bold', fontsize=10, color=colors[1])
+
+    # 修改折线图样式，
+
 
     for i in range(len(num_x) - 1):
-        ax.plot([num_x[i]+0.2, num_x[i+1]-0.2], [num_y[i], num_y[i+1]],  color='black', linewidth=1, linestyle='--')
+        ax.plot([num_x[i]+0.2, num_x[i+1]-0.2], [num_y[i], num_y[i+1]],  color=colors[0], linewidth=1, linestyle='--')
 
     # 设置 x 轴和 y 轴标签
     y_label = "Free Energy" + f" ({data.unit})"
