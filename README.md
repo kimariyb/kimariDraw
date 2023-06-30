@@ -62,7 +62,7 @@ kimariDraw <filename>
 假如要运行 example 目录下的 `test2.kd` 文件，并且生成 `test.png` 则可以输入以下指令：
 
 ```bash
-kimariDraw ./example/test2.kd -s test
+kimariDraw ./example/test2.kd -s test.png
 ```
 
 则可以在当前目录下得到 test.png:
