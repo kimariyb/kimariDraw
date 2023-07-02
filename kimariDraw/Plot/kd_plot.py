@@ -4,6 +4,14 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 from kimariDraw.Data.kd_data import KDData
 
+def modify_style(style):
+    """
+    修改折线图样式，一种为折线图、另一种为曲线图
+    :param style: 样式
+    :return:
+    """
+    pass
+
 
 def kd_draw(data: KDData, save_name='figure.png'):
     """
@@ -45,21 +53,18 @@ def kd_draw(data: KDData, save_name='figure.png'):
     elif data.color_theme == 'science':
         colors = ["#1b9e77", "#d95f02"]
 
-    # 绘制平台
-    # 绘制数据点
-    # for i in range(len(num_x)):
-    #    ax.scatter(num_x[i], num_y[i])
-
-    # 在每个数据点上绘制长度为 0.4 的水平线，并在水平线上显示数字
-    for i, (x, y) in enumerate(zip(num_x, num_y)):
-        ax.plot([x - 0.2, x + 0.2], [y, y], color=colors[0], linewidth=3)
-        if abs(y) > 100:
-            ax.text(x, y + 2, f"{y:.1f}", ha='center', va='bottom', fontweight='bold', fontsize=10, color=colors[1])
-        else:
-            ax.text(x, y + 0.5, f"{y:.1f}", ha='center', va='bottom', fontweight='bold', fontsize=10, color=colors[1])
-
     # 修改折线图样式，一种为折线图、另一种为曲线图
     if data.plot_style == 'line':
+        # 绘制平台
+        # 在每个数据点上绘制长度为 0.4 的水平线，并在水平线上显示数字
+        for i, (x, y) in enumerate(zip(num_x, num_y)):
+            ax.plot([x - 0.2, x + 0.2], [y, y], color=colors[0], linewidth=3)
+            if abs(y) > 100:
+                ax.text(x, y + 2, f"{y:.1f}", ha='center', va='bottom', fontweight='bold', fontsize=10, color=colors[1])
+            else:
+                ax.text(x, y + 0.5, f"{y:.1f}", ha='center', va='bottom', fontweight='bold', fontsize=10,
+                        color=colors[1])
+        # 以折线连接平台
         for i in range(len(num_x) - 1):
             ax.plot([num_x[i] + 0.2, num_x[i + 1] - 0.2], [num_y[i], num_y[i + 1]], color=colors[0], linewidth=1,
                     linestyle='--')

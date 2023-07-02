@@ -1,6 +1,6 @@
 import os.path
 
-from kimariDraw.Parser.kd_file import KDFile
+from kimariDraw.KDParser.kd_file import KDFile
 
 
 class KDFileParser:

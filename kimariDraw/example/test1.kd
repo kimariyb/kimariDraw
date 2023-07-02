@@ -1,13 +1,16 @@
-# UNIT = kJ/mol
-# FIGURE_SIZE = 8, 5
-# COLOR_THEME = nature
-# FONT_FAMILY = Arial
-# PLOT_STYLE = line
+%title = Chemdraw Energy Profile
+%x = Reaction Coordinate
+%y = Free Energy
+%unit = kJ/mol
+%size = 8, 4
+%color = red, red
+%font = Arial
+%style = line
 
-BEGIN
+begin
 1, 0
 2, -20.3
 3, -4.8
 4, 6.2
 5, 37.9
-END
+end

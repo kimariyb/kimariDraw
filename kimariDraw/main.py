@@ -1,6 +1,6 @@
 import argparse
 
-from kimariDraw.Parser.kd_parser import KDFileParser
+from kimariDraw.KDParser.kd_parser import KDFileParser
 from kimariDraw.Plot.kd_plot import kd_draw
 
 
