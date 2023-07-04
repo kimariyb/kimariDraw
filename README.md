@@ -1,13 +1,6 @@
-<!-- <h1 align="center">
+<h1 align="center">
     <img src="figure/logo.png" width="300">
-    ## 安装
-
-    ## 使用
-
-    ## 鸣谢
-
-    ## 许可证
-</h1><br> -->
+</h1><br>
 
 
 <h3 align="center">
