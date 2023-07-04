@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 setup(
     name='kimariDraw',
-    version='1.2.0',
+    version='2.0.0',
     description='The application is used to draw the Energy Profile Map',
     author='kimariyb',
     author_email='kimariyb@163.com',
@@ -14,7 +14,7 @@ setup(
     packages=find_packages(),
     entry_points={
         'console_scripts': [
-            'kimariDraw = kimariDraw.main:main'
+            'kimariDraw = main:main'
         ],
     },
     classifiers=[
