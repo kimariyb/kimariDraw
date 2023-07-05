@@ -3,9 +3,6 @@
 </h1><br>
 
 
-<h3 align="center">
-    KimariDraw 1.2 已经搬运到 KimariPlot 项目中，敬请期待 KimariDraw 2.0
-</h3>
-
+KimariDraw 是一个用来绘制 NMR、IR 等光谱的 Python 程序。
 
 
