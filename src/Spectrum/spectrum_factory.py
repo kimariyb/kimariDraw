@@ -1,12 +1,13 @@
-from src.Spectrum.spectrum import NMRSpectrum, IRSpectrum
+from src.Spectrum.spectrum_IR import IRSpectrum
+from src.Spectrum.spectrum_NMR import NMRSpectrum
 
 
 class SpectrumFactory:
     @staticmethod
     def create_spectrum(spectrum_type):
         if spectrum_type == "NMR":
-            return NMRSpectrum(spectrum_type)
+            return NMRSpectrum()
         elif spectrum_type == "IR":
-            return IRSpectrum(spectrum_type)
+            return IRSpectrum()
         else:
             raise ValueError("Unsupported spectrum type")

@@ -24,10 +24,32 @@ KimariDraw Github website: {version_info['website']}
 
 Input file path, for example d:\\project\\kimariDraw\\data\\NMR_curve.txt
 ( Supported: .txt file and .xlsx file )
-Hint: Press ENTER button directly can select file in a GUI window. 
     """
 
     # 打印界面文本
     print(interface_text)
 
 
+def main_view():
+    """
+    主程序界面
+    """
+    print('Please enter the spectrum you want to plot.')
+    print('1. NMR \t 2. IR \t 3. Raman \t 4. UV-Vis \t 5. ECD \t 6. VCD')
+
+
+def nmr_view(self):
+    """
+    NMR 选择界面
+    """
+    print('0. Plot NMR spectrum now!')
+    print('1. Save graphical file of NMR spectrum in current folder')
+    print('2. Set lower and upper limits of X-axis')
+    print('3. Set upper and lower limits of Y-axis')
+    print('4. Set size of figure')
+    print('5. Set colors of curves')
+    print('6. Set format of saving graphical file')
+
+
+def ir_view():
+    pass
