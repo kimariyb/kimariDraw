@@ -1,4 +1,3 @@
-from matplotlib import pyplot as plt
 from pandas import DataFrame
 
 
@@ -9,6 +8,7 @@ class Spectrum:
         self.y_limits = None
         self.figure_size = None
         self.curve_colors = None
+        self.spike_colors = None
         self.save_format = None
 
     def plot_spectrum(self, dataframe: DataFrame):
@@ -60,13 +60,22 @@ class Spectrum:
         self.curve_colors = colors
         print(f'Setting curve colors to {colors}...')
 
+    def set_spike_colors(self, colors):
+        """
+        设置曲线颜色
+        :param colors: 颜色
+        :return:
+        """
+        self.spike_colors = colors
+        print(f'Setting spike colors to {colors}...')
+
     def set_save_format(self, format_type):
         """
         保存图片的格式
         :param format_type: 保存格式
         :return:
         """
-        self.save_format = format
-        print(f'Setting save format to {format}...')
+        self.save_format = format_type
+        print(f'Setting save format to {format_type}...')
 
 

@@ -47,9 +47,13 @@ def nmr_view(self):
     print('2. Set lower and upper limits of X-axis')
     print('3. Set upper and lower limits of Y-axis')
     print('4. Set size of figure')
-    print('5. Set colors of curves')
+    print('5. Set colors of curves and spikes')
     print('6. Set format of saving graphical file')
 
 
 def ir_view():
     pass
+
+
+
+
