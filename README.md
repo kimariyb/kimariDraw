@@ -3,9 +3,21 @@
 </h1><br>
 
 
-KimariDraw 是一款基于 Python 开发的开源绘图软件，主要用来处理著名波函数分析程序 [Multiwfn](http://sobereva.com/multiwfn/) 绘制光谱产生的数据，并依据这些数据重新绘制相对美观的各种光谱图。有关 Multiwfn 的
+KimariDraw 是一款基于 Python 开发的开源绘图软件，专门用来处理著名的波函数分析程序 Multiwfn 绘制光谱所产生的数据，并重新绘制出美观、清晰的各种光谱图。对于科学研究人员和化学爱好者而言，KimariDraw 是一个非常实用的工具，它可以帮助用户更好地展示和分析波函数分析数据，有助于更好地理解和解释分析结果。
 
-KimariDraw 目前支持使用 Multiwfn 绘制 NMR、IR 等光谱导出的曲线数据，即 Multiwfn 生成的文本文件，也支持 Excel 文件（必须安装约定进行配置）。KimariDraw 可支持修改图片大小、保存格式、曲线颜色等功能。
+Multiwfn 是一个非常强大的程序，用于实现电子波函数分析，这是量子化学的重要组成部分。Multiwfn 是免费的、开源的、高效的、用户友好的和灵活的，它支持几乎所有最重要的波函数分析方法。Multiwfn 已经成为了量子化学领域的常用工具之一，得到了广泛的应用和认可。
+
+**如果您对 Multiwfn 还不熟悉，请访问 [Multiwfn 官网](http://sobereva.com/multiwfn/)了解更多信息。**
+
+当你使用 KimariDraw 时，你可以享受到以下的功能：
+
+- **支持多种光谱类型**：KimariDraw 目前支持使用 Multiwfn 绘制 NMR、IR 等光谱导出的曲线数据，即 Multiwfn 生成的文本文件，也支持 Excel 文件（必须安装约定进行配置）。
+
+- **美观的图形界面**：KimariDraw 的图形用户界面易于使用，您可以轻松地调整图表的大小、颜色等，以便更好地呈现您的数据。
+
+- **支持多种文件格式**：KimariDraw 支持导入多种数据文件格式，包括文本文件和 Excel 文件。除此之外，KimariDraw 也支持将图表导出为多种文件格式，如 PNG、JPG、PDF 等。
+
+- **易于安装和配置**：KimariDraw 的安装和配置十分简单，您只需要按照项目 README 文件中的说明进行操作即可。
 
 ## 安装
 
@@ -22,7 +34,7 @@ git clone https://github.com/kimariyb/kimariDraw.git
 3. 进入 KimariDraw 目录并安装依赖：
 
 ```shell
-cd kimariPlot
+cd kimariDraw
 pip install -r requirements.txt
 ```
 这将自动安装 KimariDraw 所需的 numpy、matplotlib 和 scipy 等依赖项。请注意，如果您已经安装了这些依赖项，则可以跳过此步骤。
