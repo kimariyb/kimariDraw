@@ -63,6 +63,20 @@ data/NMR_curvewei.txt
 
 <img src="figure/nmr.png">
 
+## 配置
+
+KimariDraw 通过项目目录下的 `settings.ini` 修改光谱的样式，默认的 NMR 配置参数如下：
+
+```ini
+[NMR]
+figure_size = 10,4
+save_format = png
+curve_color = red
+spike_color = red
+x_limit = 12,0,1
+y_limit = 0,30,5
+```
+
 ## 鸣谢
 
 在开发 KimariDraw 时，主要使用了以下 Python 开源模组，在这里对开发这些模组的工作人员表示感谢。
