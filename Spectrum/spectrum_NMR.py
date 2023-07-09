@@ -1,23 +1,24 @@
-import numpy as np
 from matplotlib import pyplot as plt
 from matplotlib.ticker import MultipleLocator
+from pandas import DataFrame
 from scipy import signal
 
-from src.Spectrum.spectrum import Spectrum
+from Spectrum.spectrum import Spectrum
+from Utils.utils import read_nmr_config
 
 
 class NMRSpectrum(Spectrum):
+
     def __init__(self):
         super().__init__('NMR')
-        # 设置默认 NMR config
-        self.set_x_limits(12, 0, 1)
-        self.set_y_limits(0, 30, 5)
-        self.set_figure_size(10, 5)
-        self.set_curve_colors("#DC143C")
-        self.set_spike_colors("#DC143C")
-        self.set_save_format("png")
+        self.figure_size = read_nmr_config('settings.ini')[0]
+        self.x_limits = read_nmr_config('settings.ini')[1]
+        self.y_limits = read_nmr_config('settings.ini')[2]
+        self.curve_colors = read_nmr_config('settings.ini')[3]
+        self.spike_colors = read_nmr_config('settings.ini')[4]
+        self.save_format = read_nmr_config('settings.ini')[5]
 
-    def plot_spectrum(self):
+    def plot_spectrum(self, dataframe: DataFrame):
         """
         将谱图绘制出来
         :return: fig ax
@@ -30,7 +31,7 @@ class NMRSpectrum(Spectrum):
         })
 
         # 创建画布和子图对象
-        fig, ax = plt.subplots(figsize=self.figure_size, dpi=400)
+        fig, ax = plt.subplots(figsize=self.figure_size)
 
         # 设置 x 轴和 y 轴的范围
         ax.set_xlim(self.x_limits[0], self.x_limits[1])
@@ -56,11 +57,11 @@ class NMRSpectrum(Spectrum):
             label.set_fontweight('bold')
 
         # 绘制 curve
-        ax.plot(self.dataframe['x'], self.dataframe['y'], linewidth=1.5, color=self.curve_colors)
+        ax.plot(dataframe['x'], dataframe['y'], linewidth=1.5, color=self.curve_colors)
         # 绘制 spike
-        peaks, _ = signal.find_peaks(self.dataframe['y'])
+        peaks, _ = signal.find_peaks(dataframe['y'])
         for i in peaks:
-            ax.plot([self.dataframe['x'][i], self.dataframe['x'][i]], [0, self.dataframe['y'][i]],
+            ax.plot([dataframe['x'][i], dataframe['x'][i]], [0, dataframe['y'][i]],
                     color=self.spike_colors, linewidth=1.5)
 
         # 添加坐标轴标签

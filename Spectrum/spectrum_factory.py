@@ -1,5 +1,5 @@
-from src.Spectrum.spectrum_IR import IRSpectrum
-from src.Spectrum.spectrum_NMR import NMRSpectrum
+from Spectrum.spectrum_IR import IRSpectrum
+from Spectrum.spectrum_NMR import NMRSpectrum
 
 
 class SpectrumFactory:

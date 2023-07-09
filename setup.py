@@ -9,6 +9,9 @@ setup(
     url='https://github.com/kimariyb/kimariDraw',
     install_requires=[
         'numpy',
+        'pandas',
+        'scipy',
+        'openpyxl',
         'matplotlib',
     ],
     packages=find_packages(),

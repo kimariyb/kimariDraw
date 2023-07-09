@@ -1,4 +1,4 @@
-from src.Parser.parser import TXTParser, ExcelParser
+from Parser.parser import TXTParser, ExcelParser
 
 
 class ParserFactory:
