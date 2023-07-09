@@ -1,9 +1,11 @@
+import numpy as np
 from pandas import DataFrame
 
 
 class Spectrum:
     def __init__(self, spectrum_type):
         self.spectrum_type = spectrum_type
+        self.dataframe = None
         self.x_limits = None
         self.y_limits = None
         self.figure_size = None
@@ -11,15 +13,22 @@ class Spectrum:
         self.spike_colors = None
         self.save_format = None
 
-    def plot_spectrum(self, dataframe: DataFrame):
+    def load_dataframe(self, dataframe):
+        """
+        load dataframe in the spectrum
+        :param dataframe: dataframe to load
+        :return:
+        """
+        self.dataframe = dataframe
+
+    def plot_spectrum(self):
         """
         将谱图绘制出来
-        :param dataframe: pandas dataframe
         :return: fig ax
         """
         raise NotImplementedError
 
-    def set_x_limits(self, lower, upper, spacing):
+    def set_x_limits(self, lower=None, upper=None, spacing=None):
         """
         设置 X 轴的上下限
         :param lower: 下限
@@ -30,7 +39,7 @@ class Spectrum:
         self.x_limits = (lower, upper, spacing)
         print(f'Setting X-axis limits to ({lower}, {upper}, {spacing})...')
 
-    def set_y_limits(self, lower, upper, spacing):
+    def set_y_limits(self, lower=None, upper=None, spacing=None):
         """
         设置 Y 轴的上下限
         :param lower: 下限
@@ -38,6 +47,7 @@ class Spectrum:
         :param spacing: 刻度间隔
         :return:
         """
+
         self.y_limits = (lower, upper, spacing)
         print(f'Setting Y-axis limits to ({lower}, {upper}, {spacing})...')
 
@@ -77,5 +87,4 @@ class Spectrum:
         """
         self.save_format = format_type
         print(f'Setting save format to {format_type}...')
-
 
