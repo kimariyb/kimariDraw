@@ -3,7 +3,7 @@ import os
 from matplotlib import pyplot as plt
 
 from Parser.parser_factory import ParserFactory
-from Utils.utils import welcome, main_view, plot_nmr_spectrum
+from Utils.utils import welcome, main_view, plot_nmr_spectrum, plot_ir_spectrum
 
 
 def input_file_path():
@@ -46,6 +46,8 @@ def main():
             break
         elif main_choice == '1':
             plot_nmr_spectrum(dataframe)
+        elif main_choice == '2':
+            plot_ir_spectrum(dataframe)
 
 
 if __name__ == '__main__':

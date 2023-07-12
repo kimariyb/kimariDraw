@@ -9,12 +9,11 @@ from Utils.config import read_ir_config
 
 class IRSpectrum(Spectrum):
     def __init__(self):
-        super().__init__('NMR')
+        super().__init__('IR')
         self.figure_size = read_ir_config('settings.ini')[0]
         self.x_limits = read_ir_config('settings.ini')[1]
         self.y_limits = read_ir_config('settings.ini')[2]
         self.curve_colors = read_ir_config('settings.ini')[3]
-        self.spike_colors = read_ir_config('settings.ini')[4]
         self.save_format = read_ir_config('settings.ini')[5]
 
     def plot_spectrum(self, dataframe: DataFrame):
@@ -57,11 +56,6 @@ class IRSpectrum(Spectrum):
 
         # 绘制 curve
         ax.plot(dataframe['x'], dataframe['y'], linewidth=1.5, color=self.curve_colors)
-        # 绘制 spike
-        peaks, _ = signal.find_peaks(dataframe['y'])
-        for i in peaks:
-            ax.plot([dataframe['x'][i], dataframe['x'][i]], [0, dataframe['y'][i]],
-                    color=self.spike_colors, linewidth=1.5)
 
         # 添加坐标轴标签
         ax.set_xlabel('Chemical Shift (ppm)', fontweight='bold', fontsize=16)

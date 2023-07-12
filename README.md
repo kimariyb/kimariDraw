@@ -67,7 +67,7 @@ data/NMR_curvewei.txt
 
 ## 配置
 
-KimariDraw 通过项目目录下的 `settings.ini` 修改光谱的样式，默认的 NMR 配置参数如下：
+KimariDraw 通过项目目录下的 `settings.ini` 修改光谱的样式，默认的配置参数如下：
 
 ```ini
 [NMR]
@@ -79,15 +79,19 @@ x_limit = 12,0,1
 y_limit = 0,30,5
 
 [IR]
-figure_size = 10,5
+figure_size = 12,8
 save_format = png
-curve_color = #F05BCE
-spike_color = #FA5F89
-x_limit = 12,0,1
-y_limit = 0,45,5
+curve_color = #990033
+x_limit = 4000,0,400
+y_limit = 2400,-200,200
 
 ...
 ```
+
+可以在 `settings.ini` 里配置 NMR、IR 等光谱的绘图参数。
+
+<img src="figure/IR_Spectrum.png">
+
 
 ## 鸣谢
 
