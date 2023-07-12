@@ -4,7 +4,7 @@ from pandas import DataFrame
 from scipy import signal
 
 from Spectrum.spectrum import Spectrum
-from Utils.utils import read_nmr_config
+from Utils.config import read_nmr_config
 
 
 class NMRSpectrum(Spectrum):
@@ -72,5 +72,4 @@ class NMRSpectrum(Spectrum):
         fig.subplots_adjust(bottom=0.2)
 
         return fig, ax
-
 

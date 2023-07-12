@@ -1,6 +1,6 @@
-import configparser
 import datetime
-import os
+
+from Spectrum.spectrum_factory import SpectrumFactory
 
 
 def welcome():
@@ -43,30 +43,41 @@ def main_view():
     print('4. UV-Vis')
     print('5. ECD')
     print('6. VCD')
+    print('0. Exit')
     choice = input()
-    if choice not in ['1', '2', '3', '4', '5', '6']:
+    if choice not in ['0', '1', '2', '3', '4', '5', '6']:
         raise ValueError("Invalid spectrum type, please input the correct numeric code.")
     return choice
 
 
-def read_nmr_config(filename):
-    """
-    获得 NMR configuration
-    :param filename: 文件名字
-    :return:
-    """
-    # 构建绝对路径
-    file_path = os.path.join(os.path.dirname(__file__), '..', filename)
+def plot_nmr_spectrum(dataframe):
+    # 创建一个 NMRSpectrum 对象
+    nmr_spectrum = SpectrumFactory.create_spectrum('NMR')
+    # 调用绘图函数
+    fig, ax = nmr_spectrum.plot_spectrum(dataframe)
+    # 展示图片
+    fig.show()
+    # 询问是否保存图片
+    if ask_save_image(nmr_spectrum.save_format):
+        fig.savefig('NMR_Spectrum' + '.' + nmr_spectrum.save_format, dpi=500, bbox_inches='tight')
 
-    config = configparser.ConfigParser()
-    config.read(file_path)
 
-    # 读取配置项
-    figure_size = tuple(map(int, config.get('NMR', 'figure_size').split(',')))
-    save_format = config.get('NMR', 'save_format')
-    curve_colors = config.get('NMR', 'curve_color')
-    spike_colors = config.get('NMR', 'spike_color')
-    x_limit = tuple(map(float, config.get('NMR', 'x_limit').split(',')))
-    y_limit = tuple(map(float, config.get('NMR', 'y_limit').split(',')))
+def plot_ir_spectrum(dataframe):
+    # 创建一个 NMRSpectrum 对象
+    ir_spectrum = SpectrumFactory.create_spectrum('IR')
+    # 调用绘图函数
+    fig, ax = ir_spectrum.plot_spectrum(dataframe)
+    # 展示图片
+    fig.show()
+    # 询问是否保存图片
+    if ask_save_image(ir_spectrum.save_format):
+        fig.savefig('IR_Spectrum' + '.' + ir_spectrum.save_format, dpi=500, bbox_inches='tight')
 
-    return figure_size, x_limit, y_limit, curve_colors, spike_colors, save_format
+
+def ask_save_image(save_format):
+    # 询问是否保存图片
+    save_choice = input('Do you want to save the image? (y/n) ')
+    if save_choice.lower() == 'y':
+        return True
+    else:
+        return False

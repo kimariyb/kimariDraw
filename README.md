@@ -41,27 +41,29 @@ pip install -r requirements.txt
 
 ## 使用
 
+在使用 KimariDraw 之前，必须使用 Multiwfn 自行根据量子化学计算程序生产的各种光谱计算产生的 `.out` 文件得到光谱的数据。如果不了解如何使用 Multiwfn 绘制各类光谱，可以浏览 Sob 的 [使用Multiwfn绘制红外、拉曼、UV-Vis、ECD、VCD和ROA光谱图](http://sobereva.com/224)。
+
 要使用 KimariDraw，请执行以下步骤：
 
 **请注意：在正式运行前，请确保已经安装了 Python 和 pip 包管理工具，以免程序报错！**
 
 1. 在命令行中导航到 KimariDraw 目录。
 
-2. 运行 main.py：
+2. 运行 main.py 进入 KimariDraw 主程序：
 
 ```shell
 python main.py
 ```
 
-3. 输入 Multiwfn 输出的文本文件 `.txt` 或 Excel 文件 `.xlsx` 的路径。例如本项目中的 `data\NMR_curvewei.txt` 文件。
+3. 输入 Multiwfn 输出的文本文件 `.txt` 或 Excel 文件 `.xlsx` 的路径。例如本项目中的 `data\NMR_curve.txt` 文件。
 
 ```shell
 data/NMR_curvewei.txt
 ```
 
-4. 选择 `1. NMR`，绘制 NMR 谱。
+4. 选择想要绘制的谱，例如选择 `1. NMR`，就可以绘制 NMR 谱。
 
-<img src="figure/nmr.png">
+<img src="figure/NMR_Spectrum.png">
 
 ## 配置
 
@@ -75,6 +77,16 @@ curve_color = red
 spike_color = red
 x_limit = 12,0,1
 y_limit = 0,30,5
+
+[IR]
+figure_size = 10,5
+save_format = png
+curve_color = #F05BCE
+spike_color = #FA5F89
+x_limit = 12,0,1
+y_limit = 0,45,5
+
+...
 ```
 
 ## 鸣谢
