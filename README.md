@@ -61,9 +61,7 @@ python main.py
 data/NMR_curvewei.txt
 ```
 
-4. 选择想要绘制的谱，例如选择 `1. NMR`，就可以绘制 NMR 谱。
-
-<img src="figure/NMR_Spectrum.png">
+4. 选择想要绘制的谱，例如选择 `1. NMR`，就可以绘制 NMR 谱，如果不想绘制 NMR 则可以选择其他选项。
 
 ## 配置
 
@@ -89,6 +87,14 @@ y_limit = 2400,-200,200
 ```
 
 可以在 `settings.ini` 里配置 NMR、IR 等光谱的绘图参数。
+
+## 绘制效果
+
+### NMR
+
+<img src="figure/NMR_Spectrum.png">
+
+### IR
 
 <img src="figure/IR_Spectrum.png">
 
