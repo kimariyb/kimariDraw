@@ -53,7 +53,21 @@ pip install -r requirements.txt
 
 ```shell
 python main.py
+
+KimariDraw -- A spectrum plotting program based on Multitwfn.
+Version 2.0, release date: 2023-07
+Developer: Kimariyb (XiaMen University, School of Electronic Science and Engineering)
+KimariDraw Github website: https://github.com/kimariyb/kimariDraw
+
+( Current date: 2023-07-16  Time: 15:53:43 )
+
+Input file path, for example d:\project\kimariDraw\data\NMR_curve.txt
+( Supported: .txt file and .xlsx file )
+
+Please enter the file path: 
 ```
+
+
 
 3. 输入 Multiwfn 输出的文本文件 `.txt` 或 Excel 文件 `.xlsx` 的路径。例如本项目中的 `data\NMR_curve.txt` 文件。
 
@@ -62,6 +76,19 @@ data/NMR_curvewei.txt
 ```
 
 4. 选择想要绘制的谱，例如选择 `1. NMR`，就可以绘制 NMR 谱，如果不想绘制 NMR 则可以选择其他选项。
+
+```shell
+Please enter the spectrum you want to plot.
+0. Return the main view
+1. NMR
+2. IR
+3. Raman
+4. UV-Vis
+5. ECD
+6. VCD
+```
+
+5. 选择之后，会提示是否保存为图像，保存的格式在 `settings.ini` 中配置，保存在当前项目的 `output` 文件夹中。
 
 ## 配置
 

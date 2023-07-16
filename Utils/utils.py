@@ -59,7 +59,7 @@ def plot_nmr_spectrum(dataframe):
     fig.show()
     # 询问是否保存图片
     if ask_save_image(nmr_spectrum.save_format):
-        fig.savefig('NMR_Spectrum' + '.' + nmr_spectrum.save_format, dpi=500, bbox_inches='tight')
+        fig.savefig('output/NMR_Spectrum' + '.' + nmr_spectrum.save_format, dpi=500, bbox_inches='tight')
 
 
 def plot_ir_spectrum(dataframe):
@@ -71,7 +71,7 @@ def plot_ir_spectrum(dataframe):
     fig.show()
     # 询问是否保存图片
     if ask_save_image(ir_spectrum.save_format):
-        fig.savefig('IR_Spectrum' + '.' + ir_spectrum.save_format, dpi=500, bbox_inches='tight')
+        fig.savefig('output/IR_Spectrum' + '.' + ir_spectrum.save_format, dpi=500, bbox_inches='tight')
 
 
 def plot_raman_spectrum(dataframe):
@@ -83,7 +83,7 @@ def plot_raman_spectrum(dataframe):
     fig.show()
     # 询问是否保存图片
     if ask_save_image(raman_spectrum.save_format):
-        fig.savefig('Raman_Spectrum' + '.' + raman_spectrum.save_format, dpi=500, bbox_inches='tight')
+        fig.savefig('output/Raman_Spectrum' + '.' + raman_spectrum.save_format, dpi=500, bbox_inches='tight')
 
 
 def plot_uv_spectrum(dataframe):
@@ -95,7 +95,7 @@ def plot_uv_spectrum(dataframe):
     fig.show()
     # 询问是否保存图片
     if ask_save_image(uv_spectrum.save_format):
-        fig.savefig('UV_Spectrum' + '.' + uv_spectrum.save_format, dpi=500, bbox_inches='tight')
+        fig.savefig('output/UV_Spectrum' + '.' + uv_spectrum.save_format, dpi=500, bbox_inches='tight')
 
 
 def ask_save_image(save_format):
