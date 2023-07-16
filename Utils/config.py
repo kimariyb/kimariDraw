@@ -34,3 +34,7 @@ def read_nmr_config(filename):
 
 def read_ir_config(filename):
     return read_config('IR', filename)
+
+
+def read_raman_config(filename):
+    return read_config('Raman', filename)

@@ -90,13 +90,17 @@ y_limit = 2400,-200,200
 
 ## 绘制效果
 
-### NMR
+<h3 align="center">NMR 绘制效果
+    <img src="figure/NMR_Spectrum.png">
+</h3><br>
 
-<img src="figure/NMR_Spectrum.png">
+<h3 align="center">IR 绘制效果
+    <img src="figure/IR_Spectrum.png">
+</h3><br>
 
-### IR
-
-<img src="figure/IR_Spectrum.png">
+<h3 align="center">Raman 绘制效果
+    <img src="figure/IR_Spectrum.png">
+</h3><br>
 
 
 ## 鸣谢

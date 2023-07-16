@@ -74,6 +74,18 @@ def plot_ir_spectrum(dataframe):
         fig.savefig('IR_Spectrum' + '.' + ir_spectrum.save_format, dpi=500, bbox_inches='tight')
 
 
+def plot_raman_spectrum(dataframe):
+    # 创建一个 NMRSpectrum 对象
+    raman_spectrum = SpectrumFactory.create_spectrum('Raman')
+    # 调用绘图函数
+    fig, ax = raman_spectrum.plot_spectrum(dataframe)
+    # 展示图片
+    fig.show()
+    # 询问是否保存图片
+    if ask_save_image(raman_spectrum.save_format):
+        fig.savefig('Raman_Spectrum' + '.' + raman_spectrum.save_format, dpi=500, bbox_inches='tight')
+
+
 def ask_save_image(save_format):
     # 询问是否保存图片
     save_choice = input('Do you want to save the image? (y/n) ')
