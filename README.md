@@ -102,6 +102,10 @@ y_limit = 2400,-200,200
     <img src="figure/Raman_Spectrum.png">
 </h3><br>
 
+<h3 align="center">UV 绘制效果
+    <img src="figure/UV_Spectrum.png">
+</h3><br>
+
 
 ## 鸣谢
 

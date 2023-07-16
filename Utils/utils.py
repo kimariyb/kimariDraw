@@ -37,13 +37,13 @@ def main_view():
     主程序界面
     """
     print('Please enter the spectrum you want to plot.')
+    print('0. Return the main view')
     print('1. NMR')
     print('2. IR')
     print('3. Raman')
     print('4. UV-Vis')
     print('5. ECD')
     print('6. VCD')
-    print('0. Exit')
     choice = input()
     if choice not in ['0', '1', '2', '3', '4', '5', '6']:
         raise ValueError("Invalid spectrum type, please input the correct numeric code.")
@@ -84,6 +84,18 @@ def plot_raman_spectrum(dataframe):
     # 询问是否保存图片
     if ask_save_image(raman_spectrum.save_format):
         fig.savefig('Raman_Spectrum' + '.' + raman_spectrum.save_format, dpi=500, bbox_inches='tight')
+
+
+def plot_uv_spectrum(dataframe):
+    # 创建一个 NMRSpectrum 对象
+    uv_spectrum = SpectrumFactory.create_spectrum('UV')
+    # 调用绘图函数
+    fig, ax = uv_spectrum.plot_spectrum(dataframe)
+    # 展示图片
+    fig.show()
+    # 询问是否保存图片
+    if ask_save_image(uv_spectrum.save_format):
+        fig.savefig('UV_Spectrum' + '.' + uv_spectrum.save_format, dpi=500, bbox_inches='tight')
 
 
 def ask_save_image(save_format):

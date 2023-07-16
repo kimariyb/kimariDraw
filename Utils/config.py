@@ -38,3 +38,7 @@ def read_ir_config(filename):
 
 def read_raman_config(filename):
     return read_config('Raman', filename)
+
+
+def read_uv_config(filename):
+    return read_config('UV', filename)
