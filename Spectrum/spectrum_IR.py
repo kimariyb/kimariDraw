@@ -58,8 +58,8 @@ class IRSpectrum(Spectrum):
         ax.plot(dataframe['x'], dataframe['y'], linewidth=1.5, color=self.curve_colors)
 
         # 添加坐标轴标签
-        ax.set_xlabel('Chemical Shift (ppm)', fontweight='bold', fontsize=16)
-        ax.set_ylabel('Signal Strength', fontweight='bold', fontsize=16)
+        ax.set_xlabel('Wavenumber (cm^-1)', fontweight='bold', fontsize=16)
+        ax.set_ylabel('Molar absorption coefficient', fontweight='bold', fontsize=16)
 
         # 调整图表布局，增加底部边距
         fig.subplots_adjust(bottom=0.2)

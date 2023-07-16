@@ -99,7 +99,7 @@ y_limit = 2400,-200,200
 </h3><br>
 
 <h3 align="center">Raman 绘制效果
-    <img src="/figure/Raman_Spectrum.png">
+    <img src="figure/Raman_Spectrum.png">
 </h3><br>
 
 
