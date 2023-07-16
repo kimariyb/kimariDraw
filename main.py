@@ -3,7 +3,8 @@ import os
 from matplotlib import pyplot as plt
 
 from Parser.parser_factory import ParserFactory
-from Utils.utils import welcome, main_view, plot_nmr_spectrum, plot_ir_spectrum, plot_raman_spectrum, plot_uv_spectrum
+from Utils.utils import welcome, main_view, plot_nmr_spectrum, plot_ir_spectrum, plot_raman_spectrum, plot_uv_spectrum, \
+    plot_ecd_spectrum, plot_vcd_spectrum, plot_pes_spectrum
 
 
 def input_file_path():
@@ -55,6 +56,15 @@ def main():
                 plot_raman_spectrum(dataframe)
             elif main_choice == '4':
                 plot_uv_spectrum(dataframe)
+            elif main_choice == '5':
+                plot_ecd_spectrum(dataframe)
+            elif main_choice == '6':
+                plot_vcd_spectrum(dataframe)
+            elif main_choice == '7':
+                plot_pes_spectrum(dataframe)
+            else:
+                print("Unknown choice, please try again")
+                continue
 
 
 if __name__ == '__main__':

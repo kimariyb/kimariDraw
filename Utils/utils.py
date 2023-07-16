@@ -44,8 +44,9 @@ def main_view():
     print('4. UV-Vis')
     print('5. ECD')
     print('6. VCD')
+    print('7. PES')
     choice = input()
-    if choice not in ['0', '1', '2', '3', '4', '5', '6']:
+    if choice not in ['0', '1', '2', '3', '4', '5', '6', '7']:
         raise ValueError("Invalid spectrum type, please input the correct numeric code.")
     return choice
 
@@ -96,6 +97,42 @@ def plot_uv_spectrum(dataframe):
     # 询问是否保存图片
     if ask_save_image(uv_spectrum.save_format):
         fig.savefig('output/UV_Spectrum' + '.' + uv_spectrum.save_format, dpi=500, bbox_inches='tight')
+
+
+def plot_ecd_spectrum(dataframe):
+    # 创建一个 NMRSpectrum 对象
+    ecd_spectrum = SpectrumFactory.create_spectrum('ECD')
+    # 调用绘图函数
+    fig, ax = ecd_spectrum.plot_spectrum(dataframe)
+    # 展示图片
+    fig.show()
+    # 询问是否保存图片
+    if ask_save_image(ecd_spectrum.save_format):
+        fig.savefig('output/ECD_Spectrum' + '.' + ecd_spectrum.save_format, dpi=500, bbox_inches='tight')
+
+
+def plot_vcd_spectrum(dataframe):
+    # 创建一个 NMRSpectrum 对象
+    vcd_spectrum = SpectrumFactory.create_spectrum('VCD')
+    # 调用绘图函数
+    fig, ax = vcd_spectrum.plot_spectrum(dataframe)
+    # 展示图片
+    fig.show()
+    # 询问是否保存图片
+    if ask_save_image(vcd_spectrum.save_format):
+        fig.savefig('output/VCD_Spectrum' + '.' + vcd_spectrum.save_format, dpi=500, bbox_inches='tight')
+
+
+def plot_pes_spectrum(dataframe):
+    # 创建一个 NMRSpectrum 对象
+    pes_spectrum = SpectrumFactory.create_spectrum('PES')
+    # 调用绘图函数
+    fig, ax = pes_spectrum.plot_spectrum(dataframe)
+    # 展示图片
+    fig.show()
+    # 询问是否保存图片
+    if ask_save_image(pes_spectrum.save_format):
+        fig.savefig('output/PES_Spectrum' + '.' + pes_spectrum.save_format, dpi=500, bbox_inches='tight')
 
 
 def ask_save_image(save_format):

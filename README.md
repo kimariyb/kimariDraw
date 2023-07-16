@@ -86,9 +86,10 @@ Please enter the spectrum you want to plot.
 4. UV-Vis
 5. ECD
 6. VCD
+7. PES
 ```
 
-5. 选择之后，会提示是否保存为图像，保存的格式在 `settings.ini` 中配置，保存在当前项目的 `output` 文件夹中。
+5. 选择之后，会提示是否保存为图像，保存的格式在 `settings.ini` 中配置，保存在当前项目的 `output` 文件夹中，请确保 `output` 文件夹存在。
 
 ## 配置
 
@@ -96,24 +97,57 @@ KimariDraw 通过项目目录下的 `settings.ini` 修改光谱的样式，默�
 
 ```ini
 [NMR]
-figure_size = 10,4
+figure_size = 10,5
 save_format = png
-curve_color = red
-spike_color = red
+curve_color = #F05BCE
+spike_color = #FA5F89
 x_limit = 12,0,1
-y_limit = 0,30,5
+y_limit = 0,64,8
 
 [IR]
-figure_size = 12,8
+figure_size = 10,5
 save_format = png
-curve_color = #990033
+curve_color = #ff4d00
 x_limit = 4000,0,400
-y_limit = 2400,-200,200
+y_limit = 2400,-200,400
 
-...
+[Raman]
+figure_size = 10,5
+save_format = png
+curve_color = #8E6CC3
+x_limit = 4000,0,400
+y_limit = -2,22,4
+
+[UV]
+figure_size = 10,5
+save_format = png
+curve_color = #3F5465
+x_limit = 100,400,30
+y_limit = 0,1.6,0.2
+
+[ECD]
+figure_size = 10,5
+save_format = png
+curve_color = #038C3E
+x_limit = 120,280,20
+y_limit = -100,100,20
+
+[VCD]
+figure_size = 10,5
+save_format = png
+curve_color = #E68C14
+x_limit = 1700,700,100
+y_limit = -2.5,2.5,0.5
+
+[PES]
+figure_size = 10,5
+save_format = png
+curve_color = #0B15FA
+x_limit = 1,4.5,0.5
+y_limit = 0,12,2
 ```
 
-可以在 `settings.ini` 里配置 NMR、IR 等光谱的绘图参数。
+可以在 `settings.ini` 里配置 NMR、IR 等光谱的绘图参数。其中 `figure_size` 表示图片的大小，`save_format` 为保存的格式，`curve_color` 为曲线的颜色，`spike_color` 为直线颜色，`x_limit` 和 `y_limit` 分别为 x 刻度和 y 刻度的范围与间距。
 
 ## 绘制效果
 
@@ -131,6 +165,18 @@ y_limit = 2400,-200,200
 
 <h3 align="center">UV 绘制效果
     <img src="figure/UV_Spectrum.png">
+</h3><br>
+
+<h3 align="center">ECD 绘制效果
+    <img src="figure/ECD_Spectrum.png">
+</h3><br>
+
+<h3 align="center">VCD 绘制效果
+    <img src="figure/VCD_Spectrum.png">
+</h3><br>
+
+<h3 align="center">PES 绘制效果
+    <img src="figure/PES_Spectrum.png">
 </h3><br>
 
 

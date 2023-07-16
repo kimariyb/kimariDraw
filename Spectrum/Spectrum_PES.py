@@ -1,20 +1,19 @@
-
 from matplotlib import pyplot as plt
 from matplotlib.ticker import MultipleLocator
 from pandas import DataFrame
 
 from Spectrum.spectrum import Spectrum
-from Utils.config import read_ecd_config
+from Utils.config import read_pes_config
 
 
-class ECDSpectrum(Spectrum):
+class PESSpectrum(Spectrum):
     def __init__(self):
-        super().__init__('ECD')
-        self.figure_size = read_ecd_config('settings.ini')[0]
-        self.x_limits = read_ecd_config('settings.ini')[1]
-        self.y_limits = read_ecd_config('settings.ini')[2]
-        self.curve_colors = read_ecd_config('settings.ini')[3]
-        self.save_format = read_ecd_config('settings.ini')[5]
+        super().__init__('PES')
+        self.figure_size = read_pes_config('settings.ini')[0]
+        self.x_limits = read_pes_config('settings.ini')[1]
+        self.y_limits = read_pes_config('settings.ini')[2]
+        self.curve_colors = read_pes_config('settings.ini')[3]
+        self.save_format = read_pes_config('settings.ini')[5]
 
     def plot_spectrum(self, dataframe: DataFrame):
         """
@@ -57,12 +56,9 @@ class ECDSpectrum(Spectrum):
         # 绘制 curve
         ax.plot(dataframe['x'], dataframe['y'], linewidth=1.5, color=self.curve_colors)
 
-        # 绘制一个 y = 0 的平行于 x 轴的线段
-        ax.axhline(y=0, color='black', linewidth=1.5)
-
         # 添加坐标轴标签
-        ax.set_xlabel('Wavelength (nm)', fontweight='bold', fontsize=16)
-        ax.set_ylabel('Delta Epsilon (arb.)', fontweight='bold', fontsize=16)
+        ax.set_xlabel('Binding energy (eV)', fontweight='bold', fontsize=16)
+        ax.set_ylabel('PES intensity', fontweight='bold', fontsize=16)
 
         # 调整图表布局，增加底部边距
         fig.subplots_adjust(bottom=0.2)

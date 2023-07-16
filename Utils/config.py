@@ -42,3 +42,14 @@ def read_raman_config(filename):
 
 def read_uv_config(filename):
     return read_config('UV', filename)
+
+
+def read_ecd_config(filename):
+    return read_config('ECD', filename)
+
+
+def read_vcd_config(filename):
+    return read_config('VCD', filename)
+
+def read_pes_config(filename):
+    return read_config('PES', filename)
