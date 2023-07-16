@@ -19,13 +19,10 @@ def read_config(section, filename):
     figure_size = tuple(map(int, config.get(section, 'figure_size').split(',')))
     save_format = config.get(section, 'save_format')
     curve_colors = config.get(section, 'curve_color')
-    spike_colors = None
-    if section == 'NMR':
-        config.get(section, 'spike_color')
     x_limit = tuple(map(float, config.get(section, 'x_limit').split(',')))
     y_limit = tuple(map(float, config.get(section, 'y_limit').split(',')))
 
-    return figure_size, x_limit, y_limit, curve_colors, spike_colors, save_format
+    return figure_size, x_limit, y_limit, curve_colors, save_format
 
 
 def read_nmr_config(filename):
@@ -50,6 +47,7 @@ def read_ecd_config(filename):
 
 def read_vcd_config(filename):
     return read_config('VCD', filename)
+
 
 def read_pes_config(filename):
     return read_config('PES', filename)

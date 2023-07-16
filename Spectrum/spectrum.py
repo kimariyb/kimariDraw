@@ -8,7 +8,6 @@ class Spectrum:
         self.y_limits = None
         self.figure_size = None
         self.curve_colors = None
-        self.spike_colors = None
         self.save_format = None
 
     def plot_spectrum(self, dataframe: DataFrame):

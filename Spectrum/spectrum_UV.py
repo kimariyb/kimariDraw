@@ -13,7 +13,7 @@ class UVSpectrum(Spectrum):
         self.x_limits = read_uv_config('settings.ini')[1]
         self.y_limits = read_uv_config('settings.ini')[2]
         self.curve_colors = read_uv_config('settings.ini')[3]
-        self.save_format = read_uv_config('settings.ini')[5]
+        self.save_format = read_uv_config('settings.ini')[4]
 
     def plot_spectrum(self, dataframe: DataFrame):
         """
