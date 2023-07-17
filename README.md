@@ -67,15 +67,22 @@ Input file path, for example d:\project\kimariDraw\data\NMR_curve.txt
 Please enter the file path: 
 ```
 
-
-
 3. 输入 Multiwfn 输出的文本文件 `.txt` 或 Excel 文件 `.xlsx` 的路径。例如本项目中的 `data\NMR_curve.txt` 文件。
 
 ```shell
 data/NMR_curvewei.txt
 ```
 
-4. 选择想要绘制的谱，例如选择 `1. NMR`，就可以绘制 NMR 谱，如果不想绘制 NMR 则可以选择其他选项。
+4. 接着会让你选择绘制单曲线图还是多曲线图，这里选择 `1. The Single Spectrum`
+
+```shell
+Please enter the operation you want: 
+0. Return and enter the file path again.
+1. The Single Spectrum
+2. The Multiple Spectrum
+```
+
+5. 接着选择想要绘制的谱，例如选择 `1. NMR`，就可以绘制 NMR 谱，如果不想绘制 NMR 则可以选择其他选项。
 
 ```shell
 Please enter the spectrum you want to plot.
@@ -89,7 +96,7 @@ Please enter the spectrum you want to plot.
 7. PES
 ```
 
-5. 选择之后，会提示是否保存为图像，保存的格式在 `settings.ini` 中配置，保存在当前项目的 `output` 文件夹中，请确保 `output` 文件夹存在。
+6. 选择之后，会提示是否保存为图像，保存的格式在 `settings.ini` 中配置，保存在当前项目的 `output` 文件夹中，请确保 `output` 文件夹存在。
 
 ## 配置
 
@@ -148,7 +155,26 @@ y_limit = 0,12,2
 
 可以在 `settings.ini` 里配置 NMR、IR 等光谱的绘图参数。其中 `figure_size` 表示图片的大小，`save_format` 为保存的格式，`curve_color` 为曲线的颜色，`x_limit` 和 `y_limit` 分别为 x 刻度和 y 刻度的范围与间距。
 
-## 绘制效果
+如果要绘制多曲线图，除了配置 `settings.ini` 以外，还需要配置 `multi_settings.yaml`，可以在 yaml 中配置 `color` 以及 `label` 属性。
+
+```yaml
+color:
+  - black
+  - #23395b
+  - #5b933c
+  - #935b3c
+  - #703c93
+  - #3c938c
+label:
+  - total
+  - S3
+  - S8
+  - S14
+  - S25
+  - S26
+```
+
+## 单曲线图绘制效果
 
 <h3 align="center">NMR 绘制效果
     <img src="figure/NMR_Spectrum.png">
@@ -178,6 +204,9 @@ y_limit = 0,12,2
     <img src="figure/PES_Spectrum.png">
 </h3><br>
 
+## 多曲线图绘制效果
+
+<img src="figure/UV_multi_Spectrum.png">
 
 ## 鸣谢
 
@@ -188,6 +217,7 @@ y_limit = 0,12,2
 - **matplotlib**
 - **openpyxl**
 - **scipy**
+- **PyYAML**
 
 同时也感谢 Multiwfn 和其开发者卢天老师，为众多计算化学玩家带来这样一款，实用、轻便、功能强大的波函数分析软件。
 

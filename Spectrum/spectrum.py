@@ -10,6 +10,8 @@ class Spectrum:
         self.curve_colors = None
         self.save_format = None
 
-    def plot_spectrum(self, dataframe: DataFrame):
+    def creat_figure(self, dataframe: DataFrame):
         raise NotImplementedError
 
+    def creat_multi_figure(self, dataframe: DataFrame):
+        raise NotImplementedError

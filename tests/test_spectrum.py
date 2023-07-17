@@ -3,10 +3,9 @@ from Spectrum.spectrum_factory import SpectrumFactory
 
 
 def test():
-    data = ParserFactory.create_parser('../data/IR_curve.txt').parse()
-    ir_spectrum = SpectrumFactory.create_spectrum('IR')
-    fig, ax = ir_spectrum.plot_spectrum(data)
-    print(ir_spectrum.save_format)
+    data = ParserFactory.create_parser('../data/multi_curve.txt').parse_multi()
+    print(data)
+    fig, ax = SpectrumFactory.create_spectrum('UV').plot_multi_spectrum(data)
     fig.show()
 
 

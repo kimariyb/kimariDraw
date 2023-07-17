@@ -1,6 +1,29 @@
 import configparser
 import os
 
+import yaml
+
+
+def read_multi_config(filename):
+    """
+    获得 configuration
+    :param filename: 文件名字
+    :return: colors_list: 颜色列表
+    :return: label_list: 标签列表
+    """
+    # 构建绝对路径
+    file_path = os.path.join(os.path.dirname(__file__), '..', filename)
+
+    # 打开 YAML 文件并读取内容
+    with open(file_path, 'r') as f:
+        data = yaml.safe_load(f)
+
+    # 获取 color 和 label 列表
+    color_list = data['color']
+    label_list = data['label']
+
+    return color_list, label_list
+
 
 def read_config(section, filename):
     """

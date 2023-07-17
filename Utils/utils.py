@@ -1,6 +1,5 @@
 import datetime
-
-from Spectrum.spectrum_factory import SpectrumFactory
+import os
 
 
 def welcome():
@@ -32,12 +31,20 @@ Input file path, for example d:\\project\\kimariDraw\\data\\NMR_curve.txt
     print(interface_text)
 
 
+def input_file_path():
+    # 输入文件路径，并处理异常
+    url = input("Please enter the file path: ")
+    if not os.path.isfile(url):
+        raise FileNotFoundError(f"File not found: {url}")
+    return url
+
+
 def main_view():
     """
     主程序界面
     """
-    print('Please enter the spectrum you want to plot.')
-    print('0. Return the main view')
+    print('Please enter the spectrum you want to plot: ')
+    print('0. Return')
     print('1. NMR')
     print('2. IR')
     print('3. Raman')
@@ -51,88 +58,19 @@ def main_view():
     return choice
 
 
-def plot_nmr_spectrum(dataframe):
-    # 创建一个 NMRSpectrum 对象
-    nmr_spectrum = SpectrumFactory.create_spectrum('NMR')
-    # 调用绘图函数
-    fig, ax = nmr_spectrum.plot_spectrum(dataframe)
-    # 展示图片
-    fig.show()
-    # 询问是否保存图片
-    if ask_save_image(nmr_spectrum.save_format):
-        fig.savefig('output/NMR_Spectrum' + '.' + nmr_spectrum.save_format, dpi=500, bbox_inches='tight')
-
-
-def plot_ir_spectrum(dataframe):
-    # 创建一个 NMRSpectrum 对象
-    ir_spectrum = SpectrumFactory.create_spectrum('IR')
-    # 调用绘图函数
-    fig, ax = ir_spectrum.plot_spectrum(dataframe)
-    # 展示图片
-    fig.show()
-    # 询问是否保存图片
-    if ask_save_image(ir_spectrum.save_format):
-        fig.savefig('output/IR_Spectrum' + '.' + ir_spectrum.save_format, dpi=500, bbox_inches='tight')
-
-
-def plot_raman_spectrum(dataframe):
-    # 创建一个 NMRSpectrum 对象
-    raman_spectrum = SpectrumFactory.create_spectrum('Raman')
-    # 调用绘图函数
-    fig, ax = raman_spectrum.plot_spectrum(dataframe)
-    # 展示图片
-    fig.show()
-    # 询问是否保存图片
-    if ask_save_image(raman_spectrum.save_format):
-        fig.savefig('output/Raman_Spectrum' + '.' + raman_spectrum.save_format, dpi=500, bbox_inches='tight')
-
-
-def plot_uv_spectrum(dataframe):
-    # 创建一个 NMRSpectrum 对象
-    uv_spectrum = SpectrumFactory.create_spectrum('UV')
-    # 调用绘图函数
-    fig, ax = uv_spectrum.plot_spectrum(dataframe)
-    # 展示图片
-    fig.show()
-    # 询问是否保存图片
-    if ask_save_image(uv_spectrum.save_format):
-        fig.savefig('output/UV_Spectrum' + '.' + uv_spectrum.save_format, dpi=500, bbox_inches='tight')
-
-
-def plot_ecd_spectrum(dataframe):
-    # 创建一个 NMRSpectrum 对象
-    ecd_spectrum = SpectrumFactory.create_spectrum('ECD')
-    # 调用绘图函数
-    fig, ax = ecd_spectrum.plot_spectrum(dataframe)
-    # 展示图片
-    fig.show()
-    # 询问是否保存图片
-    if ask_save_image(ecd_spectrum.save_format):
-        fig.savefig('output/ECD_Spectrum' + '.' + ecd_spectrum.save_format, dpi=500, bbox_inches='tight')
-
-
-def plot_vcd_spectrum(dataframe):
-    # 创建一个 NMRSpectrum 对象
-    vcd_spectrum = SpectrumFactory.create_spectrum('VCD')
-    # 调用绘图函数
-    fig, ax = vcd_spectrum.plot_spectrum(dataframe)
-    # 展示图片
-    fig.show()
-    # 询问是否保存图片
-    if ask_save_image(vcd_spectrum.save_format):
-        fig.savefig('output/VCD_Spectrum' + '.' + vcd_spectrum.save_format, dpi=500, bbox_inches='tight')
-
-
-def plot_pes_spectrum(dataframe):
-    # 创建一个 NMRSpectrum 对象
-    pes_spectrum = SpectrumFactory.create_spectrum('PES')
-    # 调用绘图函数
-    fig, ax = pes_spectrum.plot_spectrum(dataframe)
-    # 展示图片
-    fig.show()
-    # 询问是否保存图片
-    if ask_save_image(pes_spectrum.save_format):
-        fig.savefig('output/PES_Spectrum' + '.' + pes_spectrum.save_format, dpi=500, bbox_inches='tight')
+def single_or_multiple():
+    """
+    选择绘制单例视图还是多例势图
+    :return:
+    """
+    print('Please enter the operation you want: ')
+    print('0. Return and enter the file path again.')
+    print('1. The Single Spectrum')
+    print('2. The Multiple Spectrum')
+    choice = input()
+    if choice not in ['0', '1', '2']:
+        raise ValueError("Invalid choice. Please enter 0 or 1 or 2.")
+    return choice
 
 
 def ask_save_image(save_format):
