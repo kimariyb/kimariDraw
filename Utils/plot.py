@@ -11,7 +11,7 @@ def plot_spectrum(dataframe, spectrum_type):
     fig.show()
     # 询问是否保存图片
     if ask_save_image(spectrum.save_format):
-        fig.savefig('output/' + spectrum_type + '_Spectrum' + '.' + spectrum.save_format, dpi=500, bbox_inches='tight')
+        fig.savefig('output/' + spectrum_type + '_Spectrum' + '.' + spectrum.save_format, dpi=600, bbox_inches='tight')
 
 
 def plot_multi_spectrum(dataframe, spectrum_type):
@@ -23,4 +23,4 @@ def plot_multi_spectrum(dataframe, spectrum_type):
     fig.show()
     # 询问是否保存图片
     if ask_save_image(spectrum.save_format):
-        fig.savefig('output/' + spectrum_type + '_Spectrum' + '.' + spectrum.save_format, dpi=500, bbox_inches='tight')
+        fig.savefig('output/' + spectrum_type + '_Spectrum' + '.' + spectrum.save_format, dpi=600, bbox_inches='tight')

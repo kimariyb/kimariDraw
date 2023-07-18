@@ -174,39 +174,42 @@ label:
   - S26
 ```
 
-## 单曲线图绘制效果
+## 绘制效果
 
-<h3 align="center">NMR 绘制效果
-    <img src="figure/NMR_Spectrum.png">
-</h3><br>
+<table>
+  <tr>
+    <td><img src="figure/NMR_Spectrum.png" alt="Image 1"></td>
+    <td><img src="figure/PES_Spectrum.png" alt="Image 2"></td>
+  </tr>
+  <tr>
+    <td><img src="figure/IR_Spectrum.png" alt="Image 3"></td>
+    <td><img src="figure/Raman_Spectrum.png" alt="Image 4"></td>
+  </tr>
+  <tr>
+    <td><img src="figure/ECD_Spectrum.png" alt="Image 5"></td>
+    <td><img src="figure/VCD_Spectrum.png" alt="Image 6"></td>
+  </tr>
+  <tr>
+    <td><img src="figure/UV_multi_Spectrum.png" alt="Image 7"></td>
+    <td><img src="figure/UV_Spectrum.png" alt="Image 8"></td>
+  </tr>
+</table>
 
-<h3 align="center">IR 绘制效果
-    <img src="figure/IR_Spectrum.png">
-</h3><br>
+## 使用脚本批量产生光谱数据
 
-<h3 align="center">Raman 绘制效果
-    <img src="figure/Raman_Spectrum.png">
-</h3><br>
+KimariDraw 程序中自带了一个用来批量产生 Multiwfn 光谱数据的脚本。如果想要批量产生绘制光谱的数据，可以在 `input` 文件夹中找到这个脚本。其中 `draw.sh` 为 Linux 系统下的脚本，`draw.bat` 为 Windows 系统下的脚本。
 
-<h3 align="center">UV 绘制效果
-    <img src="figure/UV_Spectrum.png">
-</h3><br>
-
-<h3 align="center">ECD 绘制效果
-    <img src="figure/ECD_Spectrum.png">
-</h3><br>
-
-<h3 align="center">VCD 绘制效果
-    <img src="figure/VCD_Spectrum.png">
-</h3><br>
-
-<h3 align="center">PES 绘制效果
-    <img src="figure/PES_Spectrum.png">
-</h3><br>
-
-## 多曲线图绘制效果
-
-<img src="figure/UV_multi_Spectrum.png">
+<table>
+    <tr>
+        <td><img src="figure/o.png" alt="o"></td>
+    </tr>
+    <tr>
+        <td><img src="figure/p.png" alt="p"></td>
+    </tr>
+    <tr>
+        <td><img src="figure/m.png" alt="m"></td>
+    </tr>
+</table>
 
 ## 鸣谢
 
