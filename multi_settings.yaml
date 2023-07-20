@@ -1,14 +1,10 @@
 color:
-  - black
-  - #23395b
-  - #5b933c
-  - #935b3c
-  - #703c93
-  - #3c938c
+  - orange
+  - red
+  - blue
+  - green
 label:
-  - total
-  - S3
-  - S8
-  - S14
-  - S25
-  - S26
+  - R=Cl
+  - R=OH
+  - R=OMe
+  - R=NH2

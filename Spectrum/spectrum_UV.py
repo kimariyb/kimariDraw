@@ -54,7 +54,7 @@ class UVSpectrum(Spectrum):
             label.set_fontweight('bold')
 
         # 绘制 curve
-        ax.plot(dataframe['x'], dataframe['y'], linewidth=2.5, color=self.curve_colors)
+        ax.plot(dataframe['x'], dataframe['y'], linewidth=2, color=self.curve_colors)
 
         # 添加坐标轴标签
         ax.set_xlabel('Wavelength (nm)', fontweight='bold', fontsize=16)
@@ -109,7 +109,7 @@ class UVSpectrum(Spectrum):
 
         # 绘制多条曲线
         for i, column in enumerate(dataframe.columns[1:]):
-            ax.plot(dataframe['x'], dataframe[column], linewidth=2.5, label=labels[i], color=colors[i % len(colors)])
+            ax.plot(dataframe['x'], dataframe[column], linewidth=2, label=labels[i], color=colors[i % len(colors)])
         # 添加图例
         ax.legend(fontsize=12)
 

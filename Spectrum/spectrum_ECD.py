@@ -55,7 +55,7 @@ class ECDSpectrum(Spectrum):
             label.set_fontweight('bold')
 
         # 绘制 curve
-        ax.plot(dataframe['x'], dataframe['y'], linewidth=2.5, color=self.curve_colors)
+        ax.plot(dataframe['x'], dataframe['y'], linewidth=2, color=self.curve_colors)
 
         # 绘制一个 y = 0 的平行于 x 轴的线段
         ax.axhline(y=0, color='black', linewidth=1.5)
@@ -112,7 +112,7 @@ class ECDSpectrum(Spectrum):
 
         # 绘制多条曲线
         for i, column in enumerate(dataframe.columns[1:]):
-            ax.plot(dataframe['x'], dataframe[column], linewidth=2.5, label=labels[i], color=colors[i % len(colors)])
+            ax.plot(dataframe['x'], dataframe[column], linewidth=2, label=labels[i], color=colors[i % len(colors)])
 
         # 添加图例
         ax.legend(fontsize=12)
