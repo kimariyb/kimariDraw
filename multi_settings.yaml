@@ -1,10 +1,10 @@
 color:
-  - orange
+  - black
   - red
   - blue
   - green
 label:
-  - R=Cl
-  - R=OH
-  - R=OMe
-  - R=NH2
+  - total
+  - S4
+  - S5
+  - S24

@@ -4,8 +4,8 @@ import os
 
 def welcome():
     version_info = {
-        'version': '2.0',
-        'release_date': '2023-07',
+        'version': '2.3.0',
+        'release_date': '2023-Jul',
         'developer': 'Kimariyb (XiaMen University, School of Electronic Science and Engineering)',
         'website': 'https://github.com/kimariyb/kimariDraw',
     }
