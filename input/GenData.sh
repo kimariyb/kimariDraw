@@ -5,3 +5,4 @@ for file in *.out; do
     mv spectrum_curve.txt "${file%.*}.txt"
 done
 rm -f spectrum_line.txt
+rm -f spectrum_curve.txt

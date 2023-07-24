@@ -176,44 +176,34 @@ label:
 
 ## 绘制效果
 
-KimariDraw 目前支持绘制 NMR、IR、Raman、UV-Vis、PES、ECD 以及 VCD 的单、多曲线谱。
+KimariDraw 目前支持绘制 NMR、IR、Raman、UV-Vis、ECD 以及 VCD 光谱。
 
 <table>
   <tr>
-    <td><img src="figure/NMR_Spectrum.png" alt="Image 1"></td>
-    <td><img src="figure/PES_Spectrum.png" alt="Image 2"></td>
+    <td><img src="figure/1.png" alt="Image 1"></td>
+    <td><img src="figure/2.png" alt="Image 2"></td>
   </tr>
   <tr>
-    <td><img src="figure/IR_Spectrum.png" alt="Image 3"></td>
-    <td><img src="figure/Raman_Spectrum.png" alt="Image 4"></td>
+    <td><img src="figure/3.png" alt="Image 3"></td>
+    <td><img src="figure/4.png" alt="Image 4"></td>
   </tr>
   <tr>
-    <td><img src="figure/ECD_Spectrum.png" alt="Image 5"></td>
-    <td><img src="figure/VCD_Spectrum.png" alt="Image 6"></td>
-  </tr>
-  <tr>
-    <td><img src="figure/UV_multi_Spectrum.png" alt="Image 7"></td>
-    <td><img src="figure/UV_Spectrum.png" alt="Image 8"></td>
+    <td><img src="figure/5.png" alt="Image 5"></td>
+    <td><img src="figure/6.png" alt="Image 6"></td>
   </tr>
 </table>
+
+KimariDraw 也可以绘制不同体系下的 UV-Vis 多曲线图。
+
+<img src="figure/7.png">
 
 ## 使用脚本批量产生光谱数据
 
 KimariDraw 程序中自带了一个用来批量产生 Multiwfn 光谱数据的脚本。如果想要批量产生绘制光谱的数据，可以在 `input` 文件夹中找到这个脚本。其中 `draw.sh` 为 Linux 系统下的脚本，`draw.bat` 为 Windows 系统下的脚本。
 
-`draw.sh` 以及 `draw.bat` 都需要一个名为 `commands.txt` 的文件。`commands.txt` 文件包含了执行 Multiwfn 生成数据所需要的命令，如果想要使用这个脚本，则必须对 Multiwfn 有一定的了解。得到的数据可以使用 KimariDraw 继续绘制光谱，如下所示（可以使用图片编辑工具把 x 轴 y 轴标题删了）；也可以用 Origin 绘制你想要效果的光谱。
+`GenData.sh` 以及 `GenData.bat` 都需要一个名为 `commands.txt` 的文件。`commands.txt` 文件包含了执行 Multiwfn 生成数据所需要的命令，如果想要使用这个脚本，则必须对 Multiwfn 有一定的了解。得到的数据可以使用 KimariDraw 继续绘制光谱，如下所示（可以使用图片编辑工具把 x 轴 y 轴标题删了）；也可以用 Origin 绘制你想要效果的光谱。
 
-<table>
-    <tr>
-        <td align="center"><img src="figure/o.png" width="80%" alt="o"></td>
-    </tr>
-    <tr>
-        <td align="center"><img src="figure/p.png" width="80%" alt="p"></td>
-    </tr>
-    <tr>
-        <td align="center"><img src="figure/m.png" width="80%" alt="m"></td>
-    </tr>
-</table>
+<img src="figure/8.png">
 
 ## 鸣谢
 
