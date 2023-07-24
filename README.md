@@ -195,7 +195,7 @@ KimariDraw 目前支持绘制 NMR、IR、Raman、UV-Vis、ECD 以及 VCD 光谱�
 
 KimariDraw 也可以绘制不同体系下的 UV-Vis 多曲线图。
 
-<img src="figure/7.png">
+<img src="figure/7.png" width="50%">
 
 ## 使用脚本批量产生光谱数据
 
