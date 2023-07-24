@@ -54,7 +54,7 @@ def main_view():
     print('7. PES')
     choice = input()
     if choice not in ['0', '1', '2', '3', '4', '5', '6', '7']:
-        raise ValueError("Invalid spectrum type, please input the correct numeric code.")
+        raise ValueError("Invalid spectrum type, please script the correct numeric code.")
     return choice
 
 

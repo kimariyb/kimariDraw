@@ -199,7 +199,7 @@ KimariDraw 也可以绘制不同体系下的 UV-Vis 多曲线图。
 
 ## 使用脚本批量产生光谱数据
 
-KimariDraw 程序中自带了一个用来批量产生 Multiwfn 光谱数据的脚本。如果想要批量产生绘制光谱的数据，可以在 `input` 文件夹中找到这个脚本。其中 `draw.sh` 为 Linux 系统下的脚本，`draw.bat` 为 Windows 系统下的脚本。
+KimariDraw 程序中自带了一个用来批量产生 Multiwfn 光谱数据的脚本。如果想要批量产生绘制光谱的数据，可以在 `script` 文件夹中找到这个脚本。其中 `GenData.sh` 为 Linux 系统下的脚本，`GenData.bat` 为 Windows 系统下的脚本。
 
 `GenData.sh` 以及 `GenData.bat` 都需要一个名为 `commands.txt` 的文件。`commands.txt` 文件包含了执行 Multiwfn 生成数据所需要的命令，如果想要使用这个脚本，则必须对 Multiwfn 有一定的了解。得到的数据可以使用 KimariDraw 继续绘制光谱，如下所示（可以使用图片编辑工具把 x 轴 y 轴标题删了）；也可以用 Origin 绘制你想要效果的光谱。
 
