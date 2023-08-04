@@ -1,9 +1,8 @@
-[figure]
-font = ["Arial", "14"]
-size = [6, 5]
-
-[UV.1]
+[[UV]]
 path = "multi_curve.txt"
+size = [5, 2]
+xlim = []
+ylim = []
 style = [
     ["water", "black", "-"],
     ["DCM", "red", "--"],
