@@ -1,0 +1,27 @@
+[figure]
+font = ["Arial", "14"]
+size = [5, 2]
+
+[[IR]]
+path = "CH3CHO.txt"
+style = [
+    ["Acetaldehyde", "red", "-"]
+]
+
+[[IR]]
+path = "CH3OCH3.txt"
+style = [
+    ["acetone", "blue", "-"]
+]
+
+[[IR]]
+path = "CH3CO2CH3.txt"
+style = [
+    ["Methyl acetate", "orange", "-"]
+]
+
+[[IR]]
+path = "CH3CONHCH3.txt"
+style = [
+    ["Acetate formamide", "green", "-"]
+]

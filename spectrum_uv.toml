@@ -1,12 +1,12 @@
 [figure]
 font = ["Arial", "14"]
 size = [6, 5]
-format = "png"
-
 
 [UV.1]
+path = "multi_curve.txt"
 style = [
     ["water", "black", "-"],
     ["DCM", "red", "--"],
     ["DMSO", "blue", "--"],
 ]
+
