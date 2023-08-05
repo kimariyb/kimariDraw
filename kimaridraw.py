@@ -1,9 +1,11 @@
+import os
 from pathlib import Path
 
 import proplot as pplt
 import matplotlib.pyplot as plt
 import pandas as pd
 import toml
+from pandas import DataFrame
 
 from proplot import rc
 
@@ -67,7 +69,14 @@ def get_dataframe(file_name: str):
     with file_path.open('r', encoding='utf-8') as f:
         df = pd.read_csv(f, delim_whitespace=True, header=None)
     # 为列指定新的标签
-    df = df.rename(columns={0: 'x', 1: 'y'})
+    df = df.rename(columns={0: 'x'})
+    # 判断 DataFrame 对象有多少个列，如果只有两列，就分别命名为 x 和 y
+    if len(df.columns) == 2:
+        df = df.rename(columns={1: 'y'})
+    else:
+        # 判断 DataFrame 对象有多少个列，如果只有多列，就分别命名为 x 和 y1、y2 ...
+        for i in range(1, len(df.columns)):
+            df = df.rename(columns={i: 'y{}'.format(i)})
     return df
 
 
@@ -105,54 +114,169 @@ def read_multiple(multiple_path: str):
         raise f"An error occurred: {str(e)}"
 
 
-def main():
-    # 设置默认的颜色集合
-    tableau = ["#4E79A7", "#F28E2B", "#E15759", "#76B7B2", "#59A14F", "#EDC949", "#AF7AA1", "#FF9DA7", "#9C755F",
-               "#BAB0AC"]
-    categorical = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22",
-                   "#17becf"]
-    colorbrewer = ["#8dd3c7", "#ffffb3", "#bebada", "#fb8072", "#80b1d3", "#fdb462", "#b3de69", "#fccde5", "#d9d9d9",
-                   "#bc80bd"]
+def draw_multiple(config: SpectrumConfig, axs, data_list):
+    """
+    绘制多子图的方法
+    :param config: SpectrumConfig 对象
+    :param axs: proplot Axes 对象集合
+    :param data_list: 装有绘制数据的 DataFrame 对象的集合
+    """
+    # 图例文本集合
+    label_list = config.legend_text
+    # 颜色集合
+    color_list = config.colors
+    # 样式集合
+    style_list = config.line_style
+    # 根据 DataFrame 的数据绘制多个子图的光谱图
+    for ax, data, color, label, style in zip(axs, data_list, color_list, label_list, style_list):
+        # 首先判断 DataFrame 对象的列数，如果为 2，则直接绘制
+        if len(data.columns) == 2:
+            # 绘制折线图
+            ax.plot(data['x'], data['y'], linewidth=1.3, color=color, label=label, linestyle=style)
+        else:
+            # 否则需要继续循环绘制多曲线图
+            for column in enumerate(data.columns[1:]):
+                ax.plot(data['x'], data[column], linewidth=1.3, color=color, label=label, linestyle=style)
+        # 如果开启显示图例，则执行下面的代码
+        if config.legend == 1:
+            # 显示图例
+            ax.legend(loc='best', ncols=1, fontweight='bold', frame=False)
+
+
+def draw_single(config: SpectrumConfig, ax, data: DataFrame):
+    """
+    绘制单子图的方法
+    :param config: SpectrumConfig 对象
+    :param ax: proplot Axes 对象
+    :param data: 装有绘制数据的 DataFrame 对象
+    """
+    # 图例文本集合
+    label_list = config.legend_text
+    # 颜色集合
+    color_list = config.colors
+    # 样式集合
+    style_list = config.line_style
+
+    # 根据 DataFrame 的数据绘制单子图的光谱图
+    # 首先判断 DataFrame 对象的列数，如果为 2，则直接绘制
+    if len(data.columns) == 2:
+        # 绘制折线图
+        ax.plot(data['x'], data['y'], linewidth=1.3, color=color_list, label=label_list, linestyle=style_list)
+    else:
+        # 否则需要继续循环绘制多曲线图
+        for i, column in enumerate(data.columns[1:]):
+            ax.plot(data['x'], data[column], linewidth=1.3, color=color_list[i], label=label_list[i],
+                    linestyle=style_list[i])
+    # 如果开启显示图例，则执行下面的代码
+    if config.legend == 1:
+        # 显示图例
+        ax.legend(loc='best', ncols=1, fontweight='bold', frame=False)
+    # 如果开启显示 Zero 轴，则执行下面的代码
+    if config.zero_line == 1:
+        # 显示 Zero 轴
+        ax.axhline(y=0, color='black', linewidth=1.25)
+
+
+def save_spectrum(fig, save_type="png"):
+    """
+    保存光谱图片为某一格式
+    :param save_type: 保存的格式，默认为 png 格式
+    :param fig: matplotlib figure 对象
+    """
+    # 文件名初始值
+    file_name = f"figure.{save_type}"
+    i = 1
+    # 首先检查当前路径是否存在以 figure.save_type 为文件名的文件
+    while os.path.exists(file_name):
+        # 文件名已存在，添加数字后缀
+        file_name = f"figure{i}.{save_type}"
+        i += 1
+    # 保存光谱图
+    fig.savefig(file_name, dpi=500, bbox_inches="tight")
+
+
+def draw_spectrum(config: SpectrumConfig, data_list=None, data=None):
+    """
+    绘制光谱图
+    :param config: SpectrumConfig 对象
+    :param data_list: 装有绘制数据的 DataFrame 对象的集合。仅在。
+    :param data: 装有绘制数据的 DataFrame 对象
+    """
     # 设置全局属性
-    rc['font.name'] = 'Arial'
+    rc['font.name'] = config.font_family
     rc['tick.width'] = 1.3
     rc['meta.width'] = 1.3
     rc['label.weight'] = 'bold'
     rc['tick.labelweight'] = 'bold'
     rc['ytick.major.size'] = 4.6
-    rc['ytick.minor.size'] = 2.3
+    rc['ytick.minor.size'] = 2.5
     rc['xtick.major.size'] = 4.6
-    rc['xtick.minor.size'] = 2.3
+    rc['xtick.minor.size'] = 2.5
 
-    # 拿到 multiple.txt 中记录的数据，并将其保存为 DataFrame 对象
-    data_list = read_multiple("multiple.txt")
-    # 图例文本集合
-    label_list = ["Acetaldehyde", "Methyl acetate", "Acetone", "N-Methylacetamide"]
+    # 得到 xlim 和 ylim 以及 xminor 和 yminor
+    min_xlim = config.x_limit[0]
+    max_xlim = config.x_limit[1]
+    tick_xlim = config.x_limit[2]
+    min_ylim = config.y_limit[0]
+    max_ylim = config.y_limit[1]
+    tick_ylim = config.y_limit[2]
+    xminor = tick_xlim / 2
+    yminor = tick_ylim / 2
 
-    # 创建子图和坐标轴
-    fig = pplt.figure(figsize=(5, 1.5 * len(data_list)), dpi=300, span=True, share=True)
-    axs = fig.subplots(nrows=4, ncols=1)
+    # 判断多子图是否开启，开启多子图对应 plot_type = 2
+    if config.plot_type == 2:
+        # 创建子图和坐标轴
+        fig = pplt.figure(figsize=config.figure_size, dpi=300, span=True, share=True)
+        axs = fig.subplots(nrows=config.sup_type[0], ncols=config.sup_type[1])
 
-    # 根据 DataFrame 的数据绘制多个子图的光谱图
-    for ax, data, color, label in zip(axs, data_list, tableau, label_list):
-        # 绘制折线图
-        ax.plot(data['x'], data['y'], color=color, linewidth=1.3, label=label)
-        # 显示图例
-        ax.legend(loc='best', fontweight='bold', frame=False)
+        # 调用绘制多子图的方法
+        draw_multiple(config, axs, data_list)
 
-    # 将多子图的 x 标题和 y 标题 合并
-    fig.supylabel("Absorption (in L/mol/cm)", fontsize=11.5)
-    fig.supxlabel("Frequency (in cm^-1)", fontsize=11.5)
+        # 将多子图的 x 标题和 y 标题 合并
+        fig.supylabel(config.y_label, fontsize=11.5)
+        fig.supxlabel(config.x_label, fontsize=11.5)
 
-    # 设置图像的一些杂属性，如果开启多子图绘制时，可以选择是否显示子图的序号。
-    axs.format(
-        xlabel='', ylabel='',
-        grid=False, xlocator=500, ylocator=1000, xlim=(0, 4000), ylim=(0, 3000),
-        abc="(a)", abcloc="ul", xminorlocator=250, yminorlocator=500
-    )
+        # 设置一个标志，如果开启显示子图的序号，则显示子图
+        if config.serial == 1:
+            serial_flag = "(a)"
+        else:
+            serial_flag = False
 
-    plt.show()
+        # 设置图像的一些杂属性，如果开启多子图绘制时，可以选择是否显示子图的序号。
+        axs.format(
+            xlabel='', ylabel='',
+            grid=False, xlocator=tick_xlim, ylocator=tick_ylim, xlim=(min_xlim, max_xlim), ylim=(min_ylim, max_ylim),
+            abc=serial_flag, abcloc="ul", xminorlocator=xminor, yminorlocator=yminor
+        )
+
+        # 显示绘制结果
+        plt.show()
+        # 最后调用保存图像方法
+        save_spectrum(fig)
+
+    # 如果没有开启子图，则对应 plot_type = 1
+    elif config.plot_type == 1:
+        # 创建子图和坐标轴
+        fig = pplt.figure(figsize=config.figure_size, dpi=300, span=True, share=True)
+        ax = fig.subplots()
+
+        # 调用绘制单子图的方法
+        draw_single(config, ax, data)
+
+        # 设置 x 轴 y 轴标签
+        ax.set_xlabel(config.x_label, fontsize=11.5)
+        ax.set_ylabel(config.y_label, fontsize=11.5)
+
+        # 设置图像的一些杂属性，如果开启多子图绘制时，可以选择是否显示子图的序号。
+        ax.format(
+            grid=False, xlocator=tick_xlim, ylocator=tick_ylim, xlim=(min_xlim, max_xlim), ylim=(min_ylim, max_ylim),
+            xminorlocator=xminor, yminorlocator=yminor
+        )
+
+        # 显示绘制结果
+        plt.show()
+        # 最后调用保存图像方法
+        save_spectrum(fig)
 
 
-if __name__ == '__main__':
-    main()
+
