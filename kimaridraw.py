@@ -135,8 +135,10 @@ def draw_multiple(config: SpectrumConfig, axs, data_list):
             ax.plot(data['x'], data['y'], linewidth=1.3, color=color, label=label, linestyle=style)
         else:
             # 否则需要继续循环绘制多曲线图
-            for column in enumerate(data.columns[1:]):
-                ax.plot(data['x'], data[column], linewidth=1.3, color=color, label=label, linestyle=style)
+            for column, multi_color, multi_label, multi_style in zip(data.columns[1:], color_list, label_list,
+                                                                     style_list):
+                ax.plot(data['x'], data[column].values, linewidth=1.3, color=multi_color, label=multi_label,
+                        linestyle=multi_style)
         # 如果开启显示图例，则执行下面的代码
         if config.legend == 1:
             # 显示图例
@@ -192,7 +194,7 @@ def save_spectrum(fig, save_type="png"):
         file_name = f"figure{i}.{save_type}"
         i += 1
     # 保存光谱图
-    fig.savefig(file_name, dpi=500, bbox_inches="tight")
+    fig.savefig(file_name, dpi=500, bbox_inches="tight", pad_inches=0.2)
 
 
 def draw_spectrum(config: SpectrumConfig, data_list=None, data=None):
@@ -232,23 +234,27 @@ def draw_spectrum(config: SpectrumConfig, data_list=None, data=None):
         # 调用绘制多子图的方法
         draw_multiple(config, axs, data_list)
 
-        # 将多子图的 x 标题和 y 标题 合并
-        fig.supylabel(config.y_label, fontsize=11.5)
-        fig.supxlabel(config.x_label, fontsize=11.5)
-
         # 设置一个标志，如果开启显示子图的序号，则显示子图
         if config.serial == 1:
             serial_flag = "(a)"
         else:
             serial_flag = False
 
+        # 使用循环设置子图的 x 轴和 y 轴标签
+        for ax in axs:
+            ax.set_xlabel("", fontsize=11.5)
+            ax.set_ylabel("", fontsize=11.5)
+
+        # 设置整个图像的 x 标签和 y 标签
+        fig.format(
+            xlabel=config.x_label, ylabel=config.y_label
+        )
+
         # 设置图像的一些杂属性，如果开启多子图绘制时，可以选择是否显示子图的序号。
         axs.format(
-            xlabel='', ylabel='',
             grid=False, xlocator=tick_xlim, ylocator=tick_ylim, xlim=(min_xlim, max_xlim), ylim=(min_ylim, max_ylim),
             abc=serial_flag, abcloc="ul", xminorlocator=xminor, yminorlocator=yminor
         )
-
         # 显示绘制结果
         plt.show()
         # 最后调用保存图像方法
@@ -264,19 +270,22 @@ def draw_spectrum(config: SpectrumConfig, data_list=None, data=None):
         draw_single(config, ax, data)
 
         # 设置 x 轴 y 轴标签
-        ax.set_xlabel(config.x_label, fontsize=11.5)
-        ax.set_ylabel(config.y_label, fontsize=11.5)
+        ax.set_xlabel("", fontsize=11.5)
+        ax.set_ylabel("", fontsize=11.5)
 
         # 设置图像的一些杂属性，如果开启多子图绘制时，可以选择是否显示子图的序号。
         ax.format(
+            xlabel=config.x_label, ylabel=config.y_label,
             grid=False, xlocator=tick_xlim, ylocator=tick_ylim, xlim=(min_xlim, max_xlim), ylim=(min_ylim, max_ylim),
             xminorlocator=xminor, yminorlocator=yminor
         )
-
         # 显示绘制结果
         plt.show()
         # 最后调用保存图像方法
         save_spectrum(fig)
 
 
-
+if __name__ == '__main__':
+    config = SpectrumConfig().from_toml("settings.toml")
+    data_list = read_multiple("multiple.txt")
+    draw_spectrum(config, data_list=data_list)
