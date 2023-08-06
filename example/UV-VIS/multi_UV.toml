@@ -2,26 +2,26 @@
 # 如果需要绘制多子图，则需要先修改 PlotType，再将包含多子图的数据的 txt 文件文件名写在一个名为 multiple.txt 的文件中
 PlotType = 2
 # X 轴坐标的最小、最大值以及间距，例如 0, 4000, 500
-xLimit = [0, 4000, 500]
+xLimit = [80, 200, 20]
 # Y 轴坐标的最小、最大值以及间距，例如 0, 3000, 1000
-yLimit = [0, 3000, 1000]
+yLimit = [0, 10000, 2000]
 # 配图的标题，可以为空
 Title = ""
 # 设置 x 轴标签
-xLabel = "Frequency (in cm^-1)"
+xLabel = "Wavelength (in nm)"
 # 设置 y 轴标签
 yLabel = "Absorption (in L/mol/cm)"
 # 设置全局的字体，一般为 Arial
 FontFamily = "Arial"
 # 设置图片的大小，也就是设置图片的长和宽。就算开启绘制多子图模式，也代表的是总的大小，不是子图的大小。
 # 绘制多子图时，可以先想好每一个子图的大小，然后分别乘上行数和列数。必须为相同数据类型！
-FigureSize = [4.5, 4.8]
+FigureSize = [12, 9]
 # 曲线的颜色，可以为一个列表，优先从第一个开始选择。如果为空，则为默认的 color cycle。
 # 如果开启了多子图，则每一个颜色就对应一个子图曲线的颜色。
-Colors = ["black", "red", "orange", "blue"]
+Colors = ["black", "red", "orange", "yellow", "blue"]
 # 曲线的样式，可以为一个列表，优先从第一个开始选择
 # 如果开启了多子图，则每一个格式就对应一个子图的格式
-LineStyle = ["-", "-", "-", "-"]
+LineStyle = ["-", "--", "--", "--", "--"]
 # 是否显示表达式为 Y = 0 的直线，可选 0. 关闭；1. 开启
 # 可以在绘制 ECD、VCD 谱时开启
 ZeroLine = 0
@@ -32,9 +32,9 @@ Serial = 1
 # 通常是绘制单子图的多曲线图时开启，多子图也可以开启。单开启时显示在图像的右上角。
 Legend = 1
 # 图例的文本，需要和 Colors 和 LineStyle 列表中元素的数量一样
-LegendText = ["Acetaldehyde", "Methyl acetate", "Acetone", "N-Methylacetamide"]
+LegendText = ["total", "S0->S2", "S0->S5", "S0->S11", "S0->S13"]
 # 多子图的排版，例如，[2, 2] 为 2 行 2 列的排列。推荐奇数使用 [n, 1]，偶数使用 [n/2, n/2]
 # 仅开启多子图才能生效
-SupType = [4, 1]
+SupType = [3, 3]
 
 

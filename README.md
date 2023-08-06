@@ -49,153 +49,30 @@ pip install -r requirements.txt
 
 1. 在命令行中导航到 KimariDraw 目录。
 
-2. 运行 main.py 进入 KimariDraw 主程序：
+2. 运行 kimaridraw.py 进入 KimariDraw 主程序：
 
 ```shell
-python main.py
-
-KimariDraw -- A spectrum plotting program based on Multitwfn.
-Version 2.0, release date: 2023-07
-Developer: Kimariyb (XiaMen University, School of Electronic Science and Engineering)
-KimariDraw Github website: https://github.com/kimariyb/kimariDraw
-
-( Current date: 2023-07-16  Time: 15:53:43 )
-
-Input file path, for example d:\project\kimariDraw\data\NMR_curve.txt
-( Supported: .txt file and .xlsx file )
-
-Please enter the file path: 
+KimariDraw --  A Python script that processes Multiwfn spectral data and plots various spectra.
+Version: v2.4.0, release date: Aug-6-2023
+Developer: Kimariyb, Ryan Hsiun
+Address: XiaMen University, School of Electronic Science and Engineering
+KimariDraw home website: https://github.com/kimariyb/kimariDraw
 ```
-
-3. 输入 Multiwfn 输出的文本文件 `.txt` 或 Excel 文件 `.xlsx` 的路径。例如本项目中的 `data\NMR_curve.txt` 文件。
-
-```shell
-data/NMR_curvewei.txt
-```
-
-4. 接着会让你选择绘制单曲线图还是多曲线图，这里选择 `1. The Single Spectrum`
-
-```shell
-Please enter the operation you want: 
-0. Return and enter the file path again.
-1. The Single Spectrum
-2. The Multiple Spectrum
-```
-
-5. 接着选择想要绘制的谱，例如选择 `1. NMR`，就可以绘制 NMR 谱，如果不想绘制 NMR 则可以选择其他选项。
-
-```shell
-Please enter the spectrum you want to plot.
-0. Return the main view
-1. NMR
-2. IR
-3. Raman
-4. UV-Vis
-5. ECD
-6. VCD
-7. PES
-```
-
-6. 选择之后，会提示是否保存为图像，保存的格式在 `settings.ini` 中配置，保存在当前项目的 `output` 文件夹中，请确保 `output` 文件夹存在。
 
 ## 配置
 
-KimariDraw 通过项目目录下的 `settings.ini` 修改光谱的样式，默认的配置参数如下：
 
-```ini
-[NMR]
-figure_size = 10,5
-save_format = png
-curve_color = #F05BCE
-x_limit = 12,0,1
-y_limit = 0,64,8
-
-[IR]
-figure_size = 10,5
-save_format = png
-curve_color = #ff4d00
-x_limit = 4000,0,400
-y_limit = 2400,-200,400
-
-[Raman]
-figure_size = 10,5
-save_format = png
-curve_color = #8E6CC3
-x_limit = 4000,0,400
-y_limit = -2,22,4
-
-[UV]
-figure_size = 10,5
-save_format = png
-curve_color = #3F5465
-x_limit = 100,400,30
-y_limit = 0,1.6,0.2
-
-[ECD]
-figure_size = 10,5
-save_format = png
-curve_color = #038C3E
-x_limit = 120,280,20
-y_limit = -100,100,20
-
-[VCD]
-figure_size = 10,5
-save_format = png
-curve_color = #E68C14
-x_limit = 1700,700,100
-y_limit = -2.5,2.5,0.5
-
-[PES]
-figure_size = 10,5
-save_format = png
-curve_color = #0B15FA
-x_limit = 1,4.5,0.5
-y_limit = 0,12,2
-```
-
-可以在 `settings.ini` 里配置 NMR、IR 等光谱的绘图参数。其中 `figure_size` 表示图片的大小，`save_format` 为保存的格式，`curve_color` 为曲线的颜色，`x_limit` 和 `y_limit` 分别为 x 刻度和 y 刻度的范围与间距。
-
-如果要绘制多曲线图，除了配置 `settings.ini` 以外，还需要配置 `multi_settings.yaml`，可以在 yaml 中配置 `color` 以及 `label` 属性。
-
-```yaml
-color:
-  - black
-  - #23395b
-  - #5b933c
-  - #935b3c
-  - #703c93
-  - #3c938c
-label:
-  - total
-  - S3
-  - S8
-  - S14
-  - S25
-  - S26
-```
 
 ## 绘制效果
 
-KimariDraw 目前支持绘制 NMR、IR、Raman、UV-Vis、ECD 以及 VCD 光谱。
+### 绘制单子图
 
-<table>
-  <tr>
-    <td><img src="figure/1.png" alt="Image 1"></td>
-    <td><img src="figure/2.png" alt="Image 2"></td>
-  </tr>
-  <tr>
-    <td><img src="figure/3.png" alt="Image 3"></td>
-    <td><img src="figure/4.png" alt="Image 4"></td>
-  </tr>
-  <tr>
-    <td><img src="figure/5.png" alt="Image 5"></td>
-    <td><img src="figure/6.png" alt="Image 6"></td>
-  </tr>
-</table>
+### 绘制多子图
 
-KimariDraw 也可以绘制不同体系下的 UV-Vis 多曲线图。
+<img src="figure/multi_IR.png">
 
-<img src="figure/7.png" width="50%">
+<img src="figure/multi_UV.png">
+
 
 ## 使用脚本批量产生光谱数据
 
@@ -203,20 +80,16 @@ KimariDraw 程序中自带了一个用来批量产生 Multiwfn 光谱数据的�
 
 `GenData.sh` 以及 `GenData.bat` 都需要一个名为 `commands.txt` 的文件。`commands.txt` 文件包含了执行 Multiwfn 生成数据所需要的命令，如果想要使用这个脚本，则必须对 Multiwfn 有一定的了解。得到的数据可以使用 KimariDraw 继续绘制光谱，如下所示（可以使用图片编辑工具把 x 轴 y 轴标题删了）；也可以用 Origin 绘制你想要效果的光谱。
 
-<img src="figure/8.png">
 
 ## 鸣谢
 
 在开发 KimariDraw 时，主要使用了以下 Python 开源模组，在这里对开发这些模组的工作人员表示感谢。
 
-- **numpy**
-- **pandas**
 - **matplotlib**
-- **openpyxl**
-- **scipy**
-- **PyYAML**
+- **pandas**
+- **proplot**
+- **toml**
 
-同时也感谢 Multiwfn 和其开发者卢天老师，为众多计算化学玩家带来这样一款，实用、轻便、功能强大的波函数分析软件。
 
 ## 许可证
 

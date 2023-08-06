@@ -10,8 +10,7 @@ import pandas as pd
 import toml
 
 from pandas import DataFrame
-from proplot import rc
-
+from proplot import rc, Colormap
 
 # 提取常量和配置
 DEFAULT_DPI = 500
@@ -23,6 +22,7 @@ VERSION_INFO = {
     'address': 'XiaMen University, School of Electronic Science and Engineering',
     'website': 'https://github.com/kimariyb/kimariDraw',
 }
+
 
 class SpectrumConfig:
     def __init__(self):
@@ -128,6 +128,19 @@ def read_multiple(multiple_path: str):
         raise f"An error occurred: {str(e)}"
 
 
+def is_multiple(data):
+    """
+    用来判断 data 是单曲线还是多曲线图
+    """
+    flag = False
+    if len(data.columns) > 2:
+        flag = True
+    else:
+        flag = False
+
+    return flag
+
+
 def draw_multiple(config: SpectrumConfig, axs, data_list):
     """
     绘制多子图的方法
@@ -141,22 +154,48 @@ def draw_multiple(config: SpectrumConfig, axs, data_list):
     color_list = config.colors
     # 样式集合
     style_list = config.line_style
-    # 根据 DataFrame 的数据绘制多个子图的光谱图
-    for ax, data, color, label, style in zip(axs, data_list, color_list, label_list, style_list):
-        # 首先判断 DataFrame 对象的列数，如果为 2，则直接绘制
-        if len(data.columns) == 2:
-            # 绘制折线图
+
+    # 设置标志位
+    flag = 0
+
+    if flag == 0:
+        for ax, data in zip(axs, data_list):
+            # 首先判断每一个子图是否为多曲线图
+            if is_multiple(data):
+                # 遍历 DataFrame 对象的列，跳过第一列 'x'
+                for i, column in enumerate(data.columns[1:], start=0):
+                    multi_color = color_list[i % len(color_list)]
+                    multi_label = label_list[i % len(label_list)]
+                    multi_style = style_list[i % len(style_list)]
+                    # 绘制曲线图
+                    ax.plot(data['x'], data[column], linewidth=1.3, linestyle=multi_style, color=multi_color,
+                            label=multi_label)
+
+                # 如果开启显示图例，则执行下面的代码
+                if config.legend == 1:
+                    # 显示图例
+                    ax.legend(loc='best', ncols=1, fontweight='bold', frame=False)
+                # 如果开启显示 Zero 轴，则执行下面的代码
+                if config.zero_line == 1:
+                    # 显示 Zero 轴
+                    ax.axhline(y=0, color='black', linewidth=1.25)
+            else:
+                flag = 1
+
+    if flag == 1:
+        # 否则绘制单曲线多子图
+        for ax, data, color, label, style in zip(axs, data_list, color_list, label_list, style_list):
+            # 绘制曲线图
             ax.plot(data['x'], data['y'], linewidth=1.3, color=color, label=label, linestyle=style)
-        else:
-            # 否则需要继续循环绘制多曲线图
-            for column, multi_color, multi_label, multi_style in zip(data.columns[1:], color_list, label_list,
-                                                                     style_list):
-                ax.plot(data['x'], data[column].values, linewidth=1.3, color=multi_color, label=multi_label,
-                        linestyle=multi_style)
-        # 如果开启显示图例，则执行下面的代码
-        if config.legend == 1:
-            # 显示图例
-            ax.legend(loc='best', ncols=1, fontweight='bold', frame=False)
+
+            # 如果开启显示图例，则执行下面的代码
+            if config.legend == 1:
+                # 显示图例
+                ax.legend(loc='best', ncols=1, fontweight='bold', frame=False)
+            # 如果开启显示 Zero 轴，则执行下面的代码
+            if config.zero_line == 1:
+                # 显示 Zero 轴
+                ax.axhline(y=0, color='black', linewidth=1.25)
 
 
 def draw_single(config: SpectrumConfig, ax, data: DataFrame):
@@ -174,15 +213,16 @@ def draw_single(config: SpectrumConfig, ax, data: DataFrame):
     style_list = config.line_style
 
     # 根据 DataFrame 的数据绘制单子图的光谱图
-    # 首先判断 DataFrame 对象的列数，如果为 2，则直接绘制
-    if len(data.columns) == 2:
-        # 绘制折线图
-        ax.plot(data['x'], data['y'], linewidth=1.3, color=color_list, label=label_list, linestyle=style_list)
-    else:
-        # 否则需要继续循环绘制多曲线图
+    # 首先判断 DataFrame 对象所记载的是否为多曲线图
+    if is_multiple(data):
+        # 循环绘制多曲线图
         for i, column in enumerate(data.columns[1:]):
-            ax.plot(data['x'], data[column], linewidth=1.3, color=color_list[i], label=label_list[i],
-                    linestyle=style_list[i])
+            ax.plot(data['x'], data[column], linewidth=1.3, color=color_list[i % len(color_list)],
+                    label=label_list[i % len(label_list)], linestyle=style_list[i % len(style_list)])
+    else:
+        # 否则绘制单曲线图
+        ax.plot(data['x'], data['y'], linewidth=1.3, color=color_list, label=label_list, linestyle=style_list)
+
     # 如果开启显示图例，则执行下面的代码
     if config.legend == 1:
         # 显示图例
@@ -395,11 +435,16 @@ def execute_process():
     # 接着询问是否使用默认的 settings.toml 配置文件，可选 y：是；n：否
     # 如果选择 y 则需要重新输入 toml 配置文件，如果选择 n 则使用 settings.toml
     use_default_settings = input(
-        "Do you want to use the default settings.toml configuration file? (y/n):\n").lower() == "y"
+        "Do you want to use the default settings.toml configuration file? (y/n):\n").lower() == "n"
 
     # 如果选择了 y，则覆盖默认的设置文件，并重新输入新的配置文件名
     if use_default_settings:
         set_file = input("Please enter the toml configuration file.\n")
+        # 如果什么都不输入直接 Enter，则重新询问，如果输入 q 则退出。
+        while set_file == "":
+            set_file = input("Please enter the toml configuration file or 'q' to quit.\n")
+            if set_file.lower() == "q":
+                break
 
     # 拿到 config 对象
     config = SpectrumConfig().from_toml(set_file)
@@ -466,11 +511,9 @@ def execute_process():
             print("Invalid selection!")
 
 
-def main():
-    # 命令行运行方式
-    if len(sys.argv) > 1:
-        console_process(VERSION_INFO)
-    # 直接双击可执行文件运行方式
-    else:
-        execute_process()
-
+# 命令行运行方式
+if len(sys.argv) > 1:
+    console_process(VERSION_INFO)
+# 直接双击可执行文件运行方式
+else:
+    execute_process()
