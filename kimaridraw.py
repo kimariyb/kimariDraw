@@ -4,13 +4,14 @@ import os
 import sys
 from pathlib import Path
 
+import matplotlib
 import proplot as pplt
-import matplotlib.pyplot as plt
 import pandas as pd
 import toml
-from pandas import DataFrame
 
+from pandas import DataFrame
 from proplot import rc
+
 
 # 提取常量和配置
 DEFAULT_DPI = 500
