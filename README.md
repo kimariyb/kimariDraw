@@ -197,14 +197,21 @@ SupType = [4, 1]
 
 配置文件和数据文件都在 `example/IR` 文件夹下，下面是绘制效果：
 
-<img src="figure/multi_IR.png" height="50%" width="50%" >
+<img src="figure/multi_IR.png" height="60%" width="60%" >
 
 
 ## 绘制效果
 
 ### 绘制单子图
 
-KimariDraw 可以很方便的绘制单子图，包括单曲线图和多曲线图。
+KimariDraw 可以很方便的绘制单子图，包括单曲线图和多曲线图。下面是绘制的效果，配置文件和数据都在 `example/ECD` 和 `example/UV-VIS` 文件夹下。
+
+<table>
+    <tr>
+    <td><img src="figure/single_UV.png"></td>
+    <td><img src="figure/single_ECD.png"></td>
+    </tr>
+</table>
 
 ### 绘制多子图
 
