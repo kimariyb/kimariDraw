@@ -195,19 +195,25 @@ LegendText = ["Acetaldehyde", "Methyl acetate", "Acetone", "N-Methylacetamide"]
 SupType = [4, 1]
 ```
 
-<img src="figure/multi_IR.png" height="50%" width="50" >
+配置文件和数据文件都在 `example/IR` 文件夹下，下面是绘制效果：
+
+<img src="figure/multi_IR.png" height="50%" width="50%" >
 
 
 ## 绘制效果
 
 ### 绘制单子图
 
+KimariDraw 可以很方便的绘制单子图，包括单曲线图和多曲线图。
+
 ### 绘制多子图
+
+KimariDraw 除了绘制单子图以外，还可以支持绘制多子图。并且也同时支持绘制多曲线图的多子图，下面是绘制的效果，配置文件和数据文件都在 `example/UV-VIS` 文件夹下。
 
 <img src="figure/multi_UV.png">
 
 
-## 使用脚本批量产生光谱数据
+### 使用脚本批量产生光谱数据
 
 KimariDraw 程序中自带了一个用来批量产生 Multiwfn 光谱数据的脚本。如果想要批量产生绘制光谱的数据，可以在 `script` 文件夹中找到这个脚本。其中 `GenData.sh` 为 Linux 系统下的脚本，`GenData.bat` 为 Windows 系统下的脚本。
 
