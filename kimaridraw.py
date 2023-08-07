@@ -373,8 +373,8 @@ def console_process(version_info):
     arg = sys.argv[1]
     # 执行其他逻辑
     # 创建 ArgumentParser 对象
-    parser = argparse.ArgumentParser(prog='KimariPlot', add_help=False,
-                                     description='KimariPlot -- A Python script that processes Multiwfn spectral data '
+    parser = argparse.ArgumentParser(prog='KimariDraw', add_help=False,
+                                     description='KimariDraw -- A Python script that processes Multiwfn spectral data '
                                                  'and plots various spectra.')
     # 添加 -h 参数
     parser.add_argument('--help', '-h', action='help', help='Show this help message and exit')
@@ -421,6 +421,7 @@ def console_process(version_info):
         data = get_dataframe(input_file)
         # 绘制单子图光谱
         draw_spectrum(config, save_type=image_format, dpi=dpi, data=data)
+    print("The picture is drawn and saved!")
 
 
 def execute_process():
