@@ -215,7 +215,21 @@ KimariDraw 可以很方便的绘制单子图，包括单曲线图和多曲线图
 
 ### 绘制多子图
 
-KimariDraw 除了绘制单子图以外，还可以支持绘制多子图。并且也同时支持绘制多曲线图的多子图，下面是绘制的效果，配置文件和数据文件都在 `example/UV-VIS` 文件夹下。
+KimariDraw 除了绘制单子图以外，还可以支持绘制多子图。并且也同时支持绘制多曲线图的多子图。如果想要绘制多子图，首先必须将 toml 文件中的 `PlotType` 属性修改为 2，接着在当前文件夹下新建一个 `multiple.txt` 的文件。然后将需要绘制的子图的路径写在 txt 文件中，如下所示。
+
+```text
+curve.txt
+curve.txt
+curve.txt
+curve.txt
+curve.txt
+curve.txt
+curve.txt
+curve.txt
+curve.txt
+```
+
+这个 `multiple.txt` 文件中内容所表示的意思是，绘制 9 个一模一样的子图，绘制的效果如下所示。 下面是绘制的效果，配置文件和数据文件都在 `example/UV-VIS` 文件夹下。
 
 <img src="figure/multi_UV.png">
 
