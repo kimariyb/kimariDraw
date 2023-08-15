@@ -4,13 +4,12 @@ import os
 import sys
 from pathlib import Path
 
-import matplotlib
 import proplot as pplt
 import pandas as pd
 import toml
 
 from pandas import DataFrame
-from proplot import rc, Colormap
+from proplot import rc
 
 # 提取常量和配置
 DEFAULT_DPI = 500
