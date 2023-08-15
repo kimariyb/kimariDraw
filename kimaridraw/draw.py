@@ -23,20 +23,21 @@ class Spectrum:
     """
 
     def __init__(self, x_limit, y_limit, x_label, y_label, title, font_family, font_size, figure_size, line_style,
-                 is_legend, is_zero):
+                 legend_text, is_legend, is_zero):
         """
         初始化 Spectrum 类
-        :param x_limit: X 轴坐标的最小、最大值以及间距，例如 0, 4000, 500
-        :param y_limit: Y 轴坐标的最小、最大值以及间距，例如 0, 3000, 1000
-        :param x_label: X 轴标签
-        :param y_label: Y 轴标签
-        :param title: 标题
-        :param font_family: 字体
-        :param font_size: 字号
-        :param figure_size: 图片大小
-        :param line_style: 曲线格式
-        :param is_legend: 是否开启图例
-        :param is_zero: 是否开启 y=0 轴
+        :param x_limit: X 轴坐标的最小、最大值以及间距，例如 [0, 4000, 500]，默认为 auto
+        :param y_limit: Y 轴坐标的最小、最大值以及间距，例如 [0, 3000, 1000]，默认为 auto
+        :param x_label: X 轴标签，默认为空
+        :param y_label: Y 轴标签，默认为空
+        :param title: 标题，默认为空
+        :param font_family: 字体，默认为 Arial
+        :param font_size: 字号，可选择 large、medium、small，默认为 medium
+        :param figure_size: 图片大小，默认为 (8, 5)
+        :param line_style: 曲线格式，默认为直线 -，可选择 -，-- 等，也可以选择一个集合
+        :param legend_text: 图例文本，默认为空
+        :param is_legend: 是否开启图例，可选择 auto，False，True，默认为 auto
+        :param is_zero: 是否开启 y=0 轴，可选择 auto，False，True，默认为 auto
         """
         self.x_limit = x_limit
         self.y_limit = y_limit
@@ -46,7 +47,8 @@ class Spectrum:
         self.font_family = font_family
         self.font_size = font_size
         self.figure_size = figure_size
-        self.line_style = line_style
+        self.line_style = line_style if isinstance(line_style, list) else [line_style]
+        self.legend_text = legend_text
         self.is_legend = is_legend
         self.is_zero = is_zero
 
@@ -61,25 +63,36 @@ def init_spectrum(file_path):
     # 根据文件的后缀是否为 txt 或者 xlsx 判断
     if file.suffix == ".txt":
         # 如果是 Multiwfn 输出的 txt 文件，调用 Pandas 的 read_csv 方法读取
-        data = pd.read_csv(file, delimiter="\t")
+        data = pd.read_csv(file, delim_whitespace=True, header=None)
     elif file.suffix == ".xlsx":
         # 读取包含光谱数据的 Excel 文件，假设文件包含一个名为 Sheet1 的表格
         data = pd.read_excel(file, sheet_name=0, dtype={'column_name': float})
     else:
         # 文件格式不支持
         raise ValueError("Unsupported file format.")
-    print(data)
     # 根据第一列的最大值和最小值设定 xlim
     x_max = data.iloc[:, 0].max()
     x_min = data.iloc[:, 0].min()
     # 得到 x 的最大值和最小值之后，程序自动设定 xlim
-    xlim = auto_xlim(x_max, x_min)
+    init_xlim = auto_xlim(x_max, x_min)
     # 根据 1~n 列的数据的最大值和最小值设定 ylim
     y_max = data.iloc[:, 1].max()
     y_min = data.iloc[:, 1].min()
-    ylim = auto_ylim(y_max, y_min)
+    init_ylim = auto_ylim(y_max, y_min)
+    # 根据数据自动判断是否开启 legend，如果有三列或以上的数据，就说明需要开启
+    if data.shape[1] >= 3:
+        auto_legend = True
+    else:
+        auto_legend = False
+    # 根据数据自动判断是否开启 y=0 轴，如果所有的 y 轴数据存在 <0 的数，则需要开启
+    if (data.iloc[:, 1:].values < 0).any():
+        auto_zero = True
+    else:
+        auto_zero = False
 
-    spectrum = Spectrum()
+    spectrum = Spectrum(x_limit=init_xlim, y_limit=init_ylim, x_label="", y_label="", title="", font_family="Arial",
+                        font_size="medium", figure_size=(8, 5), line_style="-", legend_text="", is_legend=auto_legend,
+                        is_zero=auto_zero)
 
     return spectrum
 
@@ -114,6 +127,7 @@ def main():
     :param is_serial: 是否显示子图序号
     :param sup_layout: 子图的排版
     """
+    pass
 
 
 if __name__ == '__main__':
