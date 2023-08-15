@@ -3,6 +3,14 @@ from pathlib import Path
 
 import pandas as pd
 
+# 全局的字号大小，分别对应 large、medium 以及 small
+LARGE_FONTSIZE = []
+MEDIUM_FONTSIZE = []
+SMALL_FONTSIZE = []
+
+
+# 全局的颜色主题
+
 
 class Version:
     """
@@ -23,7 +31,7 @@ class Spectrum:
     """
 
     def __init__(self, x_limit, y_limit, x_label, y_label, title, font_family, font_size, figure_size, line_style,
-                 legend_text, is_legend, is_zero):
+                 colors, legend_text, is_legend, is_zero):
         """
         初始化 Spectrum 类
         :param x_limit: X 轴坐标的最小、最大值以及间距，例如 [0, 4000, 500]，默认为 auto
@@ -35,6 +43,7 @@ class Spectrum:
         :param font_size: 字号，可选择 large、medium、small，默认为 medium
         :param figure_size: 图片大小，默认为 (8, 5)
         :param line_style: 曲线格式，默认为直线 -，可选择 -，-- 等，也可以选择一个集合
+        :param colors: 曲线的颜色，默认为 black，也可以选择一个集合，同时也可以选择内置的颜色主题
         :param legend_text: 图例文本，默认为空
         :param is_legend: 是否开启图例，可选择 auto，False，True，默认为 auto
         :param is_zero: 是否开启 y=0 轴，可选择 auto，False，True，默认为 auto
@@ -48,6 +57,7 @@ class Spectrum:
         self.font_size = font_size
         self.figure_size = figure_size
         self.line_style = line_style if isinstance(line_style, list) else [line_style]
+        self.colors = colors if isinstance(colors, list) else [colors]
         self.legend_text = legend_text
         self.is_legend = is_legend
         self.is_zero = is_zero
@@ -91,8 +101,8 @@ def init_spectrum(file_path):
         auto_zero = False
 
     spectrum = Spectrum(x_limit=init_xlim, y_limit=init_ylim, x_label="", y_label="", title="", font_family="Arial",
-                        font_size="medium", figure_size=(8, 5), line_style="-", legend_text="", is_legend=auto_legend,
-                        is_zero=auto_zero)
+                        font_size=MEDIUM_FONTSIZE, figure_size=(8, 5), line_style="-", colors="black", legend_text="",
+                        is_legend=auto_legend, is_zero=auto_zero)
 
     return spectrum
 
