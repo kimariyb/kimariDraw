@@ -3,17 +3,43 @@ import os
 from datetime import datetime
 from pathlib import Path
 
+import toml
 import wx
 import numpy as np
 import pandas as pd
 
-# 全局的字号大小，分别对应 large、medium 以及 small
-LARGE_FONTSIZE = []
-MEDIUM_FONTSIZE = []
-SMALL_FONTSIZE = []
+# 全局变量设定
+# 进入主程序时，如果需要修改字号，则使用此全局变量
+FONT_SIZE = []
+# 进入主程序时，如果需要修改字体，则使用此全局变量
+FONT_FAMILY = "Arial"
+# 进入主程序时，如果需要修改颜色主题，则使用此全局变量
+COLOR_THEME = "black"
+# 进入主程序时，如果需要修改曲线格式，则使用此全局变量
+LINE_STYLE = "-"
+# 进入主程序时，如果需要修改 x_limit，则使用此全局变量，默认为 auto
+X_LIMIT = "auto"
+# 进入主程序时，如果需要修改 y_limit，则使用此全局变量，默认为 auto
+Y_LIMIT = "auto"
+# 进入主程序时，如果需要修改 x_label, y_label, title, 则使用此全局变量，默认为空
+LABEL_TITLE = ["", "", ""]
+# 进入主程序时，如果需要修改图片大小，则使用此全局变量，默认为 8, 5
+FIGURE_SIZE = (8, 5)
+# 进入主程序时，用来判断是否开启 y=0 轴，默认为 auto
+IS_ZERO = "auto"
+# 进入主程序时，用来判断是否显示图例，默认为 auto
+IS_LEGEND = "auto"
+# 进入主程序时，用来判断是否开启多子图，默认为 auto
+IS_SUP = "auto"
+# 进入主程序时，用来判断是否显示多子图序号，默认为 True
+IS_SERIA = True
+# 进入主程序时，如果需要修改多子图的排版，则使用此全局变量，默认为 auto
+SUP_LAYOUT = "auto"
+# 进入主程序时，如果需要修改保存图片的格式，则使用此全局变量，默认为 png
+SAVE_FORMAT = "png"
+# 进入主程序时，如果需要修改保存图片的 dpi，则使用此全局变量，默认为 300
+DPI = 300
 
-
-# 全局的颜色主题
 
 class Version:
     """
@@ -39,10 +65,12 @@ class Spectrum:
     用于记录光谱各种属性的类
     """
 
-    def __init__(self, x_limit, y_limit, x_label, y_label, title, font_family, font_size, figure_size, line_style,
-                 colors, legend_text, is_legend, is_zero):
+    def __init__(self, x_limit=None, y_limit=None, x_label=None, y_label=None, title=None, font_family=None,
+                 font_size=None, figure_size=None, line_style=None, colors=None, legend_text=None, is_legend=None,
+                 is_zero=None, data=None):
         """
         初始化 Spectrum 类
+        :param data: 绘制光谱所需要的数据，初始化时为 None。是一个 dataframe 对象
         :param x_limit: X 轴坐标的最小、最大值以及间距，例如 [0, 4000, 500]，默认为 auto
         :param y_limit: Y 轴坐标的最小、最大值以及间距，例如 [0, 3000, 1000]，默认为 auto
         :param x_label: X 轴标签，默认为空
@@ -57,8 +85,19 @@ class Spectrum:
         :param is_legend: 是否开启图例，可选择 auto，False，True，默认为 auto
         :param is_zero: 是否开启 y=0 轴，可选择 auto，False，True，默认为 auto
         """
+        self.data = data
+        # 得到 x 数据
+        x_array = np.array(data.iloc[:, 0])
         self.x_limit = x_limit
+        # 如果输入 auto 则直接使用 auto_lim 方法
+        if self.x_limit == "auto":
+            self.x_limit = auto_lim(np.max(x_array), np.min(x_array))
+        # 得到 y 数据
+        y_array = np.array((data.iloc[:, 1:]))
         self.y_limit = y_limit
+        # 如果输入 auto 则直接使用 auto_lim 方法
+        if self.y_limit == "auto":
+            self.y_limit = auto_lim(np.max(y_array), np.min(y_array))
         self.x_label = x_label
         self.y_label = y_label
         self.title = title
@@ -69,13 +108,45 @@ class Spectrum:
         self.colors = colors if isinstance(colors, list) else [colors]
         self.legend_text = legend_text if isinstance(legend_text, list) else [legend_text]
         self.is_legend = is_legend
+        # 根据数据自动判断是否开启 legend，如果有三列或以上的数据，就说明需要开启
+        # 如果输入 auto 则直接调用该方法
+        if self.is_legend == "auto":
+            if self.data.shape[1] >= 3:
+                self.is_legend = True
+            else:
+                self.is_legend = False
         self.is_zero = is_zero
+        # 根据数据自动判断是否开启 y=0 轴，如果所有的 y 轴数据存在 <0 的数，则需要开启
+        # 如果输入 auto 则直接调用该方法
+        if self.is_zero == "auto":
+            if (data.iloc[:, 1:].values < 0).any():
+                self.is_zero = True
+            else:
+                self.is_zero = False
+
+    def __str__(self):
+        return f"Spectrum Object:\n" \
+               f"  x_limit: {self.x_limit}\n" \
+               f"  y_limit: {self.y_limit}\n" \
+               f"  x_label: {self.x_label}\n" \
+               f"  y_label: {self.y_label}\n" \
+               f"  title: {self.title}\n" \
+               f"  font_family: {self.font_family}\n" \
+               f"  font_size: {self.font_size}\n" \
+               f"  figure_size: {self.figure_size}\n" \
+               f"  line_style: {self.line_style}\n" \
+               f"  colors: {self.colors}\n" \
+               f"  legend_text: {self.legend_text}\n" \
+               f"  is_legend: {self.is_legend}\n" \
+               f"  is_zero: {self.is_zero}\n" \
+               f"  data:\n{self.data}\n"
 
 
 def init_spectrum(file_path):
     """
     根据一个 Multiwfn 输出的 txt 文件或一个记载光谱数据的 excel 文件初始化光谱
     :return: Spectrum 对象
+    :return: 同时返回一个 dataframe 对象
     """
     # 读取 Multiwfn 输出的 txt 文件或者一个记载光谱数据的 excel 文件
     file = Path(file_path)
@@ -89,31 +160,12 @@ def init_spectrum(file_path):
     else:
         # 文件格式不支持
         raise ValueError("Unsupported file format.")
-    # 根据第一列的最大值和最小值设定 xlim
-    x_array = np.array(data.iloc[:, 0])
-    x_max = np.max(x_array)
-    x_min = np.min(x_array)
-    # 得到 x 的最大值和最小值之后，程序自动设定 xlim
-    init_xlim = auto_lim(x_max, x_min)
-    # 根据 1~n 列的数据的最大值和最小值设定 ylim
-    y_array = np.array((data.iloc[:, 1:]))
-    y_max = np.max(y_array)
-    y_min = np.min(y_array)
-    init_ylim = auto_lim(y_max, y_min)
-    # 根据数据自动判断是否开启 legend，如果有三列或以上的数据，就说明需要开启
-    if data.shape[1] >= 3:
-        auto_legend = True
-    else:
-        auto_legend = False
-    # 根据数据自动判断是否开启 y=0 轴，如果所有的 y 轴数据存在 <0 的数，则需要开启
-    if (data.iloc[:, 1:].values < 0).any():
-        auto_zero = True
-    else:
-        auto_zero = False
 
-    spectrum = Spectrum(x_limit=init_xlim, y_limit=init_ylim, x_label="", y_label="", title="", font_family="Arial",
-                        font_size=MEDIUM_FONTSIZE, figure_size=(8, 5), line_style="-", colors="black", legend_text="",
-                        is_legend=auto_legend, is_zero=auto_zero)
+    # 初始化 spectrum
+    spectrum = Spectrum(x_limit=X_LIMIT, y_limit=Y_LIMIT, x_label=LABEL_TITLE[0], y_label=LABEL_TITLE[1],
+                        title=LABEL_TITLE[2], font_family=FONT_FAMILY, font_size=FONT_SIZE, figure_size=FIGURE_SIZE,
+                        line_style=LINE_STYLE, colors=COLOR_THEME, legend_text="", is_legend=IS_LEGEND, is_zero=IS_ZERO,
+                        data=data)
 
     return spectrum
 
@@ -198,15 +250,8 @@ def auto_lim(max_value, min_value, is_deviation=False):
                 else:
                     break
 
-    def fixed_num(num):
-        if '.' in str(num):
-            num = round(float(num), 8)
-        return num
-
-    # 设置精度
-    maxi = fixed_num(maxi)
-    mini = fixed_num(mini)
-    interval = fixed_num((maxi - mini) / split_number)
+    # 得到间距
+    interval = (maxi - mini) / split_number
 
     lim = [mini, maxi, interval]
 
@@ -243,26 +288,26 @@ def validate(toml_path):
         raise FileNotFoundError("Error: File not found.\n")
 
 
-def main():
+def select_file():
     """
-    :param is_sup: 是否开启子图模式
-    :param is_serial: 是否显示子图序号
-    :param sup_layout: 子图的排版
+    和用户交互式的选择需要输入的 toml 文件，并返回 toml 文件的路径
+    如果直接写入 toml 文件的绝对路径，则直接返回 toml_path
+    如果输入 Enter 则弹出 GUI 界面选择 toml 文件
+    如果输入 q 则退出整个程序
+    :return: toml_path
     """
-
-    # 展示开始界面
-    show_info(VERSION)
-    # 创建一个 wxPython 应用程序对象
-    app = wx.App()
     # 创建文件对话框
-    dialog = wx.FileDialog(None, "打开文件", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
-
+    dialog = wx.FileDialog(None, "Select toml file", style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
     while True:
         # 输入的文本
         input_str = input("Input toml file path, for example E:\\Hello\\World.toml\n"
-                          "Hint: Press ENTER button directly can select file in a GUI window.\n")
-
-        # 对应与直接输入 Enter，如果输入 ENTER 则显示对话框，不会推出主程序
+                          "Hint: Press ENTER button directly can select file in a GUI window. "
+                          "If you want to exit the program, simply type the letter \"q\" and press Enter.\n")
+        # 如果输入为 "q"，则退出主程序
+        if input_str.lower() == "q":
+            print("The program has exited！")
+            exit()
+        # 对应与直接输入 Enter，如果输入 ENTER 则显示对话框，不会退出主程序
         if not input_str:
             # 弹出文件选择对话框
             if dialog.ShowModal() == wx.ID_CANCEL:
@@ -270,34 +315,304 @@ def main():
                 print("Hint: You did not select a file.\n")
                 # 返回 None 表示未选择文件, 继续主循环
                 continue
-            toml_path = dialog.GetPath()
-            # 检验是否符合要求
+            input_path = dialog.GetPath()
             try:
-                validate(toml_path)
+                validate(input_path)
             except (ValueError, FileNotFoundError) as e:
                 print(str(e))
                 # 继续主循环
                 continue
-            print("Hint: Selected toml file path:", toml_path)
+            print("Hint: Selected toml file path:", input_str)
             # 销毁对话框
             dialog.Destroy()
-            # 返回 toml_path
-            break
+            # 返回 input_path
+            return input_path
         # 对应直接填写文件路径
         else:
             # 对于直接输入了路径的情况，执行验证逻辑
-            toml_path = input_str
             try:
-                validate(toml_path)
+                validate(input_str)
             except (ValueError, FileNotFoundError) as e:
                 print(str(e))
                 # 继续主循环
                 continue
-            # 在这里可以使用 toml_path 进行后续操作
-            print("Hint: Selected toml file path:", toml_path)
-            # 返回 toml_path
-            break
+            print("Hint: Selected toml file path:", input_str)
+            # 返回 input_str
+            return input_str
+
+
+def load_toml(toml_path):
+    """
+    读取 toml 文件，并将所有读取到的 spectrum 对象封装成一个集合
+    :param toml_path: toml 文件路径
+    :return: spectrum list
+    """
+    # 新建一个 spectrum list
+    spectrum_list = []
+    # 读取 toml 文件的内容
+    with open(toml_path, 'r', encoding='utf-8') as file:
+        toml_data = toml.load(file)
+    # 获取文件配置列表
+    toml_configs = toml_data.get('file', [])  # 如果不存在文件配置，默认为空列表
+    # 遍历文件配置，
+    for file_config in toml_configs:
+        # 获取文件路径
+        file_path = file_config.get('path', '')
+        # 获取图例文本列表
+        legends = file_config.get('legend', [])
+        # 获取曲线颜色列表
+        colors = file_config.get('color', [])
+        # 获取曲线格式列表
+        styles = file_config.get('style', [])
+        # 每遍历一次，就得到一个 Spectrum 对象，将所有得到的 Spectrum 对象放置在一个 list 中
+        spectrum = init_spectrum(file_path)
+        # 如果 legends, colors, styles 不为空或者空集合，则将得到的配置赋值给 Spectrum 对象
+        if legends:
+            spectrum.legend_text = legends
+        if colors:
+            spectrum.colors = colors
+        if styles:
+            spectrum.line_style = styles
+        # 每读取一个就在 list 中追加一个 spectrum
+        spectrum_list.append(spectrum)
+
+    return spectrum_list
+
+
+def draw_multiple(spectrum_list, sup_layout, is_serial=True):
+    """
+    根据 spectrum list 绘制多子图的光谱
+    :param spectrum_list: 由 spectrum 组合成的集合
+    :param is_serial: 是否显示子图序号
+    :param sup_layout: 子图的排版
+    """
+    pass
+
+
+def draw_single(spectrum_list):
+    """
+    根据 spectrum list 绘制单子图的光谱
+    :param spectrum_list: 由 spectrum 组合成的集合
+    """
+    pass
+
+
+def draw_spectrum(spectrum_list, is_sup=False):
+    """
+    根据 spectrum list 绘制光谱
+    :param spectrum_list: 由 spectrum 组合成的集合
+    :param is_sup: 是否开启子图模式，默认不开启，即为 False
+    """
+    # 如果开启多子图绘制，也就是 is_sup = True 调用 draw_multiple()
+    if is_sup:
+        draw_multiple(spectrum_list, sup_layout=None)
+    # 如果不开启多子图绘制，也就是 is_sup = False 调用 draw_single()
+    else:
+        draw_single(spectrum_list)
+
+
+def main_view():
+    """
+    主程序页面，显示主程序，不包括实现逻辑
+    """
+    print(" \"q\": Exit program gracefully\t \"r\": Load a new file")
+    print("********************************************************")
+    print("****************** Main function menu ******************")
+    print("********************************************************")
+    print(f"-1 Set font family of the spectrum, current: {FONT_FAMILY}")
+    print(f"-2 Set font size of the spectrum, current: {FONT_SIZE}")
+    print("-3 Set title/xlabel/ylabel of the spectrum")
+    print(f"-4 Set layout of the subplots, current: {SUP_LAYOUT}")
+    print(f"-5 Set format of saving spectrum file, current: {SAVE_FORMAT}")
+    print(f"-6 Set dpi of saving spectrum, current: {DPI}")
+    print(f"-7 Set figure size of spectrum file, current: {FIGURE_SIZE}")
+    print("0 Plot spectrum!")
+    print("1 Save graphical file of the spectrum in current folder")
+    print(f"2 Set lower and upper limit of X-axis, current: {X_LIMIT}")
+    print(f"3 Set lower and upper limit of Y-axis, current: {Y_LIMIT}")
+    print("4 Set color theme of curve lines")
+    print("5 Set style of curve lines")
+    print(f"6 Showing legend text, current: {IS_LEGEND}")
+    print(f"7 Showing the subplots, current: {IS_SUP}")
+    print(f"8 Showing the zero axis, current: {IS_ZERO}")
+
+
+def set_sup_layout(spectrum_list):
+    """
+    修改全局变量 SUP_LAYOUT，已达到修改多子图排版的目的
+    :param spectrum_list: 一个装有 spectrum 对象的 spectrum_list
+    """
+    # 声明全局变量
+    global SUP_LAYOUT
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    SUP_LAYOUT = input("Please input layout of the subplots: \n")
+    if SUP_LAYOUT.lower() == "r":
+        return
+
+    print("Setting successful!\n")
+
+
+def set_title_label(spectrum_list):
+    """
+    修改全局变量 LABEL_TITLE，已达到修改 xlabel 、ylabel 和 title 的目的
+    :param spectrum_list: 一个装有 spectrum 对象的 spectrum_list
+    """
+    # 声明全局变量
+    global LABEL_TITLE
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    print("0 Set the xlabel of the spectrum")
+    print("1 Set the ylabel of the spectrum")
+    print("2 Set the title of the spectrum")
+    label_choice = input("Please enter the option of your choice: \n")
+    if label_choice.lower() == "r":
+        return
+    elif label_choice == "0":
+        LABEL_TITLE[0] = input("Please input the xlabel of the spectrum: \n")
+        # 遍历 list 中所有的 spectrum 对象
+        for spectrum in spectrum_list:
+            # 将全局变量的值赋值给 spectrum 对象
+            spectrum.x_label = LABEL_TITLE[0]
+    elif label_choice == "1":
+        LABEL_TITLE[1] = input("Please input the ylabel of the spectrum: \n")
+        # 遍历 list 中所有的 spectrum 对象
+        for spectrum in spectrum_list:
+            # 将全局变量的值赋值给 spectrum 对象
+            spectrum.y_label = LABEL_TITLE[1]
+    elif label_choice == "2":
+        LABEL_TITLE[2] = input("Please input the title of the spectrum: \n")
+        # 遍历 list 中所有的 spectrum 对象
+        for spectrum in spectrum_list:
+            # 将全局变量的值赋值给 spectrum 对象
+            spectrum.title = LABEL_TITLE[2]
+    else:
+        print("Invalid input. Please press the Enter button and make a valid selection.")
+        input("Press Enter to continue...\n")
+    print("Setting successful!\n")
+
+
+def set_font_name(spectrum_list):
+    """
+    修改全局变量 FONT_FAMILY，已达到修改字体的目的
+    :param spectrum_list: 一个装有 spectrum 对象的 spectrum_list
+    """
+    # 声明全局变量
+    global FONT_FAMILY
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    FONT_FAMILY = input("Please input the font family that you want to set: \n")
+    if FONT_FAMILY.lower() == "r":
+        return
+    # 遍历 list 中所有的 spectrum 对象
+    for spectrum in spectrum_list:
+        # 将全局变量的值赋值给 spectrum 对象
+        spectrum.font_family = FONT_FAMILY
+    print("Setting successful!\n")
+
+
+def set_font_size(spectrum_list):
+    """
+    修改全局变量 FONT_SIZE，已达到修改字号的目的
+    :param spectrum_list: 一个装有 spectrum 对象的 spectrum_list
+    """
+    # 声明全局变量
+    global FONT_SIZE
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    FONT_SIZE = input("Please input the font size that you want to set: \n")
+    if FONT_SIZE.lower() == "r":
+        return
+    # 遍历 list 中所有的 spectrum 对象
+    for spectrum in spectrum_list:
+        # 将全局变量的值赋值给 spectrum 对象
+        spectrum.font_size = FONT_SIZE
+    print("Setting successful!\n")
+
+
+def main_function(toml_file):
+    """
+    实现主程序 mian_view() 的逻辑
+    :param toml_file: 需要读取的 toml 文件
+    """
+    # 读取 toml 文件，并且得到 toml 记载的 txt 文件数据，并且生成 spectrum 组成的 list
+    spectrum_list = load_toml(toml_file)
+    while True:
+        # 显示主页面，如果不输入 q，则一直在主程序中
+        main_view()
+        # 接受用户的指令，并根据用户的指令
+        choice = input()
+        # 如果输入 0，则按照当前参数绘制 Spectrum，调用 draw_spectrum() 方法
+        if choice == 0:
+            pass
+        # 如果输入 1，按照当前参数绘制的 Spectrum 保存图片，调用 save_figure() 方法
+        elif choice == 1:
+            pass
+        # 如果输入 2，调用 set_xlim 方法修改 xlim
+        elif choice == 2:
+            pass
+        # 如果输入 3，调用 set_ylim 方法修改 ylim
+        elif choice == 3:
+            pass
+        # 如果输入 4，修改曲线的颜色主题
+        elif choice == 4:
+            pass
+        # 如果输入 5，修改曲线的颜色风格
+        elif choice == 5:
+            pass
+        # 如果输入 6，是否显示图例文本
+        elif choice == 6:
+            pass
+        # 如果输入 7，是否开启多子图
+        elif choice == 7:
+            pass
+        # 如果输入 8，是否开启 zero 轴
+        elif choice == 8:
+            pass
+        # 如果输入 -1，设置绘制光谱的字体
+        elif choice == "-1":
+            set_font_name(spectrum_list)
+        # 如果输入 -2，设置绘制光谱的字号
+        elif choice == "-2":
+            set_font_size(spectrum_list)
+        # 如果输入 -3，设置 title、xlabel、ylabel
+        elif choice == -3:
+            set_title_label(spectrum_list)
+        # 如果输入 -4，设置子图的排版
+        elif choice == -4:
+            set_sup_layout()
+        # 如果输入 -5，设置保存图片的格式
+        elif choice == -5:
+            pass
+        # 如果输入 -6，设置保存图片的 dpi
+        elif choice == -6:
+            pass
+        # 如果输入 -7，设置图片的大小
+        elif choice == -7:
+            pass
+        # 如果输入 q 则退出程序
+        elif choice.lower() == "q":
+            print("Thank you for your using! Have a good time!")
+            exit()
+        # 如果输入 r 则重新加载一个新的 toml 文件
+        elif choice.lower() == "r":
+            pass
+        # 如果输入的内容不符合要求，提示按下空格重新选择。
+        else:
+            print("Invalid input. Please press the Enter button and make a valid selection.")
+            input("Press Enter to continue...\n")
+
+
+def main():
+    # 展示开始界面
+    show_info(VERSION)
+    # 创建一个 wxPython 应用程序对象
+    app = wx.App()
+    # 选择需要解析的 toml 文件路径
+    selected_file = select_file()
+    # 进入主程序
+    main_function(selected_file)
 
 
 if __name__ == '__main__':
-    main()
+    main_function("multiple.toml")
