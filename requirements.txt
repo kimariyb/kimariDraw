@@ -3,3 +3,5 @@ proplot~=0.9.5
 matplotlib~=3.4.3
 toml~=0.10.2
 setuptools~=68.0.0
+wxpython~=4.2.1
+numpy~=1.23.5

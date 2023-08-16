@@ -1,21 +1,19 @@
 import setuptools
 
-from kimaridraw.draw import Version
-
-version_info = Version()
+from kimaridraw.draw import VERSION
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="kimaridraw",
-    version=version_info.version,
-    author=version_info.developer,
+    version=VERSION.version,
+    author=VERSION.developer,
     author_email="kimariyb@163.com",
     description="A Python script that processes Multiwfn spectral data and plots various spectra.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url=version_info.website,
+    url=VERSION.website,
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
