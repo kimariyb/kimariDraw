@@ -7,30 +7,28 @@ import toml
 import wx
 import numpy as np
 import pandas as pd
+import proplot as pplt
+from proplot import rc
 
 # 全局变量设定
 # 进入主程序时，如果需要修改字号，则使用此全局变量
-FONT_SIZE = []
+FONT_SIZE = [10.5, 12, 14]
 # 进入主程序时，如果需要修改字体，则使用此全局变量
 FONT_FAMILY = "Arial"
-# 进入主程序时，如果需要修改颜色主题，则使用此全局变量
-COLOR_THEME = "black"
-# 进入主程序时，如果需要修改曲线格式，则使用此全局变量
-LINE_STYLE = "-"
 # 进入主程序时，如果需要修改 x_limit，则使用此全局变量，默认为 auto
 X_LIMIT = "auto"
 # 进入主程序时，如果需要修改 y_limit，则使用此全局变量，默认为 auto
 Y_LIMIT = "auto"
 # 进入主程序时，如果需要修改 x_label, y_label, title, 则使用此全局变量，默认为空
 LABEL_TITLE = ["", "", ""]
-# 进入主程序时，如果需要修改图片大小，则使用此全局变量，默认为 8, 5
-FIGURE_SIZE = (8, 5)
+# 进入主程序时，如果需要修改图片大小，则使用此全局变量，默认为 6, 4
+FIGURE_SIZE = (6, 4)
 # 进入主程序时，用来判断是否开启 y=0 轴，默认为 auto
 IS_ZERO = "auto"
 # 进入主程序时，用来判断是否显示图例，默认为 auto
 IS_LEGEND = "auto"
-# 进入主程序时，用来判断是否开启多子图，默认为 auto
-IS_SUP = "auto"
+# 进入主程序时，用来判断是否开启多子图，默认为 False
+IS_SUP = False
 # 进入主程序时，用来判断是否显示多子图序号，默认为 True
 IS_SERIA = True
 # 进入主程序时，如果需要修改多子图的排版，则使用此全局变量，默认为 auto
@@ -164,7 +162,7 @@ def init_spectrum(file_path):
     # 初始化 spectrum
     spectrum = Spectrum(x_limit=X_LIMIT, y_limit=Y_LIMIT, x_label=LABEL_TITLE[0], y_label=LABEL_TITLE[1],
                         title=LABEL_TITLE[2], font_family=FONT_FAMILY, font_size=FONT_SIZE, figure_size=FIGURE_SIZE,
-                        line_style=LINE_STYLE, colors=COLOR_THEME, legend_text="", is_legend=IS_LEGEND, is_zero=IS_ZERO,
+                        line_style=None, colors=None, legend_text=None, is_legend=IS_LEGEND, is_zero=IS_ZERO,
                         data=data)
 
     return spectrum
@@ -188,7 +186,7 @@ def count_degree(estep, max_value, min_value, symmetrical=False):
         maxi = 0
     if min_value == 0:
         mini = 0
-    if symmetrical and maxi * mini < 0:
+    if symmetrical and maxi * mini <= 0:
         tm = max(abs(maxi), abs(mini))
         maxi = tm
         mini = -tm
@@ -206,10 +204,9 @@ def auto_lim(max_value, min_value, is_deviation=False):
     :return: 返回一个 auto lim list [lim_min, lim_max, locator]
     """
     # 初始化一个理想的刻度间隔段数，即希望刻度区间有多少段
-    split_number = 5
+    split_number = 4
     # 初始化一个魔术数组
-    magic_array = np.array([10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100])
-    # 计算出初始间隔 temp_gap 和缩放比例 multiple
+    magic_array = [2, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100]  # 计算出初始间隔 temp_gap 和缩放比例 multiple
     temp_gap = (max_value - min_value) / split_number
     # temp_gap 除以 magic_array 后刚刚处于魔数区间内，先求 multiple 的幂 10 指数，
     # 例如当 temp_gap 为 120，想要把 temp_gap 映射到魔数数组（即处理为 10 到 100 之间的数），则倍数为 10，即 10 的 1 次方。
@@ -366,52 +363,153 @@ def load_toml(toml_path):
         styles = file_config.get('style', [])
         # 每遍历一次，就得到一个 Spectrum 对象，将所有得到的 Spectrum 对象放置在一个 list 中
         spectrum = init_spectrum(file_path)
-        # 如果 legends, colors, styles 不为空或者空集合，则将得到的配置赋值给 Spectrum 对象
-        if legends:
-            spectrum.legend_text = legends
-        if colors:
-            spectrum.colors = colors
-        if styles:
-            spectrum.line_style = styles
+        # 将 toml 文件中的 legends, colors 和 styles 赋值给 Spectrum 对象
+        spectrum.legend_text = legends
+        spectrum.colors = colors
+        spectrum.line_style = styles
         # 每读取一个就在 list 中追加一个 spectrum
         spectrum_list.append(spectrum)
 
     return spectrum_list
 
 
-def draw_multiple(spectrum_list, sup_layout, is_serial=True):
+def draw_multiple_subplots(spectrum_list, sup_layout, is_serial=True):
     """
     根据 spectrum list 绘制多子图的光谱
     :param spectrum_list: 由 spectrum 组合成的集合
-    :param is_serial: 是否显示子图序号
     :param sup_layout: 子图的排版
+    :param is_serial: 是否显示子图序号
     """
     pass
 
 
-def draw_single(spectrum_list):
+def draw_single_subplots(spectrum_list):
     """
     根据 spectrum list 绘制单子图的光谱
     :param spectrum_list: 由 spectrum 组合成的集合
+    :return 返回一个 fig, ax 对象
     """
-    pass
+    # 拿到 spectrum 对象
+    spectrum = spectrum_list[0]
+    # 将 spectrum 中的 data 数据赋值给一个变量
+    spectrum_data = spectrum.data
+    # 得到图例的集合 legend_text
+    legend_list = spectrum.legend_text
+    # 得到颜色的集合 colors
+    colors_list = spectrum.colors
+    # 得到颜色的集合 colors
+    style_list = spectrum.line_style
+    # 声明一个画布对象和坐标轴对象
+    fig, ax = pplt.subplots(figsize=spectrum.figure_size, dpi=300, span=True, share=True)
+    # 根据 DataFrame 的数据绘制单子图的光谱图
+    # 首先判断 DataFrame 对象所记载的是否为多曲线图
+    if len(spectrum_data.columns) > 2:
+        # 第一列作为 x 值，其他列作为 y 值
+        x = spectrum_data.iloc[:, 0]
+        y_columns = spectrum_data.columns[1:]
+        # 如果 spectrum 记载的数据大于 2，则绘制多曲线图
+        for column, legend, color, style in zip(y_columns, legend_list, colors_list, style_list):
+            y = spectrum_data[column]
+            # 绘制多曲线图
+            ax.plot(x, y, label=legend, color=color, linestyle=style, linewidth=1.3)
+    else:
+        # 第一列作为 x 值，第二列作为 y 值
+        x = spectrum_data.iloc[:, 0]
+        y = spectrum_data.iloc[:, 1]
+        # 否则绘制单曲线图
+        ax.plot(x, y, labels=legend_list, color=colors_list, linestyle=style_list, linewidth=1.3)
+    # 如果开启显示图例，则执行下面的代码
+    if spectrum.is_legend:
+        ax.legend(loc='best', ncols=1, fontweight='bold', fontsize=12.5, frame=False, bbox_to_anchor=(0.95, 0.96))
+    # 如果开启显示 Zero 轴，则执行下面的代码
+    if spectrum.is_zero:
+        # 显示 Zero 轴
+        ax.axhline(y=0, color='black', linewidth=1.25)
+    # 设置 x 轴 y 轴标签
+    fig.format(
+        xlabel=spectrum.x_label, ylabel=spectrum.y_label, title=spectrum.title,
+        grid=False, xlocator=spectrum.x_limit[2], ylocator=spectrum.y_limit[2],
+        xlim=(spectrum.x_limit[0], spectrum.x_limit[1]), ylim=(spectrum.y_limit[0], spectrum.y_limit[1]),
+        xminorlocator=(spectrum.x_limit[2] / 2), yminorlocator=(spectrum.y_limit[2] / 2)
+    )
+
+    return fig, ax
 
 
-def draw_spectrum(spectrum_list, is_sup=False):
+def draw_spectrum(spectrum_list, is_show):
     """
     根据 spectrum list 绘制光谱
     :param spectrum_list: 由 spectrum 组合成的集合
-    :param is_sup: 是否开启子图模式，默认不开启，即为 False
+    :param is_show: 是否显示图片
     """
-    # 如果开启多子图绘制，也就是 is_sup = True 调用 draw_multiple()
-    if is_sup:
-        draw_multiple(spectrum_list, sup_layout=None)
-    # 如果不开启多子图绘制，也就是 is_sup = False 调用 draw_single()
+    spectrum = spectrum_list[0]
+    # 设置全局属性
+    rc['font.name'] = spectrum.font_family
+    rc['title.size'] = spectrum.font_size[2]
+    rc['label.size'] = spectrum.font_size[1]
+    rc['font.size'] = spectrum.font_size[0]
+    rc['tick.width'] = 1.3
+    rc['meta.width'] = 1.3
+    rc['label.weight'] = 'bold'
+    rc['tick.labelweight'] = 'bold'
+    rc['ytick.major.size'] = 4.6
+    rc['ytick.minor.size'] = 2.5
+    rc['xtick.major.size'] = 4.6
+    rc['xtick.minor.size'] = 2.5
+    # 声明全局变量
+    global IS_SUP
+    # 使用计数器判断 spectrum_list 中有几个 spectrum 对象
+    count = 0
+    for item in spectrum_list:
+        if isinstance(item, Spectrum):
+            count += 1
+    # 声明一个空的 fig 对象
+    fig, ax = pplt.subplots()
+    # 检查传入的 spectrum list 是否只为一个，如果只有一个，则将 IS_SUP 赋值为 False，反之亦然。
+    if count == 1:
+        IS_SUP = False
     else:
-        draw_single(spectrum_list)
+        IS_SUP = True
+    # 如果是 auto 根据之前的 auto 判断能够自动让程序识别到底用哪种方法
+    # 如果开启多子图绘制，也就是 IS_SUP = True 调用 draw_multiple()
+    if IS_SUP:
+        draw_multiple_subplots(spectrum_list, sup_layout=None)
+    # 如果不开启多子图绘制，也就是 IS_SUP = False 调用 draw_single()
+    else:
+        # 根据 draw_single_subplots 方法得到 fig 和 ax
+        fig, ax = draw_single_subplots(spectrum_list)
+        # 是否显示图片
+        if is_show:
+            fig.show()
+
+    return fig, ax
 
 
-def main_view():
+def save_figure(spectrum_list):
+    """
+    调用该方法可以保存当前设置下的图片
+    :param spectrum_list: 由 spectrum 组合成的集合
+    """
+    global DPI, SAVE_FORMAT
+    # 根据 DPI 和 SAVE_FORMAT 保存图片
+    # 文件名初始值
+    file_name = f"figure.{SAVE_FORMAT}"
+    i = 1
+    # 首先检查当前路径是否存在以 figure.save_type 为文件名的文件
+    while os.path.exists(file_name):
+        # 文件名已存在，添加数字后缀
+        file_name = f"figure{i}.{SAVE_FORMAT}"
+        i += 1
+    # 调用 draw_spectrum 方法
+    fig, ax = draw_spectrum(spectrum_list, False)
+    # 保存光谱图
+    fig.savefig(file_name, dpi=DPI, bbox_inches="tight", pad_inches=0.2)
+    print()
+    print("The picture is successfully saved!")
+    print()
+
+
+def show_menu():
     """
     主程序页面，显示主程序，不包括实现逻辑
     """
@@ -430,17 +528,180 @@ def main_view():
     print("1 Save graphical file of the spectrum in current folder")
     print(f"2 Set lower and upper limit of X-axis, current: {X_LIMIT}")
     print(f"3 Set lower and upper limit of Y-axis, current: {Y_LIMIT}")
-    print("4 Set color theme of curve lines")
-    print("5 Set style of curve lines")
-    print(f"6 Showing legend text, current: {IS_LEGEND}")
-    print(f"7 Showing the subplots, current: {IS_SUP}")
-    print(f"8 Showing the zero axis, current: {IS_ZERO}")
+    print(f"4 Showing legend text, current: {IS_LEGEND}")
+    print(f"5 Showing the multi-subplots, current: {IS_SUP}")
+    print(f"6 Showing the zero axis, current: {IS_ZERO}")
 
 
-def set_sup_layout(spectrum_list):
+def set_xlim(spectrum_list):
+    """
+    修改全局变量 X_LIMIT，已达到开启图例的目的
+    """
+    global X_LIMIT
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    x_choice = input("Please input lower and upper limit of X-axis, eg. 150, 300, 50\n")
+    if x_choice.lower() == "r":
+        return
+    # 将输入的字符串值修改成一个集合对象
+    X_LIMIT = list(map(float, x_choice.split(',')))
+    # 遍历 list 中所有的 spectrum 对象
+    for spectrum in spectrum_list:
+        # 将全局变量的值赋值给 spectrum 对象
+        spectrum.x_limit = X_LIMIT
+
+    print("Setting successful!\n")
+
+
+def set_ylim(spectrum_list):
+    """
+    修改全局变量 Y_LIMIT，已达到开启图例的目的
+    """
+    global Y_LIMIT
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    y_choice = input("Please input lower and upper limit of Y-axis, eg. 0, 3000, 1000\n")
+    if y_choice.lower() == "r":
+        return
+    # 将输入的字符串值修改成一个集合对象
+    Y_LIMIT = list(map(float, y_choice.split(',')))
+    # 遍历 list 中所有的 spectrum 对象
+    for spectrum in spectrum_list:
+        # 将全局变量的值赋值给 spectrum 对象
+        spectrum.y_limit = Y_LIMIT
+
+    print("Setting successful!\n")
+
+
+def set_legend(spectrum_list):
+    """
+    修改全局变量 IS_LEGEND，已达到开启图例的目的
+    """
+    global IS_LEGEND
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    print("0 Turn off showing the legend")
+    print("1 Turn on showing the legend")
+    legend_choice = input("Please enter the option of your choice:\n")
+    if legend_choice.lower() == "r":
+        return
+    elif legend_choice == "0":
+        IS_LEGEND = False
+    elif legend_choice == "1":
+        IS_LEGEND = True
+    else:
+        print("Invalid input. Please press the Enter button and make a valid selection.")
+        input("Press Enter to continue...\n")
+    # 遍历 list 中所有的 spectrum 对象
+    for spectrum in spectrum_list:
+        # 将全局变量的值赋值给 spectrum 对象
+        spectrum.is_legend = IS_LEGEND
+
+    print("Setting successful!\n")
+
+
+def set_zero(spectrum_list):
+    """
+    修改全局变量 IS_ZERO，已达到开启绘制 y=0 轴的目的
+    """
+    global IS_ZERO
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    print("0 Turn off drawing of the zero axis")
+    print("1 Turn on drawing of the zero axis")
+    zero_choice = input("Please enter the option of your choice:\n")
+    if zero_choice.lower() == "r":
+        return
+    elif zero_choice == "0":
+        IS_ZERO = False
+    elif zero_choice == "1":
+        IS_ZERO = True
+    else:
+        print("Invalid input. Please press the Enter button and make a valid selection.")
+        input("Press Enter to continue...\n")
+    # 遍历 list 中所有的 spectrum 对象
+    for spectrum in spectrum_list:
+        # 将全局变量的值赋值给 spectrum 对象
+        spectrum.is_zero = IS_ZERO
+
+    print("Setting successful!\n")
+
+
+def set_sup():
+    """
+    修改全局变量 IS_SUP，已达到开启多子图绘制的目的
+    """
+    global IS_SUP
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    print("0 Turn off drawing of multi-subplots")
+    print("1 Turn on drawing of multi-subplots")
+    sup_choice = input("Please enter the option of your choice:\n")
+    if sup_choice.lower() == "r":
+        return
+    elif sup_choice == "0":
+        IS_SUP = False
+    elif sup_choice == "1":
+        IS_SUP = True
+    else:
+        print("Invalid input. Please press the Enter button and make a valid selection.")
+        input("Press Enter to continue...\n")
+    print("Setting successful!\n")
+
+
+def set_figure_size(spectrum_list):
+    """
+    修改全局变量 FIGURE_SIZE，已达到修改图片大小的目的
+    """
+    global FIGURE_SIZE
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    size_choice = input("Please input figure size of spectrum file, eg. 8, 5\n")
+    if size_choice.lower() == "r":
+        return
+    # 将输入的字符串值修改成一个元组对象
+    FIGURE_SIZE = tuple(map(float, size_choice.split(',')))
+    # 遍历 list 中所有的 spectrum 对象
+    for spectrum in spectrum_list:
+        # 将全局变量的值赋值给 spectrum 对象
+        spectrum.figure_size = FIGURE_SIZE
+
+    print("Setting successful!\n")
+
+
+def set_dpi():
+    """
+    修改全局变量 DPI，已达到修改保存图片的 dpi 的目的
+    """
+    # 声明全局变量
+    global DPI
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    DPI = input("Please input dpi of saving spectrum, eg. 300\n")
+    if DPI.lower() == "r":
+        return
+
+    print("Setting successful!\n")
+
+
+def set_save_format():
+    """
+    修改全局变量 SAVE_FORMAT，已达到修改保存图片的格式目的
+    """
+    # 声明全局变量
+    global SAVE_FORMAT
+    # 修改全局变量的值
+    print("Type \"r\": Return to main menu")
+    SAVE_FORMAT = input("Please input format of saving spectrum file, eg. png\n")
+    if SAVE_FORMAT.lower() == "r":
+        return
+
+    print("Setting successful!\n")
+
+
+def set_sup_layout():
     """
     修改全局变量 SUP_LAYOUT，已达到修改多子图排版的目的
-    :param spectrum_list: 一个装有 spectrum 对象的 spectrum_list
     """
     # 声明全局变量
     global SUP_LAYOUT
@@ -530,45 +791,40 @@ def set_font_size(spectrum_list):
     print("Setting successful!\n")
 
 
-def main_function(toml_file):
+def main_menu(toml_file):
     """
-    实现主程序 mian_view() 的逻辑
+    展示主页面菜单，同时实现了主页面菜单 show_menu() 中提到的逻辑
     :param toml_file: 需要读取的 toml 文件
     """
     # 读取 toml 文件，并且得到 toml 记载的 txt 文件数据，并且生成 spectrum 组成的 list
     spectrum_list = load_toml(toml_file)
     while True:
         # 显示主页面，如果不输入 q，则一直在主程序中
-        main_view()
+        show_menu()
         # 接受用户的指令，并根据用户的指令
         choice = input()
         # 如果输入 0，则按照当前参数绘制 Spectrum，调用 draw_spectrum() 方法
-        if choice == 0:
-            pass
+        if choice == "0":
+            draw_spectrum(spectrum_list, True)
+            continue
         # 如果输入 1，按照当前参数绘制的 Spectrum 保存图片，调用 save_figure() 方法
-        elif choice == 1:
-            pass
+        elif choice == "1":
+            save_figure(spectrum_list)
         # 如果输入 2，调用 set_xlim 方法修改 xlim
-        elif choice == 2:
-            pass
+        elif choice == "2":
+            set_xlim(spectrum_list)
         # 如果输入 3，调用 set_ylim 方法修改 ylim
-        elif choice == 3:
-            pass
-        # 如果输入 4，修改曲线的颜色主题
-        elif choice == 4:
-            pass
-        # 如果输入 5，修改曲线的颜色风格
-        elif choice == 5:
-            pass
-        # 如果输入 6，是否显示图例文本
-        elif choice == 6:
-            pass
-        # 如果输入 7，是否开启多子图
-        elif choice == 7:
-            pass
-        # 如果输入 8，是否开启 zero 轴
-        elif choice == 8:
-            pass
+        elif choice == "3":
+            set_ylim(spectrum_list)
+        # 如果输入 4，是否显示图例文本
+        elif choice == "4":
+            set_legend(spectrum_list)
+        # 如果输入 5，是否开启多子图
+        elif choice == "5":
+            set_sup()
+        # 如果输入 6，是否开启 zero 轴
+        elif choice == "6":
+            set_zero(spectrum_list)
         # 如果输入 -1，设置绘制光谱的字体
         elif choice == "-1":
             set_font_name(spectrum_list)
@@ -576,22 +832,24 @@ def main_function(toml_file):
         elif choice == "-2":
             set_font_size(spectrum_list)
         # 如果输入 -3，设置 title、xlabel、ylabel
-        elif choice == -3:
+        elif choice == "-3":
             set_title_label(spectrum_list)
         # 如果输入 -4，设置子图的排版
-        elif choice == -4:
+        elif choice == "-4":
             set_sup_layout()
         # 如果输入 -5，设置保存图片的格式
-        elif choice == -5:
-            pass
+        elif choice == "-5":
+            set_save_format()
         # 如果输入 -6，设置保存图片的 dpi
-        elif choice == -6:
-            pass
+        elif choice == "-6":
+            set_dpi()
         # 如果输入 -7，设置图片的大小
-        elif choice == -7:
-            pass
+        elif choice == "-7":
+            set_figure_size(spectrum_list)
         # 如果输入 q 则退出程序
         elif choice.lower() == "q":
+            print()
+            print("The program has already terminated!")
             print("Thank you for your using! Have a good time!")
             exit()
         # 如果输入 r 则重新加载一个新的 toml 文件
@@ -599,6 +857,7 @@ def main_function(toml_file):
             pass
         # 如果输入的内容不符合要求，提示按下空格重新选择。
         else:
+            print()
             print("Invalid input. Please press the Enter button and make a valid selection.")
             input("Press Enter to continue...\n")
 
@@ -611,8 +870,8 @@ def main():
     # 选择需要解析的 toml 文件路径
     selected_file = select_file()
     # 进入主程序
-    main_function(selected_file)
+    main_menu(selected_file)
 
 
 if __name__ == '__main__':
-    main_function("multiple.toml")
+    main()
