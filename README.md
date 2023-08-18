@@ -169,7 +169,7 @@ linestyle_tuple = [
 
 ## 使用脚本批量生成光谱
 
-KimariDraw 程序中自带了一个用 KimariDraw 程序批量绘制光谱的脚本。如果需要批量绘制光谱，可以在 `script` 文件夹中找到这个脚本。由于绘制光谱通常在 Windows 系统下进行，所以只提供了能在 Windows 下运行的 batch 脚本 `SpecDraw.bat`。想要使用 `SpecDraw.bat` 脚本必须同时提供一个 `draw.txt` 文件，该文件记录了运行 KimariDraw 所需要使用到的命令。
+KimariDraw 程序中自带了一个用 KimariDraw 程序批量绘制光谱的脚本。如果需要批量绘制光谱，可以在 `script` 文件夹中找到这个脚本。由于绘制光谱通常在 Windows 系统下进行，所以只提供了能在 Windows 下运行的 batch 脚本 `SpecDraw.exe`。想要使用 `SpecDraw.bat` 脚本必须同时提供一个 `draw.txt` 文件，该文件记录了运行 KimariDraw 所需要使用到的命令。
 
 ## 使用脚本批量产生光谱数据
 
