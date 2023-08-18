@@ -1,6 +1,6 @@
 <h1 align="center">
     <img src="figure/logo.png" width="120">
-</h1><br>[
+</h1><br>
 
 
 KimariDraw 是一款开源的 Python 脚本，旨在绘制各种光谱图形，特别适用于处理著名的波函数分析程序 Multiwfn  生成的光谱数据。它能够将 Multiwfn 生成的数据以美观、清晰的方式重新绘制成单曲线单子图、多曲线单子图、单曲线多子图以及多曲线多子图。
@@ -130,7 +130,7 @@ style = ["-", "--", "--", "--", "--"]
 
 `style` 可以使用 `"-"、"--"、"-."、":"` 这种字符串代表的 linestyle，也可以是一些元组，例如 `(0, (1, 10))`。
 
-<img src="figure/linestyles.png" width="50%">
+<img src="figure/linestyles.png">
 
 ```python
 linestyle_str = [
