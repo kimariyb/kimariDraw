@@ -161,6 +161,11 @@ linestyle_tuple = [
 
 1. 示例文件：`example/uv.toml`
 
+<img src="figure/uv.png">
+
+2. 示例文件：`example/ecd.toml`
+
+<img src="figure/ecd.png">
 
 ## 使用脚本批量生成光谱
 
