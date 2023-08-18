@@ -1,5 +1,7 @@
+import argparse
 import math
 import os
+import sys
 from datetime import datetime
 from pathlib import Path
 
@@ -45,7 +47,7 @@ class Version:
         # 获取最后修改时间的时间戳
         timestamp = os.path.getmtime(file_path)
         self.developer = "Kimariyb, Ryan Hsiun"
-        self.version = "2.5.0"
+        self.version = "2.5.1"
         self.release_date = str(datetime.fromtimestamp(timestamp).strftime("%b-%d-%Y"))
         self.address = "XiaMen University, School of Electronic Science and Engineering"
         self.website = "https://github.com/kimariyb/kimariDraw"
@@ -756,6 +758,15 @@ def main_menu(toml_file):
 
 
 def main():
+    # 处理命令行参数
+    arg = sys.argv[1]
+    # 创建 ArgumentParser 对象
+    parser = argparse.ArgumentParser(prog='KimariDraw')
+    # 添加版权信息和参数
+    parser.add_argument('--version', '-v', action='version', help='Show the version information',
+                        version=VERSION.version)
+    # 解析参数，可以通过 kimaridraw -v 命令来查询版本号
+    args = parser.parse_args()
     # 展示开始界面
     show_info(VERSION)
     # 创建一个 wxPython 应用程序对象
@@ -764,7 +775,5 @@ def main():
     selected_file = select_file()
     # 进入主程序
     main_menu(selected_file)
-
-
 
 
