@@ -2,7 +2,7 @@ import setuptools
 
 from kimaridraw.draw import VERSION
 
-with open("README.md", "r", encoding="utf-8") as fh:
+with open("./README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
@@ -17,7 +17,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'kimariplot=kimaridraw.draw:main',
+            'kimaridraw=kimaridraw.draw:main',
         ],
     },
     classifiers=[
