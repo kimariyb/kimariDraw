@@ -1,0 +1,13 @@
+-6
+5,4
+-3
+0
+Wavelength (in nm)
+-3
+1
+Absorption (in L/mol/cm)
+2
+80,200,20
+3
+0,10000,2000
+1
