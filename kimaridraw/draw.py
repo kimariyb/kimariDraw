@@ -47,7 +47,7 @@ class Version:
         # 获取最后修改时间的时间戳
         timestamp = os.path.getmtime(file_path)
         self.developer = "Kimariyb, Ryan Hsiun"
-        self.version = "2.5.1.2"
+        self.version = "2.5.1.3"
         self.release_date = str(datetime.fromtimestamp(timestamp).strftime("%b-%d-%Y"))
         self.address = "XiaMen University, School of Electronic Science and Engineering"
         self.website = "https://github.com/kimariyb/kimariDraw"
@@ -267,7 +267,7 @@ def show_info(version_info: Version):
     # 获取当前日期和时间
     now = datetime.now().strftime("%b-%d-%Y, 00:45:%S")
     # 程序结束后提示版权信息和问候语
-    print(f"(Copyright © 2023 Kimariyb. Currently timeline: {now})\n")
+    print(f"(Copyright 2023 Kimariyb. Currently timeline: {now})\n")
 
 
 def validate(toml_path):
