@@ -53,6 +53,7 @@ pip install matplotlib==3.4.3 -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install toml==0.10.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install setuptools==68.0.0 -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install wxpython==4.2.1 -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install openpyxl==3.1.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 这将安装 KimariDraw 所需的 pandas、matplotlib 和 proplot 等依赖项。同时，由于激活的 conda 环境，因此 pip 安装的包只会在 kimaridraw 环境下使用，如果不激活就不会被使用。这样就很好的避免了不同任务依赖的环境不同，所导致的版本冲突。
@@ -189,6 +190,7 @@ KimariDraw 程序中自带了一个用来批量产生 Multiwfn 光谱数据的�
 - **wxpython**, https://www.wxpython.org/
 - **toml**, https://github.com/uiri/toml
 - **setuptools**, https://github.com/pypa/setuptools
+- **openpyxl**, https://openpyxl.readthedocs.io/en/stable/
 
 ## 许可证
 
