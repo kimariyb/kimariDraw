@@ -3,13 +3,13 @@
 </h1><br>
 
 
-KimariDraw 是一款开源的 Python 脚本，旨在绘制各种光谱图形，特别适用于处理著名的波函数分析程序 Multiwfn  生成的光谱数据。它能够将 Multiwfn 生成的数据以美观、清晰的方式重新绘制成单曲线单子图、多曲线单子图、单曲线多子图以及多曲线多子图。
+KimariDraw 是一款开源的 Python 脚本，旨在绘制各种光谱图形，特别适用于处理著名的波函数分析程序 Multiwfn 生成的光谱数据。它能够将 Multiwfn 生成的数据以美观、清晰的方式重新绘制成单曲线单子图、多曲线单子图、单曲线多子图以及多曲线多子图。
 
 当你使用 KimariDraw 时，你可以享受到以下的功能：
 
 - **支持多种光谱类型**：KimariDraw 支持使用 Multiwfn 绘制 NMR、IR 等光谱导出的数据，即 Multiwfn 生成的文本文件。
 
-- **支持多子图绘制**：KimariDraw 不仅支持一单子图的绘制，同时也支持多子图的绘制（多子图的绘制功能在 2.5.1 版本之后就不存在了，但是在 2.4.0 版本还保留）。
+- **支持多子图绘制**：KimariDraw 不仅支持一单子图的绘制，同时也支持多子图的绘制（**多子图的绘制功能在 2.5.1 版本之后就不存在了，但是在 2.4.0 版本还保留**）。
 
 - **支持多种文件格式**：KimariDraw 支持将图片导出为多种文件格式，如 PNG、JPG、PDF、SVG 等。
 
@@ -64,27 +64,28 @@ pip install openpyxl==3.1.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 **请注意：在正式运行前，请确保已经安装了 KimariDraw 所需要的模块和包，以免程序报错！**
 
-1. 如果使用 pip 安装了 KimariDraw，可以直接在终端中运行 KimariDraw
+**准备环境**：如果使用 pip 安装了 KimariDraw，可以直接在终端中输入 KimariDraw 命令运行 KimariDraw 程序。
 
 ```shell
 KimariDraw
 ```
 
-2. 接着程序显示程序头以及提示你要你选择一个 toml 文件，所有的指令和提示非常清晰，比如输入 `q` 可以直接退出，按空格可以使用 GUI 选择 toml 文件。
+**准备 toml 文件**：接着程序显示程序头以及提示你要你选择一个 toml 文件，所有的指令和提示非常清晰，比如输入 `q` 可以直接退出，按空格可以使用 GUI 选择 toml 文件。
 
 ```shell
 KimariDraw --  A Python script that processes Multiwfn spectral data and plots various spectra.
-Version: 2.5.1.1, release date: Aug-18-2023                             
-Developer: Kimariyb, Ryan Hsiun                                         
+Version: 2.5.2, release date: Sep-02-2023
+Developer: Kimariyb, Ryan Hsiun
+Address: XiaMen University, School of Electronic Science and Engineering
 KimariDraw home website: https://github.com/kimariyb/kimariDraw
 
-(Copyright © 2023 Kimariyb. Currently timeline: Aug-18-2023, 00:45:26)
+(Copyright (C) 2023 Kimariyb. Currently timeline: Sep-02-2023, 00:45:45)
 
 Input toml file path, for example E:\Hello\World.toml
-Hint: Press ENTER button directly can select file in a GUI window. If you want to exit the program, simply type the letter "q" and press Enter. 
+Hint: Press ENTER button directly can select file in a GUI window. If you want to exit the program, simply type the letter "q" and press Enter.
 ```
 
-3. 输入 toml 文件之后就可以进入主程序页面，接着可以输入命令，每一个命令的含义都在屏幕上显示的非常清楚。假如想直接看看默认的绘图效果，可以输入 `0`。当然大部分情况下，默认的设置都不太可能满足用户的需求，这时候可以输入其他命令修改绘图的设置。最后可以使用命令 `1` 保存图片。
+输入 toml 文件之后就可以进入主程序页面，接着可以输入命令，每一个命令的含义都在屏幕上显示的非常清楚。假如想直接看看默认的绘图效果，可以输入 `0`。当然大部分情况下，默认的设置都不太可能满足用户的需求，这时候可以输入其他命令修改绘图的设置。最后可以使用命令 `1` 保存图片。
 
 ```shell
  "q": Exit program gracefully    "r": Load a new file
@@ -95,78 +96,70 @@ Hint: Press ENTER button directly can select file in a GUI window. If you want t
 -2 Set font size of the spectrum, current: [10.5, 12, 14]
 -3 Set title/xlabel/ylabel of the spectrum
 -4 Set format of saving spectrum file, current: png
--5 Set dpi of saving spectrum, current: 300
--6 Set figure size of spectrum file, current: (6, 4)
-0 Plot spectrum!
-1 Save graphical file of the spectrum in current folder
-2 Set lower and upper limit of X-axis, current: auto
-3 Set lower and upper limit of Y-axis, current: auto
-4 Showing legend text, current: auto
-5 Showing the zero axis, current: auto
+-5 Set dpi of saving spectrum, current: 400.0
+-6 Set figure size of spectrum file, current: (6, 5)
+0 Save graphical file of the spectrum in current folder!
+1 Set lower and upper limit of X-axis, current: [120.0, 280.0, 20.0]
+2 Set lower and upper limit of left Y-axis, current: [-100.0, 100.0, 20.0]
+3 Set lower and upper limit of right Y-axis, current: [-64.0, 64.0, 16.0]
+4 Toggle showing legend text, current: False
+5 Toggle showing the zero axis, current: True
+6 Toggle showing discrete lines, current: False
+```
+
+**KimariDraw 还可以通过命令行参数运行，可以在终端中输入 KimariDraw -h 了解详情**。
+
+```shell
+KimariDraw xxx.toml
 ```
 
 
 ## 有关 toml 文件
 
-toml 文件是一种用来记录 key-value 的特殊的文件格式。KimariDraw 必须使用 toml 文件作为输入文件。KimariDraw 所需要的 toml 文件格式如下所示，如果有自己的需求可以根据下面的提示自行修改 toml 文件。
+Toml（Tom's Obvious, Minimal Language）是一种易于阅读和编写的配置文件格式。它的设计目标是提供一个简单、直观且易于理解的配置语法，适用于各种应用程序和工具。
 
-```toml
-# file 模块用来记录绘图的数据来源，例如 txt 文件和 xlxs 文件
-[[file]]
-# 记录绘图的数据来源的 txt 文件或者 xlxs 文件的路径，推荐使用绝对路径
-path = "UV_curve.txt"
-# 配置图例的文本，可以选择一个字符串类型的，也可以选择一个记录多个字符串的集合
-legend = ["style: -", "style: --", "style: -", "S0->S11", "S0->S13"]
-# 配置曲线的颜色，可以选择一个字符串类型的，也可以选择一个记录多个字符串的集合
-# 如果为空，则使用默认的颜色主题，其他的颜色主题可以再程序中配置
-color = ["black", "red", "orange", "yellow", "blue"]
-# 配置曲线的格式，可以选择一个字符串类型的，也可以选择一个记录多个字符串的集合
-# 如果为空，则所有曲线都是 "-" 类型
-style = ["-", "--", "--", "--", "--"]
-```
+想要运行 KimariDraw 必须准备一个 toml 文件。KimariDraw 的 toml 文件必须遵守程序要求的配置内容，KimariDraw 可以配置以下键值对。
 
-`color` 可以使用 `black`、`blue` 这类直接用名字代表的颜色，也可以使用十六进制颜色，例如 `#FFFFFF`
+- `[curve]` **必须配置**，这是 toml 文件中表的标志。该标识代表 `[curve]` 以下的内容都为这个表的属性。
+  - `path` `string`，这个属性指定了绘制曲线图所需数据的文件路径。
+  - `color` `string, list[string...]`, 这个属性指定了曲线的颜色主题。
+  - `legend` `string, list[string...]`, 这个属性制定了曲线的图例文本。只有 `[curve]` 才能配置这个属性！
+  - `style` `string, list[string...]`, 这个属性制定了曲线的样式风格。只有 `[curve]` 才能配置这个属性！
+- `[line]` **可选择配置**，这是 toml 文件中表的标志。
+  - `path` `string`，这个属性指定了绘制直线所需数据的文件路径。
+  - `color` `string, list[string...]`, 这个属性指定了直线的颜色主题。
 
-<img src="figure/color.svg">
+Toml 文件中可以配置的颜色可以为常规的 red、blue 等文本，也可以是 16 进制的颜色代号。同时由于 KimariDraw 基于 Proplot 和 Matplotlib 开发，因此也可以直接使用 Proplot 和 Matplotlib 内置的颜色主题。
 
-`style` 可以使用 `"-"、"--"、"-."、":"` 这种字符串代表的 linestyle，也可以是一些元组，例如 `(0, (1, 10))`。
-
-<img src="figure/linestyles.png">
-
-```python
-linestyle_str = [
-     ('solid', 'solid'),      # Same as (0, ()) or '-'
-     ('dotted', 'dotted'),    # Same as (0, (1, 1)) or ':'
-     ('dashed', 'dashed'),    # Same as '--'
-     ('dashdot', 'dashdot')]  # Same as '-.'
-
-linestyle_tuple = [
-     ('loosely dotted',        (0, (1, 10))),
-     ('dotted',                (0, (1, 1))),
-     ('densely dotted',        (0, (1, 1))),
-     ('long dash with offset', (5, (10, 3))),
-     ('loosely dashed',        (0, (5, 10))),
-     ('dashed',                (0, (5, 5))),
-     ('densely dashed',        (0, (5, 1))),
-
-     ('loosely dashdotted',    (0, (3, 10, 1, 10))),
-     ('dashdotted',            (0, (3, 5, 1, 5))),
-     ('densely dashdotted',    (0, (3, 1, 1, 1))),
-
-     ('dashdotdotted',         (0, (3, 5, 1, 5, 1, 5))),
-     ('loosely dashdotdotted', (0, (3, 10, 1, 10, 1, 10))),
-     ('densely dashdotdotted', (0, (3, 1, 1, 1, 1, 1)))]
-```
+<img src="figure/color.png">
 
 ## 绘制效果
 
-1. 示例文件：`example/uv.toml`
+**示例文件**：`example/uv.toml`
 
-<img src="figure/uv.png">
+<table>
+  <tr>
+    <th>双 Y 轴绘制效果</th>
+    <th>单 Y 轴绘制效果</th>
+  </tr>
+  <tr>
+    <td><img src="figure/uv2.png"></td>
+    <td><img src="figure/uv1.png"></td>
+  </tr>
+</table>
 
-2. 示例文件：`example/ecd.toml`
+**示例文件**：`example/ecd.toml`
 
-<img src="figure/ecd.png">
+<table>
+  <tr>
+    <th>双 Y 轴绘制效果</th>
+    <th>单 Y 轴绘制效果</th>
+  </tr>
+  <tr>
+    <td><img src="figure/ecd1.png"></td>
+    <td><img src="figure/ecd2.png"></td>
+  </tr>
+</table>
 
 ## 使用脚本批量生成光谱
 
@@ -200,7 +193,7 @@ KimariDraw 基于 MIT 许可证开源。这意味着您可以自由地使用、�
 
 由于 2.5.1 版本以及以后的所有版本，都不会保留绘制多子图功能，因此对于想要绘制多子图的同学比较难受。如果非要使用 KimariDraw 绘制多子图，可以选择老版本也就是 2.4.0 版本。
 
-直接 clone 本项目后，就可以在 `v2.4 (old version)` 文件夹里找到具体的安装以及使用方法。
+直接 clone 本项目后，就可以在 `v2.4 (old version)` 压缩包里找到具体的安装以及使用方法。
 
 ```shell
 git clone https://github.com/kimariyb/kimariDraw.git

@@ -25,8 +25,7 @@ import wx
 
 from datetime import datetime
 
-from KimariDraw.draw.spectrum import create_spectrum
-from KimariDraw.utils.common import validate
+from draw.spectrum import create_spectrum, validate
 
 # 获取当前文件被修改的最后一次时间
 time_last = os.path.getmtime(os.path.abspath(__file__))
@@ -94,7 +93,7 @@ def select_file():
                 print(str(e))
                 # 继续主循环
                 continue
-            print("Hint: Selected toml file path:", input_str)
+            print("Hint: Selected toml file path:", input_path)
             # 销毁对话框
             dialog.Destroy()
             # 返回 input_path
@@ -250,3 +249,6 @@ def main():
         # 进入主程序
         main_view(selected_file)
 
+
+if __name__ == '__main__':
+    main()
