@@ -1,0 +1,8 @@
+[curve]
+path = "ecd_curve.txt"
+style = "-"
+
+[line]
+path = "ecd_line.txt"
+color = "black"
+

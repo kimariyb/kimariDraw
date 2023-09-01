@@ -1,23 +1,21 @@
 import setuptools
 
-from kimaridraw.draw import VERSION
-
 with open("./README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="kimaridraw",
-    version=VERSION.version,
-    author=VERSION.developer,
+    version="2.5.2",
+    author="Kimariyb, Ryan Hsiun",
     author_email="kimariyb@163.com",
     description="A Python script that processes Multiwfn spectral data and plots various spectra.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url=VERSION.website,
+    url="https://github.com/kimariyb/kimariDraw",
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'kimaridraw=kimaridraw.draw:main',
+            'kimaridraw=KimariDraw.kimaridraw:main',
         ],
     },
     classifiers=[

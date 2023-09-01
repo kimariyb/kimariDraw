@@ -1,0 +1,9 @@
+[curve]
+path = "uv_curve.txt"
+color = ["black", "red", "orange", "green", "blue"]
+legend = ["total", "S0 to S2", "S0 to S5", "S0 to S11", "S0 to S13"]
+style = ["-", "--", "--", "--", "--"]
+
+[line]
+path = "uv_line.txt"
+color = "black"

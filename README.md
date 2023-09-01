@@ -28,19 +28,19 @@ Multiwfn 是一个非常强大的波函数分析程序。Multiwfn 免费、开�
 1. 如果没有安装 Python，可以不用安装 Python，直接前往 [anaconda 官网](https://www.anaconda.com/)下载 anaconda 最新版本。安装并配置好以后，使用 anaconda 新建一个环境。
 
 ```shell
-conda create -n kimaridraw python=3.8.13
+conda create -n KimariDraw python=3.8.13
 ```
 
 2. 激活名为 kimaridraw 的 conda 环境：
 
 ```shell
-conda activate kimaridraw
+conda activate KimariDraw
 ```
 
 3. 使用 pip 工具安装 kimaridraw
 
 ```shell
-pip install kimaridraw
+pip install KimariDraw
 ```
 
 4. 安装 kimaridraw 所需要的包和库：
@@ -67,7 +67,7 @@ pip install openpyxl==3.1.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
 1. 如果使用 pip 安装了 KimariDraw，可以直接在终端中运行 KimariDraw
 
 ```shell
-kimaridraw
+KimariDraw
 ```
 
 2. 接着程序显示程序头以及提示你要你选择一个 toml 文件，所有的指令和提示非常清晰，比如输入 `q` 可以直接退出，按空格可以使用 GUI 选择 toml 文件。
