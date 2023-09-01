@@ -141,6 +141,8 @@ path = "uv_line.txt"
 color = "black"
 ```
 
+**请注意！** 最好把 toml 文件以及 txt 文件放在一个目录下，同时 `path` 只用写上 txt 文件的名字，这样能很好的避免 bug。
+
 Toml 文件中可以配置的颜色可以为常规的 red、blue 等文本，也可以是 16 进制的颜色代号。同时由于 KimariDraw 基于 Proplot 和 Matplotlib 开发，因此也可以直接使用 Proplot 和 Matplotlib 内置的颜色主题。
 
 <img src="figure/color.png">
