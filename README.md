@@ -129,6 +129,18 @@ Toml（Tom's Obvious, Minimal Language）是一种易于阅读和编写的配置
   - `path` `string`，这个属性指定了绘制直线所需数据的文件路径。
   - `color` `string, list[string...]`, 这个属性指定了直线的颜色主题。
 
+```toml
+[curve]
+path = "uv_curve.txt"
+color = ["black", "red", "orange", "green", "blue"]
+legend = ["total", "S0 to S2", "S0 to S5", "S0 to S11", "S0 to S13"]
+style = ["-", "--", "--", "--", "--"]
+
+[line]
+path = "uv_line.txt"
+color = "black"
+```
+
 Toml 文件中可以配置的颜色可以为常规的 red、blue 等文本，也可以是 16 进制的颜色代号。同时由于 KimariDraw 基于 Proplot 和 Matplotlib 开发，因此也可以直接使用 Proplot 和 Matplotlib 内置的颜色主题。
 
 <img src="figure/color.png">
