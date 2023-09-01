@@ -175,7 +175,9 @@ Toml 文件中可以配置的颜色可以为常规的 red、blue 等文本，也
 
 ## 使用脚本批量生成光谱
 
-KimariDraw 程序中自带了一个用 KimariDraw 程序批量绘制光谱的脚本。如果需要批量绘制光谱，可以在 `script` 文件夹中找到这个脚本。由于绘制光谱通常在 Windows 系统下进行，所以只提供了能在 Windows 下运行的 batch 脚本 `SpecDraw.exe`。想要使用 `SpecDraw.exe` 脚本必须同时提供一个 `draw.txt` 文件，该文件记录了运行 KimariDraw 所需要使用到的命令。有关 `SpecDraw.exe` 的详细信息可以浏览 SpecDraw 的主页 https://github.com/kimariyb/SpecDraw
+KimariDraw 程序中自带了一个用 KimariDraw 程序批量绘制光谱的脚本。如果需要批量绘制光谱，可以在 `script` 文件夹中找到这个脚本。由于绘制光谱通常在 Windows 系统下进行，所以只提供了能在 Windows 下运行的 batch 脚本 `SpecDraw.exe`。 想要使用 `SpecDraw.exe` 脚本必须同时提供一个 `draw.txt` 文件，该文件记录了运行 KimariDraw 所需要使用到的命令。
+
+有关 `SpecDraw.exe` 的详细信息可以浏览 SpecDraw 的主页 https://github.com/kimariyb/SpecDraw
 
 ## 使用脚本批量产生光谱数据
 
