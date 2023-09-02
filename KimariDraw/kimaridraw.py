@@ -36,7 +36,7 @@ from proplot import rc
 # 获取当前文件被修改的最后一次时间
 time_last = os.path.getmtime(os.path.abspath(__file__))
 # 全局的静态变量
-__version__ = "2.5.2.3"
+__version__ = "2.5.2.4"
 __developer__ = "Kimariyb, Ryan Hsiun"
 __address__ = "XiaMen University, School of Electronic Science and Engineering"
 __website__ = "https://github.com/kimariyb/kimariDraw"
@@ -73,14 +73,11 @@ class Spectrum:
 
     def __init__(self, **kwargs):
         # 构造函数逻辑
+
         # 曲线数据 DataFrame，必须传入的参数
         self.curveData = kwargs.get('curveData')
         # 直线数据 DataFrame
         self.lineData = kwargs.get('lineData')
-
-        # 拿到 curveData x 数据和 left_y 数据
-        x_array = np.array(self.curveData.iloc[:, 0])
-        left_y_array = np.array((self.curveData.iloc[:, 1:]))
 
         # x 轴的标签 string，默认为 x label，可以为 None
         self.x_label = kwargs.get('x_label', 'X Label')
@@ -94,37 +91,29 @@ class Spectrum:
         # 标题 string，默认为 title，可以为 None
         self.title = kwargs.get('title', 'Title')
 
-        # 判断 lineData 是否存在，如果不为 None
-        if self.lineData is not None:
-            right_y_array = np.array((self.lineData.iloc[:, 1:]))
-            # 右 y 轴的刻度，最小值、最大值以及间距，必须为 list[float, float, float]，默认为 'auto'
-            self.right_y_limit = kwargs.get('right_y_limit', 'auto')
-            # 如果为 auto，则调用 auto_lim() 方法自动生成 right_y_limit
-            if self.right_y_limit == 'auto':
-                self.right_y_limit = auto_lim(np.max(right_y_array), np.min(right_y_array))
-            if self.right_y_limit != 'auto' and (
-                    not isinstance(self.right_y_limit, list) or len(self.right_y_limit) != 3):
+        # x 轴的刻度，最小值、最大值以及间距，必须为 list[float, float, float]，默认调用调用 auto_lim() 方法自动生成 x_limit
+        if 'x_limit' in kwargs:
+            self.x_limit = kwargs.get('x_limit')
+            if not isinstance(self.x_limit, list) or len(self.x_limit) != 3:
+                raise ValueError("x_limit must be a list of three floats [min, max, step]")
+        else:
+            self.x_limit, _, _ = self.auto_limit()
+
+        # 左 y 轴的刻度，最小值、最大值以及间距，必须为 list[float, float, float]，默认调用调用 auto_lim() 方法自动生成
+        if 'left_y_limit' in kwargs:
+            self.left_y_limit = kwargs.get('left_y_limit')
+            if not isinstance(self.left_y_limit, list) or len(self.left_y_limit) != 3:
+                raise ValueError("left_y_limit must be a list of three floats [min, max, step]")
+        else:
+            _, self.left_y_limit, _ = self.auto_limit()
+
+        # 右 y 轴的刻度，最小值、最大值以及间距，必须为 list[float, float, float]，默认调用调用 auto_lim() 方法自动生成
+        if 'right_y_limit' in kwargs:
+            self.right_y_limit = kwargs.get('right_y_limit')
+            if not isinstance(self.right_y_limit, list) or len(self.right_y_limit) != 3:
                 raise ValueError("right_y_limit must be a list of three floats [min, max, step]")
         else:
-            # 如果 lineData 为 None，则将 line 有关的属性全设为 None
-            self.right_y_label = None
-            self.right_y_limit = None
-
-        # x 轴的刻度，最小值、最大值以及间距，必须为 list[float, float, float]，默认为 'auto'
-        self.x_limit = kwargs.get('x_limit', 'auto')
-        # 如果为 auto，则调用 auto_lim() 方法自动生成 x_limit
-        if self.x_limit == 'auto':
-            self.x_limit = auto_lim(np.max(x_array), np.min(x_array))
-        if self.x_limit != 'auto' and (not isinstance(self.x_limit, list) or len(self.x_limit) != 3):
-            raise ValueError("x_limit must be a list of three floats [min, max, step]")
-
-        # 左 y 轴的刻度，最小值、最大值以及间距，必须为 list[float, float, float]，默认为 'auto'
-        self.left_y_limit = kwargs.get('left_y_limit', 'auto')
-        # 如果为 auto，则调用 auto_lim() 方法自动生成 left_y_limit
-        if self.left_y_limit == 'auto':
-            self.left_y_limit = auto_lim(np.max(left_y_array), np.min(left_y_array))
-        if self.left_y_limit != 'auto' and (not isinstance(self.left_y_limit, list) or len(self.left_y_limit) != 3):
-            raise ValueError("left_y_limit must be a list of three floats [min, max, step]")
+            _, _, self.right_y_limit = self.auto_limit()
 
         # 字体家族 string，默认为 Arial
         self.font_family = kwargs.get('font_family', 'Arial')
@@ -221,6 +210,58 @@ class Spectrum:
                f"  save_dpi: {self.save_dpi}\n" \
                f"  lineData: {self.lineData}\n" \
                f"  curveData: {self.curveData}\n"
+
+    @staticmethod
+    def calculate_limit(array):
+        """
+        计算给定数组的限制值。
+
+        Args:
+            array (numpy.ndarray): 输入的数组。
+
+        Returns:
+            list[float, float, float]: 包含最小值、最大值和间隔的限制列表。
+        """
+        # 首先计算最大值和最小值
+        min_value = np.min(array)
+        max_value = np.max(array)
+        # 拿到最大值最小值的间距
+        data_range = max_value - min_value
+        # 生成刻度的最小值、最大值以及间距
+        interval = math.ceil(data_range / 5 / 10) * 10
+        upper_limit = math.ceil(max_value / interval) * interval
+        lower_limit = math.floor(min_value / interval) * interval
+        limit = [lower_limit, upper_limit, interval]
+
+        return limit
+
+    def auto_limit(self):
+        """
+        根据初始化的 curveData 以及 lineData 的最大值和最小值，自动生成 x、lefty、righty 轴的整齐坐标轴刻度和间隔
+
+        Warnings:
+            如果当 lineData 为 None 时，则将 right_y_limit 设置为 None
+        Returns:
+            limit(list[float, float, float]): 分别返回 x_limit, left_y_limit, right_y_limit
+        """
+        # 拿到 curveData x 数据
+        x_array = np.array(self.curveData.iloc[:, 0])
+        x_limit = self.calculate_limit(x_array)
+
+        # 拿到 left_y 数据
+        left_y_array = np.array((self.curveData.iloc[:, 1:]))
+        left_y_limit = self.calculate_limit(left_y_array)
+
+        # 判断 lineData 是否存在，如果为 None 则直接返回 None，如果不为 None 则将自动生成 right_y_limit
+        if self.lineData is not None:
+            # 拿到 right_y 数据
+            right_y_array = np.array((self.lineData.iloc[:, 1:]))
+            right_y_limit = self.calculate_limit(right_y_array)
+        else:
+            right_y_limit = None
+            self.right_y_label = None
+
+        return x_limit, left_y_limit, right_y_limit
 
     def draw_spectrum(self):
         """
@@ -573,26 +614,6 @@ class Spectrum:
             print("Setting successful!\n")
 
 
-def auto_lim(max_value, min_value):
-    """
-    根据一段数据的最大值和最小值，自动生成一个整齐的坐标轴刻度和间隔
-
-    Args:
-        max_value(float): 数据的最大值
-        min_value(float): 数据的最小值
-
-    Returns:
-        limit(list[float, float, float]): 返回一个 list 记录了刻度的最小值、最大值以及间距
-    """
-    # 首先计算最大值和最小值的插值
-    data_range = max_value - min_value
-    interval = math.ceil(data_range / 5 / 10) * 10
-    upper_limit = math.ceil(max_value / interval) * interval
-    lower_limit = math.floor(min_value / interval) * interval
-    limit = [lower_limit, upper_limit, interval]
-    return limit
-
-
 def read_path(file_path):
     """
     读取 toml 文件中 path 所指向的 txt 或 xlxs 文件的内容
@@ -928,5 +949,4 @@ def main():
         selected_file = select_file()
         # 进入主程序
         main_view(selected_file)
-
 
