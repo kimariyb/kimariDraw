@@ -1,13 +1,15 @@
 -6
-5,4
+6,4
 -3
 0
-Wavelength (in nm)
--3
+Frequency (cm^-1)
 1
-Absorption (in L/mol/cm)
-2
-80,200,20
+Absorption (L/mol/cm)
 3
-0,10000,2000
+
+r
 1
+0,4000,500
+2
+0,3000,1000
+0
