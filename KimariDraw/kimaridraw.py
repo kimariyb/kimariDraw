@@ -36,7 +36,7 @@ from proplot import rc
 # 获取当前文件被修改的最后一次时间
 time_last = os.path.getmtime(os.path.abspath(__file__))
 # 全局的静态变量
-__version__ = "2.5.2.2"
+__version__ = "2.5.2.3"
 __developer__ = "Kimariyb, Ryan Hsiun"
 __address__ = "XiaMen University, School of Electronic Science and Engineering"
 __website__ = "https://github.com/kimariyb/kimariDraw"
@@ -573,6 +573,26 @@ class Spectrum:
             print("Setting successful!\n")
 
 
+def auto_lim(max_value, min_value):
+    """
+    根据一段数据的最大值和最小值，自动生成一个整齐的坐标轴刻度和间隔
+
+    Args:
+        max_value(float): 数据的最大值
+        min_value(float): 数据的最小值
+
+    Returns:
+        limit(list[float, float, float]): 返回一个 list 记录了刻度的最小值、最大值以及间距
+    """
+    # 首先计算最大值和最小值的插值
+    data_range = max_value - min_value
+    interval = math.ceil(data_range / 5 / 10) * 10
+    upper_limit = math.ceil(max_value / interval) * interval
+    lower_limit = math.floor(min_value / interval) * interval
+    limit = [lower_limit, upper_limit, interval]
+    return limit
+
+
 def read_path(file_path):
     """
     读取 toml 文件中 path 所指向的 txt 或 xlxs 文件的内容
@@ -679,119 +699,6 @@ def create_spectrum(toml_file):
 
     return Spectrum(curveData=curve_data, lineData=line_data, line_colors=line_color, curve_colors=curve_color,
                     curve_style=curve_style, legend_text=legend_text)
-
-
-def count_degree(expected, max_value, min_value, symmetrical=False):
-    """
-    Calculate the maximum and minimum degrees of the expected scale,
-    which are multiples of the estep.
-
-    Args:
-        expected (float): The desired interval of the scale.
-        max_value (float): The maximum value of the data.
-        min_value (float): The minimum value of the data.
-        symmetrical (bool, optional): Whether to enable symmetrical scale.
-            Defaults to False.
-
-    Returns:
-        tuple: The maximum and minimum degrees (maxi, mini).
-
-    """
-    # The final effect is to take 1 unit up when max/expected belongs to the interval (-1, Infinity),
-    # otherwise take 2 units. Similarly, take 1 unit down when min/expected belongs to the interval (-Infinity,1),
-    # otherwise take 2 units.
-    maxi = int(max_value / expected + 1) * expected
-    mini = int(min_value / expected - 1) * expected
-
-    # If max and min are exactly on the scale lines, the logic above would take one extra unit up or down.
-    if max_value == 0:
-        maxi = 0
-    if min_value == 0:
-        mini = 0
-
-    if symmetrical and maxi * mini <= 0:
-        tm = max(abs(maxi), abs(mini))
-        maxi = tm
-        mini = -tm
-
-    return maxi, mini
-
-
-def auto_lim(max_value, min_value, is_deviation=False):
-    """
-    Automatically generate a neat xlim or ylim based on the maximum and minimum values.
-    The lim includes the maximum value and minimum value of the x or y axis,
-    as well as the x or y axis tick locator.
-
-    Args:
-        max_value (float): The maximum value of x or y data.
-        min_value (float): The minimum value of x or y data.
-        is_deviation (bool, optional): Whether to allow deviation.
-            Defaults to False.
-
-    Returns:
-        list: Auto lim list [lim_min, lim_max, locator].
-
-    """
-    # Initialize the desired number of scale intervals
-    split_number = 4
-
-    # Initialize a magic array and calculate the initial interval (temp_gap) and scaling factor (multiple)
-    magic_array = [2, 5, 10, 15, 20, 25, 30, 40, 50, 60, 70, 80, 90, 100]
-    temp_gap = (max_value - min_value) / split_number
-    multiple = 10 ** (math.floor(math.log10(temp_gap) - 1))
-    expected = next((val * multiple for val in magic_array if val > temp_gap / multiple), None)
-
-    # Calculate the maximum and minimum degrees of the expected scale
-    maxi, mini = count_degree(expected, max_value, min_value)
-
-    if not is_deviation:
-        while True:
-            temp_split_number = round((maxi - mini) / expected)
-
-            # Update the maximum and minimum values based on conditions
-            if (maxi == 0 or mini - min_value <= maxi - max_value) and temp_split_number < split_number:
-                # Update the minimum value (move left)
-                mini -= expected
-            else:
-                # Update the maximum value (move right)
-                maxi += expected
-
-            # Exit the loop when the desired number of splits is reached
-            if temp_split_number == split_number:
-                break
-
-            if temp_split_number > split_number:
-                # Find the index of the current magic number
-                magic_idx = next((i for i, val in enumerate(magic_array) if val * multiple == expected), None)
-
-                # If the index exists and is not the last one, update the expected value and the maximum
-                # and minimum values
-                if magic_idx is not None and magic_idx < len(magic_array) - 1:
-                    # Update the expected value (increase)
-                    expected = magic_array[magic_idx + 1] * multiple
-                    # Update the maximum and minimum values
-                    maxi, mini = count_degree(expected, max_value, min_value)
-                else:
-                    break
-            else:
-                # Find the index of the current magic number
-                magic_idx = next((i for i, val in enumerate(magic_array) if val * multiple == expected), None)
-
-                # If the index exists and is not the first one, update the expected value and the
-                # maximum and minimum values
-                if magic_idx is not None and magic_idx > 0:
-                    # Update the expected value (decrease)
-                    expected = magic_array[magic_idx - 1] * multiple
-                    # Update the maximum and minimum values
-                    maxi, mini = count_degree(expected, max_value, min_value)
-                else:
-                    break
-
-    interval = (maxi - mini) / split_number
-    lim = [mini, maxi, interval]
-
-    return lim
 
 
 def validate(file):
@@ -1021,4 +928,5 @@ def main():
         selected_file = select_file()
         # 进入主程序
         main_view(selected_file)
+
 
