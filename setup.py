@@ -5,7 +5,7 @@ with open("./README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="kimaridraw",
-    version="2.5.2.4",
+    version="2.5.2.5",
     author="Kimariyb, Ryan Hsiun",
     author_email="kimariyb@163.com",
     description="A Python script that processes Multiwfn spectral data and plots various spectra.",
